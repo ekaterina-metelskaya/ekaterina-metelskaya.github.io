@@ -1,0 +1,109 @@
+<!-- Схемы и интерактивные блоки кейса. В тексте (content/documentation.md) вставляются строкой [[имя]] -->
+
+<!-- block: start-directions -->
+<ol class="directions directions--preview">
+        <li><a href="#solution-1">
+          <span class="dp dp-bars" aria-hidden="true"><i style="width:40%"></i><i class="is-brand" style="width:80%"></i></span>
+          <span class="t-label-mono dir-num">Решение 01</span><span class="t-title">Найти ценность для бизнеса</span></a></li>
+        <li><a href="#solution-2">
+          <span class="dp dp-summary" aria-hidden="true"><i></i><i></i><i></i><i class="is-on"></i><b></b></span>
+          <span class="t-label-mono dir-num">Решение 02</span><span class="t-title">Встроить аналитику в работу</span></a></li>
+        <li><a href="#solution-3">
+          <span class="dp dp-groups2" aria-hidden="true"><span><i></i><i></i><i class="is-moved"></i></span><span><i></i><i></i></span></span>
+          <span class="t-label-mono dir-num">Решение 03</span><span class="t-title">Одна логика для разных разделов</span></a></li>
+      </ol>
+
+<!-- block: solution-1-fig -->
+<figure class="fig">
+        <div class="fig-cols">
+          <div class="fig-col">
+            <span class="badge badge--neutral">Первоначальный запрос</span>
+            <div class="wf dc-concept">
+              <div class="dc-blocks"><span class="dc-block">Централизованное хранение</span></div>
+              <div class="dc-effect">
+                <span class="t-label-mono">Ожидаемый эффект</span>
+                <span class="dc-bar"><span class="dc-fill" style="--w:38%"></span><span class="dc-line"></span></span>
+                <span class="dc-verdict is-no">Недостаточно для одобрения</span>
+              </div>
+            </div>
+            <p class="t-body-sm fig-note">Информация собрана в одном месте, но этого мало, чтобы окупить разработку</p>
+          </div>
+          <div class="fig-col">
+            <span class="badge badge--brand">Расширенная концепция</span>
+            <div class="wf dc-concept">
+              <div class="dc-blocks"><span class="dc-block">Централизованное хранение</span><span class="dc-block is-new">+ Актуальность и полнота</span><span class="dc-block is-new">+ Аналитика в работе</span></div>
+              <div class="dc-effect">
+                <span class="t-label-mono">Ожидаемый эффект</span>
+                <span class="dc-bar"><span class="dc-fill is-brand" style="--w:78%"></span><span class="dc-line"></span></span>
+                <span class="dc-verdict is-ok">Окупаемость — 6 месяцев, разработку одобрили</span>
+              </div>
+            </div>
+            <p class="t-body-sm fig-note">Ценность аналитики проверили на практическом примере и добавили в обоснование</p>
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 2 — КАК ВЫРОСЛА КОНЦЕПЦИЯ</span><span>схема · линия — порог одобрения, шкала условная</span></figcaption>
+      </figure>
+
+<!-- block: solution-2-fig -->
+<figure class="fig fig--wide">
+        <div class="fig-cols">
+          <div class="fig-col">
+            <span class="badge badge--neutral">Отдельный раздел</span>
+            <div class="wf dc-split" aria-label="Схема: список документов и отдельная вкладка с графиками">
+              <div class="nb-tabs"><span class="is-current">Документы</span><span>Аналитика</span></div>
+              <span class="wf-row"></span><span class="wf-row w80"></span><span class="wf-row w60"></span><span class="wf-row w70"></span><span class="wf-row w50"></span>
+              <div class="dc-away"><span class="dc-chart"><i style="--h:40%"></i><i style="--h:70%"></i><i style="--h:55%"></i><i style="--h:85%"></i></span><span>графики — на другой вкладке</span></div>
+            </div>
+            <p class="t-body-sm fig-note">Чтобы понять состояние, нужно уйти из списка и сопоставить данные самому</p>
+          </div>
+          <div class="fig-col">
+            <span class="badge badge--brand">В рабочем контексте</span>
+            <div class="wf dc-inline" data-dc-list>
+              <div class="dc-summary" role="group" aria-label="Фильтр по состоянию">
+                <button type="button" class="dc-sum" data-f="all" aria-pressed="true"><b data-n="all"></b>Все</button>
+                <button type="button" class="dc-sum dc-sum--ok" data-f="ok" aria-pressed="false"><b data-n="ok"></b>Актуальны</button>
+                <button type="button" class="dc-sum dc-sum--warn" data-f="warn" aria-pressed="false"><b data-n="warn"></b>Требуют обновления</button>
+                <button type="button" class="dc-sum dc-sum--gap" data-f="gap" aria-pressed="false"><b data-n="gap"></b>Неполные</button>
+              </div>
+              <ul class="dc-rows">
+                <li data-s="ok"><span>Документ 1</span><span class="dc-meter" style="--p:100%"></span><span class="st st--success">Актуален</span></li>
+                <li data-s="warn"><span>Документ 2</span><span class="dc-meter" style="--p:90%"></span><span class="st st--warning">Обновить</span></li>
+                <li data-s="gap"><span>Документ 3</span><span class="dc-meter" style="--p:55%"></span><span class="st st--error">Не хватает данных</span></li>
+                <li data-s="ok"><span>Документ 4</span><span class="dc-meter" style="--p:100%"></span><span class="st st--success">Актуален</span></li>
+                <li data-s="ok"><span>Документ 5</span><span class="dc-meter" style="--p:100%"></span><span class="st st--success">Актуален</span></li>
+                <li data-s="gap"><span>Документ 6</span><span class="dc-meter" style="--p:70%"></span><span class="st st--error">Не хватает данных</span></li>
+                <li data-s="warn"><span>Документ 7</span><span class="dc-meter" style="--p:95%"></span><span class="st st--warning">Обновить</span></li>
+              </ul>
+            </div>
+            <p class="t-body-sm fig-note">Сводка над списком и состояние у каждой записи: картина видна во время работы</p>
+          </div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: нажмите на сводку — список под ней отфильтруется</p>
+        <figcaption class="t-code-sm"><span>FIG. 3 — АНАЛИТИКА В РАБОЧЕМ КОНТЕКСТЕ</span><span>схема · данные условные</span></figcaption>
+      </figure>
+
+<!-- block: solution-3-fig -->
+<figure class="fig">
+        <div class="dc-form-controls">
+          <div class="seg" role="radiogroup" aria-label="Раздел" data-seg="section">
+            <button type="button" role="radio" aria-checked="true" data-v="0">Раздел 1</button>
+            <button type="button" role="radio" aria-checked="false" data-v="1">Раздел 2</button>
+            <button type="button" role="radio" aria-checked="false" data-v="2">Раздел 3</button>
+          </div>
+          <label class="dc-check t-code-sm"><input type="checkbox" data-dc-feedback> после обсуждения с пользователями</label>
+        </div>
+        <div class="wf dc-form" data-dc-form>
+          <div class="dc-form-head"><b data-dc-title></b><span class="st st--brand">В работе</span></div>
+          <div class="dc-form-groups" data-dc-groups></div>
+          <div class="wf-footer"><span class="wf-draft">Черновик сохранён</span><span class="wf-submit">Сохранить</span></div>
+        </div>
+        <p class="dc-form-note t-code-sm" data-dc-note aria-live="polite"></p>
+        <p class="try t-code-sm">Попробуйте: переключите разделы — меняется содержание, но не устройство формы</p>
+        <figcaption class="t-code-sm"><span>FIG. 4 — ОБЩАЯ ЛОГИКА РАЗДЕЛОВ</span><span>схема · поля условные</span></figcaption>
+      </figure>
+
+<!-- block: results-finale-stat -->
+<div class="finale-stat">
+        <span class="finale-num finale-num--sm" aria-hidden="true">6 мес</span>
+        <p>ожидаемый срок окупаемости разработки</p>
+      </div>

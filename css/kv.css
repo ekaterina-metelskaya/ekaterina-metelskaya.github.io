@@ -1,0 +1,79 @@
+/* ============================================================
+   Key visuals of the NDA cases (tools/cover-control|planning|docs.html).
+   One drawing for both places: the case hero and the card on the home page.
+   Everything inside .kv-art is sized in container units, so the drawing scales with its box
+   ============================================================ */
+.kv-bg, .case-cover.kv {
+  background:
+    radial-gradient(60% 90% at 50% 110%, color-mix(in srgb, var(--kv-glow) 42%, transparent), transparent 70%),
+    radial-gradient(40% 60% at 85% 0%, color-mix(in srgb, var(--kv-glow-2) 22%, transparent), transparent 70%),
+    #1c1917;
+}
+/* Each NDA case has its own glow, so the three covers do not read as one dark blur repeated */
+.kv-bg, .case-cover.kv, .kv-docs { --kv-glow: #7c3aed; --kv-glow-2: #a88cfb; }
+.kv-control { --kv-glow: #d97706; --kv-glow-2: #fbbf24; }
+.kv-planning { --kv-glow: #0d9488; --kv-glow-2: #5eead4; }
+.kv-art { position: absolute; inset: 0; container-type: size; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+
+/* Three cards in one composition: two at the back, one in front */
+.kv-card {
+  position: absolute; display: flex; flex-direction: column; gap: 1.7cqh; padding: 3.2cqh;
+  border-radius: 2.4cqh; background: #24201e; border: max(1px, .23cqh) solid rgba(250, 250, 249, .12);
+  box-shadow: 0 3cqh 7cqh rgba(0, 0, 0, .35); font: 500 2.4cqh/1.35 var(--font-mono); color: #a6a09d;
+}
+.kv-a { left: 6%; top: 12%; width: 40%; transform: rotate(-1.5deg); }
+.kv-b { left: 31%; top: 36%; width: 44%; z-index: 2; background: #2b2725; border-color: rgba(196, 181, 253, .35); box-shadow: 0 4.5cqh 11cqh rgba(0, 0, 0, .5); }
+.kv-c { right: 6%; top: 15%; width: 26%; transform: rotate(1.5deg); }
+.kv-cap { margin-bottom: .4cqh; text-transform: uppercase; letter-spacing: .2cqh; font-size: 2cqh; color: #78716c; }
+
+/* Pieces */
+.kv-g { display: flex; align-items: center; gap: 1.8cqh; height: 4.6cqh; padding: 0 1.8cqh; border-radius: 1.1cqh; border: max(1px, .23cqh) solid rgba(250, 250, 249, .1); }
+.kv-g i { width: 1.4cqh; height: 1.4cqh; border-right: .35cqh solid #a6a09d; border-bottom: .35cqh solid #a6a09d; transform: rotate(-45deg); }
+.kv-g.is-open i { transform: rotate(45deg); border-color: #c4b5fd; }
+.kv-g b, .kv-field b, .kv-line, .kv-doc b, .kv-diff b { display: block; height: 1.4cqh; width: var(--w); border-radius: .7cqh; background: rgba(250, 250, 249, .2); }
+.kv-line { margin-left: 5cqh; }
+.kv-target { margin-left: 5cqh; width: max-content; padding: .2cqh 1.8cqh; border-radius: .9cqh; border: max(1px, .23cqh) dashed #a88cfb; background: rgba(124, 58, 237, .2); color: #ddd6fe; }
+.kv-add { margin-left: 5cqh; color: #a88cfb; }
+.kv-field { display: flex; align-items: center; justify-content: space-between; height: 5.5cqh; padding: 0 1.8cqh; border-radius: 1.1cqh; border: max(1px, .23cqh) solid rgba(250, 250, 249, .18); background: rgba(0, 0, 0, .2); }
+.kv-field i { font-style: normal; font-weight: 600; }
+.kv-field.is-ok { border-color: rgba(134, 239, 172, .6); } .kv-field.is-ok i { color: #86efac; }
+.kv-field.is-err { border-color: rgba(254, 119, 118, .7); } .kv-field.is-err i { color: #fe7776; }
+.kv-hint { margin-top: -.7cqh; color: #fe7776; }
+.kv-foot { display: flex; align-items: center; justify-content: space-between; gap: 1.8cqh; margin-top: .9cqh; padding-top: 1.8cqh; border-top: max(1px, .23cqh) solid rgba(250, 250, 249, .1); }
+.kv-foot em { font-style: normal; color: #86efac; }
+.kv-foot u { text-decoration: none; padding: .7cqh 1.8cqh; border-radius: .9cqh; background: #7c3aed; color: #fff; }
+.kv-n { height: 3.2cqh; border-radius: .9cqh; background: rgba(250, 250, 249, .12); }
+.kv-n.is-cur { background: rgba(124, 58, 237, .55); box-shadow: inset .45cqh 0 0 #c4b5fd; }
+.kv-n.is-gap { margin-top: 1.2cqh; }
+/* Planning: changes waiting for confirmation, statuses */
+.kv-diff { display: flex; align-items: center; gap: 1.6cqh; height: 5.5cqh; padding: 0 1.8cqh; border-radius: 1.1cqh; background: rgba(124, 58, 237, .16); box-shadow: inset .45cqh 0 0 #a88cfb; }
+.kv-diff s { color: #78716c; }
+.kv-diff em { font-style: normal; font-weight: 600; color: #ddd6fe; }
+.kv-diff i { margin-left: auto; font-style: normal; font-weight: 600; color: #86efac; }
+.kv-diff i + i { margin-left: 0; color: #fe7776; }
+.kv-diff.is-ok { background: rgba(134, 239, 172, .1); box-shadow: inset .45cqh 0 0 #86efac; }
+.kv-chip { display: flex; align-items: center; gap: 1.4cqh; width: max-content; padding: .5cqh 1.8cqh; border-radius: 99px; background: rgba(250, 250, 249, .08); }
+.kv-chip::before { content: ""; width: 1.4cqh; height: 1.4cqh; border-radius: 50%; background: var(--c); }
+/* Documentation: state of each record, a summary over the list */
+.kv-doc { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 1.8cqh; height: 4.2cqh; }
+.kv-meter { height: 1.4cqh; border-radius: .7cqh; background: rgba(250, 250, 249, .1); overflow: hidden; }
+.kv-meter::after { content: ""; display: block; height: 100%; width: var(--p); background: #a88cfb; }
+.kv-sum { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4cqh; }
+.kv-sum span { display: flex; flex-direction: column; gap: .4cqh; padding: 1.2cqh 1.4cqh; border-radius: 1.1cqh; border: max(1px, .23cqh) solid rgba(250, 250, 249, .12); font-size: 1.8cqh; }
+.kv-sum b { font: 600 4.2cqh/1 var(--font-sans); color: var(--c, #fafaf9); }
+.kv-sum span.is-on { border-color: #a88cfb; background: rgba(124, 58, 237, .2); }
+
+/* The NDA glass over the drawing: silhouettes read through it */
+.kv-nda {
+  z-index: 3; border-radius: inherit; background: rgba(28, 25, 23, .14) !important;
+  backdrop-filter: blur(4px) saturate(1.3) !important; -webkit-backdrop-filter: blur(4px) saturate(1.3) !important;
+  font-size: 12px !important; letter-spacing: 3px !important; color: rgba(250, 250, 249, .75) !important; text-shadow: 0 1px 8px rgba(0, 0, 0, .6);
+  transition: opacity .45s, letter-spacing .45s;
+}
+/* Home card: the glass lifts on hover, like in the case */
+.case-card:hover .cover-kv .kv-nda { opacity: 0; letter-spacing: 8px !important; }
+.case-card:hover .cover-kv .kv-art { transform: scale(1.03); }
+@media (prefers-reduced-motion: reduce) {
+  .kv-art, .kv-nda { transition: opacity .2s; }
+  .case-card:hover .cover-kv .kv-art { transform: none; }
+}

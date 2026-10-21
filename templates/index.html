@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{page_title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="preload" href="assets/fonts/IBMPlexSans-Regular-Cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/kv.css">
+<script>try{var s=localStorage.getItem('em-scheme');if(s&&s!=='default')document.documentElement.dataset.scheme=s}catch(e){}</script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M3.33 8h9.34M8.67 4l4 4-4 4"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M12.67 8H3.33M7.33 4l-4 4 4 4"/></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3.33v9.34M4 8.67l4 4 4-4"/></symbol>
+</svg>
+
+<!-- ============ Header ============ -->
+<header class="site-header">
+  <div class="wrap">
+    <a href="#top" class="logo" aria-label="На главную">ЕМ.</a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#about">Обо мне</a>
+      <a href="#work">Избранные кейсы</a>
+      <a href="#process">Как я работаю</a>
+      <a href="#experience">Опыт</a>
+      <a href="#match">Сработаемся?</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <div class="header-right">
+      <span class="status t-label">Открыта к предложениям</span>
+      <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>CV</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ Hero ============ -->
+<section class="hero" aria-label="Знакомство">
+  <div class="wrap">
+    <div class="hero-intro">
+      <div>
+        <h1 class="t-display-xl">{{name}}</h1>
+        <p class="t-heading-lg">{{role}}</p>
+      </div>
+      <div class="hero-text">
+        <p class="t-body-lg">{{intro}}</p>
+        <ul class="badges" aria-label="Роли">
+          {{badges}}
+        </ul>
+      </div>
+      <a class="btn btn--link" href="#work"><svg><use href="#i-arrow-down"/></svg><span>Смотреть кейсы</span></a>
+    </div>
+
+    <div class="diagram-box">
+      <figure class="diagram" style="margin:0" aria-label="Схема: Human–computer interaction unit">
+        <div class="abs title-plate">
+          <p class="t-code">HUMAN-COMPUTER INTERACTION UNIT</p>
+          <p class="t-code-sm">Model: EM-8+</p>
+          <div class="status-row"><span class="t-code-sm c-tertiary">Status:</span><span class="badge badge--success" data-status>online</span></div>
+        </div>
+
+        <button class="abs unit-photo" type="button" data-stage="empty" aria-label="Загрузить фото">
+          <span class="photo">
+            <span class="photo-layers">
+              <img class="photo-img" data-src="assets/human.webp" alt="Екатерина Метельская" width="240" height="300" decoding="async">
+              <canvas class="photo-dither" aria-hidden="true"></canvas>
+            </span>
+            <span class="photo-placeholder t-code-sm" aria-hidden="true"><span>DITHER · LOW-RES</span><span class="load" data-load-text>load human.webp</span></span>
+            <span class="photo-scan" aria-hidden="true"></span>
+          </span>
+          <span class="selection"></span>
+          <span class="handle" style="left:4px;top:24px"></span>
+          <span class="handle" style="left:244px;top:24px"></span>
+          <span class="handle" style="left:4px;top:324px"></span>
+          <span class="handle" style="left:244px;top:324px"></span>
+          <span class="chip-label" style="left:7px;top:0">Unit photo · <span data-photo-mode>Preview</span></span>
+          <span class="chip-label" style="left:95px;top:336px" data-size>240 × 300</span>
+        </button>
+        <!-- Phone only: Advanced (dither settings) opens right on the photo; main.js moves #adv-body in here -->
+        <div class="photo-adv">
+          <div class="photo-adv-inner" data-photo-adv>
+            <button type="button" class="photo-adv-btn t-code-sm" aria-expanded="false" aria-controls="adv-body">Advanced</button>
+          </div>
+        </div>
+
+        <div data-callouts>
+          <div class="abs callout callout--l t-code-sm" data-c="1" style="right:424px;top:128px">
+            <span class="callout-key">EXPERIENCE</span>
+            <span class="callout-val">8+ years · B2B ·<br>B2E · B2C</span>
+          </div>
+          <svg class="abs connector" data-c="1" viewBox="0 0 17.5 7" aria-hidden="true" style="left:146px;top:162.5px"><rect y="3" width="14" height="1" fill="var(--hero-line)"/><circle cx="14" cy="3.5" r="3.5" fill="var(--hero-accent)"/></svg>
+
+          <div class="abs callout callout--l t-code-sm" data-c="2" style="right:424px;top:214px">
+            <span class="callout-key">RESEARCH MODULE</span>
+            <span class="callout-val" data-beh-research>qualitative ·<br>quantitative</span>
+            <span class="callout-note" data-beh-note="talk" hidden></span>
+          </div>
+          <svg class="abs connector" data-c="2" viewBox="0 0 17.5 7" aria-hidden="true" style="left:146px;top:248.5px"><rect y="3" width="14" height="1" fill="var(--hero-line)"/><circle cx="14" cy="3.5" r="3.5" fill="var(--hero-accent)"/></svg>
+
+          <div class="abs callout callout--l t-code-sm" data-c="3" style="right:424px;top:344px">
+            <span class="callout-key">PLATFORM EXPERIENCE</span>
+            <span class="callout-val">web · mobile · TV</span>
+          </div>
+          <svg class="abs connector" data-c="3" viewBox="0 0 17.5 7" aria-hidden="true" style="left:146px;top:362.5px"><rect y="3" width="14" height="1" fill="var(--hero-line)"/><circle cx="14" cy="3.5" r="3.5" fill="var(--hero-accent)"/></svg>
+
+          <div class="abs callout callout--r t-code-sm" data-c="4" style="left:420px;top:150px">
+            <span class="callout-key">COMPLEX PROBLEMS</span>
+            <span class="badge badge--brand" data-beh-ask>enabled</span>
+            <span class="callout-note" data-beh-note="ask" hidden></span>
+          </div>
+          <svg class="abs connector" data-c="4" viewBox="0 0 17.5 7" aria-hidden="true" style="left:396.5px;top:178.5px"><rect x="3.5" y="3" width="14" height="1" fill="var(--hero-line)"/><circle cx="3.5" cy="3.5" r="3.5" fill="var(--hero-accent)"/></svg>
+
+          <div class="abs callout callout--r t-code-sm" data-c="5" style="left:420px;top:274px">
+            <span class="callout-key">OVER-ENGINEERING</span>
+            <span class="badge badge--neutral" data-beh-question>disabled</span>
+            <span class="callout-note" data-beh-note="question" hidden></span>
+          </div>
+          <svg class="abs connector" data-c="5" viewBox="0 0 17.5 7" aria-hidden="true" style="left:396.5px;top:304.5px"><rect x="3.5" y="3" width="14" height="1" fill="var(--hero-line)"/><circle cx="3.5" cy="3.5" r="3.5" fill="var(--hero-accent)"/></svg>
+
+          <div class="abs callout callout--r t-code-sm" data-c="6" style="left:420px;top:368px">
+            <span class="callout-key">AI COMPATIBILITY</span>
+            <span class="badge badge--brand">enabled</span>
+          </div>
+          <svg class="abs connector" data-c="6" viewBox="0 0 17.5 7" aria-hidden="true" style="left:396.5px;top:396.5px"><rect x="3.5" y="3" width="14" height="1" fill="var(--hero-line)"/><circle cx="3.5" cy="3.5" r="3.5" fill="var(--hero-accent)"/></svg>
+        </div>
+
+        <div class="abs diagram-rule"></div>
+        <figcaption class="abs diagram-caption t-code-sm">FIG. 1 — UNIT OVERVIEW · NOT TO SCALE</figcaption>
+        <p class="abs console t-code-sm" data-console aria-live="polite"></p>
+      </figure>
+    </div>
+
+    <aside class="hero-side" aria-label="Инспектор">
+      <div class="panel inspector">
+        <div class="inspector-head">
+          <span class="t-label">Inspector</span>
+          <span class="inspector-hint t-code-sm c-tertiary" aria-hidden="true">layer · scheme · advanced</span>
+          <div class="actions">
+            <button class="icon-btn" type="button" data-collapse aria-expanded="true" aria-label="Свернуть инспектор"><img src="assets/minus.svg" alt=""></button>
+            <button class="icon-btn" type="button" data-reset aria-label="Сбросить настройки юнита"><img src="assets/x.svg" alt=""></button>
+          </div>
+        </div>
+        <div class="inspector-body">
+          <div class="sep"></div>
+          <div class="group">
+            <span class="t-label-mono" style="color:var(--color-text-primary)">Layer</span>
+            <div class="layer-row">
+              <span class="select t-body"><span class="thumb"></span>Unit photo</span>
+              <span class="dims t-code-sm">W 240   H 300
+X 120   Y 64</span>
+            </div>
+          </div>
+          <div class="sep"></div>
+          <div class="group">
+            <span class="t-label-mono" style="color:var(--color-text-primary)">Appearance</span>
+            <div class="scheme-row">
+              <span class="t-code-sm c-secondary" id="scheme-label">Scheme</span>
+              <div class="segmented" role="radiogroup" aria-labelledby="scheme-label">
+                <button type="button" role="radio" aria-checked="true" data-scheme="default">Default</button>
+                <button type="button" role="radio" aria-checked="false" data-scheme="accent">Accent</button>
+                <button type="button" role="radio" aria-checked="false" data-scheme="inverse">Inverse</button>
+              </div>
+            </div>
+          </div>
+          <div class="sep"></div>
+          <button class="adv-row" type="button" aria-expanded="false" aria-controls="adv-body">
+            <img src="assets/chevron-right-sm.svg" alt="">
+            <span class="t-label-mono" style="color:var(--color-text-primary)">Advanced</span>
+            <span class="spacer"></span>
+            <span class="t-code-sm c-tertiary">dither · human · config</span>
+          </button>
+          <div class="adv-body t-code-sm" id="adv-body" hidden>
+            <label>Pixel size <span class="range"><input type="range" min="1" max="6" value="2" data-pixel><output data-out="pixel">2</output></span></label>
+            <label>Contrast <span class="range"><input type="range" min="-60" max="60" value="0" data-contrast><output data-out="contrast">0</output></span></label>
+            <label>Human <span class="range"><input type="range" min="0" max="100" value="0" data-human><output data-out="human">0%</output></span></label>
+            <div class="sep"></div>
+            <label>Spec callouts <input type="checkbox" checked data-toggle-callouts></label>
+            <label>Console <input type="checkbox" checked data-toggle-console></label>
+            <button type="button" class="reset-unit" data-reset>Reset unit</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel behaviour" role="group" aria-labelledby="behaviour-title">
+        <div class="behaviour-head"><span class="t-label-mono" id="behaviour-title">Behaviour</span><button type="button" class="behaviour-reset t-code-sm" data-beh-reset aria-label="Сбросить Behaviour">Reset</button></div>
+        <label class="check"><input type="checkbox" checked data-beh="ask"><span class="box"><img src="assets/check.svg" alt=""></span><span class="lbl t-code-sm">Ask why</span></label>
+        <label class="check"><input type="checkbox" checked data-beh="question"><span class="box"><img src="assets/check.svg" alt=""></span><span class="lbl t-code-sm">Question requirements</span></label>
+        <label class="check"><input type="checkbox" checked data-beh="talk"><span class="box"><img src="assets/check.svg" alt=""></span><span class="lbl t-code-sm">Talk to users</span></label>
+        <label class="check"><input type="checkbox" data-beh="pop"><span class="box"><img src="assets/check.svg" alt=""></span><span class="lbl t-code-sm">Make it pop</span></label>
+        <label class="check"><input type="checkbox" data-beh="coffee"><span class="box"><img src="assets/check.svg" alt=""></span><span class="lbl t-code-sm">Give coffee</span></label>
+        <p class="behaviour-note t-code-sm" aria-live="polite"></p>
+      </div>
+
+      <details class="panel help">
+        <summary><img src="assets/chevron-right.svg" alt=""><span class="t-label">Как взаимодействовать с hero</span></summary>
+        <ul class="t-code-sm">
+          <li data-help-click>Клик по фото — загрузить фото</li>
+          <li class="help-fine">Advanced → Pixel size / Contrast — пикселизация</li>
+          <li class="help-fine">Scheme — сменить тему страницы</li>
+          <li class="help-fine">Advanced → Human — смешать дизеринг и фото</li>
+          <li class="help-fine help-beh">Behaviour — переключатели меняют схему и статус</li>
+          <li class="help-touch">Inspector — разверните, чтобы сменить тему и настроить дизеринг</li>
+        </ul>
+      </details>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ About ============ -->
+<section class="about" id="about">
+  <div class="wrap split">
+    <div class="section-head">
+      <p class="t-label-mono">{{about.label}}</p>
+      <h2 class="t-heading-lg">{{about.title}}</h2>
+    </div>
+    <div class="about-text t-body-lg">
+      {{about.text}}
+    </div>
+  </div>
+</section>
+
+<div class="divider wrap" aria-hidden="true"><hr></div>
+
+<!-- ============ Selected work ============ -->
+<section class="work" id="work">
+  <div class="wrap split">
+    <div class="section-head">
+      <p class="t-label-mono">{{work.label}}</p>
+      <h2 class="t-heading-lg">{{work.title}}</h2>
+      <p class="t-body-lg">{{work.lead}}</p>
+      <a class="btn btn--outline all-projects" href="projects.html"><svg><use href="#i-arrow-right"/></svg>Посмотреть все проекты</a>
+    </div>
+    <div class="groups">
+      <div class="case-group">
+        <div class="case-group-head"><h3>Внутренние системы</h3><div class="track-nav" aria-hidden="true"><button type="button" class="track-btn" data-dir="-1" tabindex="-1"><svg><use href="#i-arrow-left"/></svg></button><button type="button" class="track-btn" data-dir="1" tabindex="-1"><svg><use href="#i-arrow-right"/></svg></button></div></div>
+        <ul class="track" tabindex="0" aria-label="Внутренние системы">
+          <!--CARD:production-control--><!--CARD:planning--><!--CARD:documentation-->
+        </ul>
+      </div>
+      <div class="case-group">
+        <div class="case-group-head"><h3>Публичные продукты</h3><div class="track-nav" aria-hidden="true"><button type="button" class="track-btn" data-dir="-1" tabindex="-1"><svg><use href="#i-arrow-left"/></svg></button><button type="button" class="track-btn" data-dir="1" tabindex="-1"><svg><use href="#i-arrow-right"/></svg></button></div></div>
+        <ul class="track" tabindex="0" aria-label="Публичные продукты">
+          <!--CARD:sweet-tv--><!--CARD:in-vino--><!--CARD:re-instance-->
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Process ============ -->
+<section class="process" id="process">
+  <div class="wrap split">
+    <div class="section-head">
+      <p class="t-label-mono">{{process.label}}</p>
+      <h2 class="t-heading-lg">{{process.title}}</h2>
+      <p class="t-body-lg">{{process.lead}}</p>
+    </div>
+    <ol class="steps" style="margin:0;padding:0;list-style:none">
+      {{process.steps}}
+    </ol>
+  </div>
+</section>
+
+<!-- ============ Experience ============ -->
+<section class="experience" id="experience">
+  <div class="wrap split">
+    <div class="section-head">
+      <p class="t-label-mono">{{experience.label}}</p>
+      <h2 class="t-heading-lg">{{experience.title}}</h2>
+    </div>
+    <div>
+      {{experience.entries}}
+    </div>
+  </div>
+</section>
+
+<div class="divider wrap" aria-hidden="true"><hr></div>
+
+  <section class="match" id="match">
+    <div class="wrap split">
+      <div class="section-head">
+        <p class="t-label-mono">{{match.label}}</p>
+        <h2 class="t-heading-lg">{{match.title}}</h2>
+        <p class="t-body-lg">{{match.lead}}</p>
+      </div>
+      <div class="match-col">
+        <div class="match-choices">
+          <!--CHIPS-->
+        </div>
+        <aside class="match-card" aria-live="polite">
+          <p class="match-card-title t-heading-md" data-match-title>Проверим совместимость?</p>
+          <p class="match-card-text t-body" data-match-text>Здесь появится ответ, как только вы отметите первый вариант.</p>
+          <div class="match-card-actions">
+            <a class="btn btn--primary" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener"><svg><use href="#i-arrow-right"/></svg>Написать мне</a>
+            <button type="button" class="btn btn--link match-reset" data-match-reset hidden>Сбросить выбор</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+<!-- ============ Dark zone: contacts + footer ============ -->
+<div class="is-dark">
+  <section class="case-cta" id="contacts">
+    <div class="wrap">
+      <div class="case-cta-text">
+        <h2 class="t-heading-lg">{{home.cta_title}}</h2>
+        <p class="case-cta-lead t-title">{{home.cta_lead}}</p>
+        <p class="t-body-lg">{{home.cta_text}}</p>
+        <p class="case-cta-where t-label-mono">{{home.cta_where}}</p>
+      </div>
+      <div class="case-cta-actions">
+        <a class="btn btn--primary" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener"><svg><use href="#i-arrow-right"/></svg>Написать в Telegram</a>
+        <a class="btn btn--outline" href="assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>Скачать CV</a>
+        <a class="case-cta-mail t-title" href="mailto:metelskaya.ek@gmail.com">metelskaya.ek@gmail.com</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-left">
+        <span class="logo">ЕМ.</span>
+        <span class="t-body-sm">© 2026 Екатерина Метельская</span>
+      </div>
+      <nav class="footer-links" aria-label="Ссылки">
+        <a class="t-label-mono" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener">Telegram</a>
+        <a class="t-label-mono" href="https://www.linkedin.com/in/ekaterina-metelskaya/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="t-label-mono" href="https://novosibirsk.hh.ru/resume/f022f4cfff10b37b790039ed1f5a3039745752" target="_blank" rel="noopener">hh.ru</a>
+        <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>CV</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+</main>
+
+<script src="js/main.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/covers.js"></script>
+</body>
+</html>

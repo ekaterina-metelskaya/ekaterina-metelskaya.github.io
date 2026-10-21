@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<!-- Link-preview image template, 1200×630. Rendered to assets/og/<key>.png by tools/og.js (?k=home|control|planning|docs|tv|invino) -->
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../css/kv.css">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #fff; }
+  .og { position: relative; display: grid; grid-template-columns: 500px 1fr; gap: 48px; align-items: center; width: 1200px; height: 630px; padding: 64px; box-sizing: border-box; }
+  .og::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: #7c3aed; }
+  .og-text { display: flex; flex-direction: column; gap: 20px; }
+  .og-kicker { font: 500 18px/24px var(--font-mono); letter-spacing: 1px; text-transform: uppercase; color: #6d28d9; }
+  .og-title { margin: 0; font: 600 52px/58px var(--font-sans); letter-spacing: -1.2px; color: #1c1917; }
+  .og-title.is-long { font-size: 42px; line-height: 48px; letter-spacing: -.8px; }
+  .og-lead { margin: 0; font: 500 22px/31px var(--font-sans); color: #44403c; }
+  .og-metric { display: flex; align-items: center; gap: 16px; }
+  .og-metric b { font: 600 72px/1 var(--font-sans); letter-spacing: -3px; color: #7c3aed; }
+  .og-metric span { max-width: 260px; font: 500 18px/25px var(--font-sans); color: #1c1917; }
+  .og-foot { position: absolute; left: 64px; bottom: 40px; font: 500 18px/24px var(--font-sans); color: #78716c; }
+  .og-foot b { color: #1c1917; font-weight: 600; }
+  .og-art { position: relative; height: 420px; border-radius: 20px; overflow: hidden; }
+  /* Illustrated covers (420×180 drawings) scaled to the art box */
+  .og-art .cover-art { position: absolute; left: 50%; top: 50%; width: 420px; height: 180px; transform: translate(-50%, -50%) scale(1.22); }
+  .og-art .kv-art { inset: 0; }
+  .og-art .kv-nda { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font: 500 16px/1 var(--font-mono) !important; letter-spacing: 6px !important; }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="og-text">
+    <p class="og-kicker" data-kicker></p>
+    <h1 class="og-title" data-title></h1>
+    <p class="og-lead" data-lead></p>
+    <div class="og-metric" data-metric hidden><b></b><span></span></div>
+  </div>
+  <div class="og-art" data-art></div>
+  <p class="og-foot"><b>Екатерина Метельская</b> · продуктовый дизайнер</p>
+</div>
+<script>
+  const pages = {
+    home: { kicker: 'Портфолио', title: 'Екатерина Метельская', lead: 'Продуктовый дизайнер. Разбираюсь в сложных цифровых продуктах и делаю их понятнее для пользователей.', art: 'tv', foot: false },
+    control: { kicker: 'Кейс · Внутренние системы', title: 'Система производственного контроля и мониторинга', metric: ['×8', 'быстрее выполняется основная задача пользователя'], art: 'control' },
+    planning: { kicker: 'Кейс · Внутренние системы', title: 'Корпоративная система планирования', metric: ['×3', 'примерно во столько раз быстрее рабочий процесс'], art: 'planning' },
+    docs: { kicker: 'Кейс · Внутренние системы', title: 'Система управления документацией', metric: ['6 мес', 'ожидаемая окупаемость разработки'], art: 'docs' },
+    tv: { kicker: 'Кейс · Публичные продукты', title: 'SWEET.TV', lead: 'Один пользовательский сценарий на устройствах, которыми управляют пальцем и пультом.', art: 'tv' },
+    invino: { kicker: 'Кейс · Собственные инструменты', title: 'In Vino — дизайн-система', lead: 'Многоуровневые токены, слоты и свойства компонентов. На ней собрано это портфолио.', art: 'invino' },
+  };
+  const covers = { tv: ['cover-tv', 'linear-gradient(to right, #0e1b26, #17324a)'], invino: ['cover-invino', '#fdf2f2'] };
+  const p = pages[new URLSearchParams(location.search).get('k')] || pages.home;
+  const $ = s => document.querySelector(s);
+  $('[data-kicker]').textContent = p.kicker;
+  $('[data-title]').textContent = p.title;
+  $('[data-title]').classList.toggle('is-long', p.title.length > 30);
+  $('[data-lead]').textContent = p.lead || '';
+  if (p.metric) { const m = $('[data-metric]'); m.hidden = false; m.querySelector('b').textContent = p.metric[0]; m.querySelector('span').textContent = p.metric[1]; }
+  if (p.foot === false) $('.og-foot').remove();
+  const art = $('[data-art]');
+  const file = covers[p.art] ? covers[p.art][0] : `cover-${p.art}`;
+  fetch(`../templates/partials/${file}.html`).then(r => r.text()).then(html => {
+    html = html.split('src="assets/').join('src="../assets/');
+    if (covers[p.art]) {
+      art.style.background = covers[p.art][1];
+      art.innerHTML = `<div class="cover-art">${html}</div>`;
+    } else {
+      art.classList.add('kv-bg');
+      art.innerHTML = `<div class="kv-art">${html}</div><div class="crystal-panel kv-nda">NDA</div>`;
+    }
+    document.body.dataset.ready = '1';
+  });
+</script>
+</body>
+</html>

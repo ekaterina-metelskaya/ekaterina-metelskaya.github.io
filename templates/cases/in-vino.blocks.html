@@ -1,0 +1,214 @@
+<!-- Схемы и интерактивные блоки кейса. В тексте (content/in-vino.md) вставляются строкой [[имя]] -->
+
+<!-- block: tokens-fig -->
+<figure class="fig fig--wide">
+        <div class="pg-controls" data-pg-controls>
+          <div class="pg-group"><span class="t-label-mono">Тема</span><div class="ap-seg" role="radiogroup" aria-label="Тема" data-mode="theme"><button type="button" role="radio" aria-checked="true" data-v="light">Light</button><button type="button" role="radio" aria-checked="false" data-v="dark">Dark</button></div></div>
+          <div class="pg-group"><span class="t-label-mono">Выразительность</span><div class="ap-seg" role="radiogroup" aria-label="Выразительность" data-mode="expr"><button type="button" role="radio" aria-checked="true" data-v="neutral">Neutral</button><button type="button" role="radio" aria-checked="false" data-v="vino">In Vino</button><button type="button" role="radio" aria-checked="false" data-v="signature">Signature</button></div></div>
+          <div class="pg-group"><span class="t-label-mono">Плотность</span><div class="ap-seg" role="radiogroup" aria-label="Плотность" data-mode="density"><button type="button" role="radio" aria-checked="false" data-v="compact">Compact</button><button type="button" role="radio" aria-checked="true" data-v="default">Default</button><button type="button" role="radio" aria-checked="false" data-v="comfortable">Comfortable</button></div></div>
+          <div class="pg-group"><span class="t-label-mono">Движение</span><div class="ap-seg" role="radiogroup" aria-label="Движение" data-mode="motion"><button type="button" role="radio" aria-checked="true" data-v="standard">Standard</button><button type="button" role="radio" aria-checked="false" data-v="reduced">Reduced</button></div></div>
+        </div>
+        <div class="pg" data-pg data-theme="light" data-expr="neutral" data-density="default" data-motion="standard">
+          <div class="pg-stage">
+            <article class="pg-card" data-token="card/bg">
+              <div class="pg-card-head">
+                <span class="pg-meta" data-token="meta">REQ-102</span>
+                <span class="pg-tag" data-token="tag">На ревью</span>
+              </div>
+              <h3 class="pg-title" data-token="card/text">Вход через SSO</h3>
+              <p class="pg-text" data-token="card/text-secondary">Пользователь входит через корпоративный SSO; сессия завершается через 30 минут бездействия.</p>
+              <div class="pg-actions">
+                <button type="button" class="pg-btn pg-btn--primary" data-token="button/primary/bg">Утвердить</button>
+                <button type="button" class="pg-btn pg-btn--secondary" data-token="button/secondary/border">Комментировать</button>
+              </div>
+              <span class="pg-spec" aria-hidden="true"></span>
+            </article>
+            <div class="pg-snackbar" data-token="snackbar/bg"><span>3 переменные требуют внимания</span><b>Показать</b></div>
+          </div>
+          <aside class="pg-inspector" aria-live="polite">
+            <p class="t-label-mono">Инспектор токенов</p>
+            <p class="pg-hint" data-touch="Нажмите на элемент">Наведите на элемент или нажмите на него</p>
+            <ol class="pg-chain" data-pg-chain></ol>
+            <dl class="pg-readout" data-pg-readout></dl>
+          </aside>
+        </div>
+        <p class="try t-code-sm" data-touch="Попробуйте: переключите режимы и нажмите на элементы карточки">Попробуйте: переключите режимы и наведите на элементы карточки</p>
+        <figcaption class="t-code-sm"><span>FIG. 1 — ОДИН КОМПОНЕНТ, ЧЕТЫРЕ ОСИ РЕЖИМОВ</span><span>значения из Variables</span></figcaption>
+      </figure>
+
+<!-- block: components-iv-stats -->
+<dl class="iv-stats" data-inv-stats aria-label="Масштаб библиотеки"></dl>
+
+<!-- block: components-fig -->
+<figure class="fig">
+        <div class="sl-wrap" data-slots>
+          <div class="sl-side">
+            <p class="t-label-mono">Вставить в слот</p>
+            <div class="sl-target ap-seg" role="radiogroup" aria-label="Слот" data-sl-target>
+              <button type="button" role="radio" aria-checked="false" data-v="header">Header</button>
+              <button type="button" role="radio" aria-checked="true" data-v="content">Content</button>
+              <button type="button" role="radio" aria-checked="false" data-v="footer">Footer</button>
+            </div>
+            <div class="sl-palette" data-sl-palette></div>
+            <p class="t-label-mono">Свойства</p>
+            <label class="iv-check"><input type="checkbox" checked data-sl-show="header"> Show header</label>
+            <label class="iv-check"><input type="checkbox" checked data-sl-show="footer"> Show footer</label>
+            <div class="sl-prop"><span class="t-label-mono">Surface</span><div class="ap-seg" role="radiogroup" aria-label="Surface" data-sl-surface><button type="button" role="radio" aria-checked="true" data-v="outlined">Outlined</button><button type="button" role="radio" aria-checked="false" data-v="elevated">Elevated</button><button type="button" role="radio" aria-checked="false" data-v="subtle">Subtle</button></div></div>
+            <div class="sl-prop"><span class="t-label-mono">State</span><div class="ap-seg" role="radiogroup" aria-label="State" data-sl-state><button type="button" role="radio" aria-checked="true" data-v="default">Default</button><button type="button" role="radio" aria-checked="false" data-v="selected">Selected</button><button type="button" role="radio" aria-checked="false" data-v="loading">Loading</button></div></div>
+          </div>
+          <div class="sl-canvas">
+            <article class="sl-card" data-sl-card data-surface="outlined" data-state="default">
+              <div class="sl-slot" data-slot="header"><span class="sl-label">Header</span><div class="sl-items"></div></div>
+              <div class="sl-slot" data-slot="content"><span class="sl-label">Content</span><div class="sl-items"></div></div>
+              <div class="sl-slot" data-slot="footer"><span class="sl-label">Footer</span><div class="sl-items"></div></div>
+            </article>
+            <p class="sl-readout t-code-sm" data-sl-readout></p>
+          </div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: добавьте блоки в слот и смените Surface — содержимое сохранится</p>
+        <figcaption class="t-code-sm"><span>FIG. 2 — CARD: HEADER, CONTENT, FOOTER</span><span>поведение как в библиотеке</span></figcaption>
+      </figure>
+
+<!-- block: components-fig-2 -->
+<figure class="fig">
+        <div class="dt-wrap" data-dt>
+          <div class="dt-side">
+            <p class="t-label-mono">Слот Content в ячейке</p>
+            <p class="dt-picked t-code-sm" data-dt-picked></p>
+            <div class="sl-palette" data-dt-palette></div>
+            <label class="iv-check"><input type="checkbox" data-dt-col> Заменить во всей колонке</label>
+          </div>
+          <div class="dt-side dt-comp">
+            <p class="t-label-mono">Композиция</p>
+            <ol class="dt-tree" data-dt-tree aria-live="polite"></ol>
+          </div>
+          <div class="sl-canvas dt-canvas">
+            <div class="dt-scroll"><table class="dt-table" data-dt-table aria-label="Data Table"></table></div>
+            <p class="sl-readout t-code-sm" data-dt-readout></p>
+          </div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: выберите ячейку и поменяйте её содержимое — таблица остаётся экземпляром библиотеки</p>
+        <figcaption class="t-code-sm"><span>FIG. 3 — DATA TABLE: СЛОТ В ЯЧЕЙКЕ</span><span>Data Table → Table Row → Table Cell · три уровня вложенности</span></figcaption>
+      </figure>
+
+<!-- block: components-fig-3 -->
+<figure class="fig">
+        <div class="ag" data-ag>
+          <div class="ag-controls">
+            <div class="ag-count"><button type="button" class="ag-step" data-ag-step="-1" aria-label="Убрать участника">−</button><output data-ag-out>6</output><button type="button" class="ag-step" data-ag-step="1" aria-label="Добавить участника">+</button><span class="t-label-mono">участников</span></div>
+            <div class="sl-prop"><span class="t-label-mono">Size</span><div class="ap-seg" role="radiogroup" aria-label="Size" data-ag-size><button type="button" role="radio" aria-checked="false" data-v="24">24</button><button type="button" role="radio" aria-checked="true" data-v="32">32</button><button type="button" role="radio" aria-checked="false" data-v="40">40</button></div></div>
+            <label class="iv-check"><input type="checkbox" checked data-ag-overflow> Show overflow</label>
+          </div>
+          <div class="ag-stage"><div class="ag-group" data-ag-group></div><p class="t-code-sm ag-note" data-ag-note></p></div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: добавьте участников и смените Size — лишние уйдут в счётчик «+N»</p>
+        <figcaption class="t-code-sm"><span>FIG. 4 — AVATAR GROUP: СЛОТ ITEMS</span><span>3 варианта размера вместо варианта на каждое число</span></figcaption>
+      </figure>
+
+<!-- block: components-fig-4 -->
+<figure class="fig">
+        <div class="bp" data-bp>
+          <div class="bp-stage"><div class="bp-preview" data-bp-preview></div><p class="bp-name t-code-sm" data-bp-name></p></div>
+          <div class="bp-panel" data-bp-panel aria-label="Свойства Button"></div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: поменяйте свойства на панели — она устроена как панель инстанса в Figma</p>
+        <figcaption class="t-code-sm"><span>FIG. 5 — BUTTON · 390 ВАРИАНТОВ</span><span>свойства из библиотеки</span></figcaption>
+      </figure>
+
+<!-- block: states-fig -->
+<figure class="fig">
+        <div class="iv-states">
+          <div class="iv-state-col">
+            <article class="iv-scard is-active"><span class="iv-scard-meta">REQ-102</span><b>Вход через SSO</b><span class="iv-scard-text">Сессия завершается через 30 минут бездействия</span></article>
+            <code class="t-code-sm">State=Active</code>
+          </div>
+          <div class="iv-state-col">
+            <article class="iv-scard is-active is-hover"><span class="iv-scard-meta">REQ-102</span><b>Вход через SSO</b><span class="iv-scard-text">Сессия завершается через 30 минут бездействия</span></article>
+            <code class="t-code-sm">State=Active + Hover</code>
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 6 — СОСТОЯНИЕ, КОТОРОЕ ПРИШЛОСЬ ДОБАВИТЬ</span><span>схема · у активной карточки тоже есть отклик на наведение</span></figcaption>
+      </figure>
+
+<!-- block: states-fig-2 -->
+<figure class="fig">
+        <div class="iv-shot iv-matrix">
+          <ol class="iv-matrix-cols iv-matrix-cols--card" aria-hidden="true"><li>Default</li><li>Hover</li><li>Focus</li><li>Selected</li><li>Disabled</li><li>Loading</li></ol>
+          <div class="iv-matrix-body">
+            <ol class="iv-matrix-rows iv-matrix-rows--card" aria-hidden="true"><li>Outlined</li><li>Elevated</li><li>Subtle</li></ol>
+            <img src="../assets/in-vino/card-variants.png" width="2160" height="779" loading="lazy" decoding="async" alt="Компонент Card в библиотеке Figma: поверхности Outlined, Elevated и Subtle в состояниях Default, Hover, Focus, Selected, Disabled и Loading">
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 7 — CARD В БИБЛИОТЕКЕ</span><span>18 вариантов: 3 Surface × 6 State · Figma</span></figcaption>
+      </figure>
+
+<!-- block: visual-fig -->
+<figure class="fig">
+        <div class="iv-palette" data-iv-palette data-surface="light">
+          <div class="iv-palette-head">
+            <p class="t-label-mono">Палитра интерфейса · 8 семейств из .Primitives</p>
+            <div class="ap-seg" role="radiogroup" aria-label="Поверхность" data-iv-surface><button type="button" role="radio" aria-checked="true" data-v="light">Light</button><button type="button" role="radio" aria-checked="false" data-v="dark">Dark</button></div>
+          </div>
+          <div class="iv-ramps" data-iv-ramps></div>
+        </div>
+        <div class="iv-shot iv-matrix iv-matrix--status">
+          <ol class="iv-matrix-cols iv-matrix-cols--status" aria-hidden="true"><li>Neutral</li><li>Brand</li><li>Info</li><li>Success</li><li>Warning</li><li>Error</li></ol>
+          <div class="iv-matrix-body">
+            <ol class="iv-matrix-rows iv-matrix-rows--status" aria-hidden="true"><li>Filled</li><li>Subtle</li><li>Outlined</li></ol>
+            <img src="../assets/in-vino/status-label.png" width="840" height="476" loading="lazy" decoding="async" alt="Компонент Status Label в Figma: варианты Filled, Subtle и Outlined в тонах Neutral, Brand, Info, Success, Warning и Error, по три размера">
+          </div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: переключите поверхность Light / Dark</p>
+        <figcaption class="t-code-sm"><span>FIG. 8 — ЦВЕТ</span><span>значения из Figma · фиолетовый Brand рядом с Success, Warning и Error в Status Label</span></figcaption>
+      </figure>
+
+<!-- block: visual-fig-2 -->
+<figure class="fig">
+        <div class="iv-shot iv-typescale" data-iv-type></div>
+        <figcaption class="t-code-sm"><span>FIG. 9 — ТИПОГРАФИКА</span><span>17 текстовых стилей · размер / межстрочный · привязаны к Semantic Typography</span></figcaption>
+      </figure>
+
+<!-- block: visual-fig-3 -->
+<figure class="fig">
+        <div class="iv-shot iv-forms">
+          <p class="t-label-mono">Скругления · radius</p>
+          <ol class="iv-radii">
+            <li style="--r:0"><i></i><b>none</b><span>0 · таблицы, разделители</span></li>
+            <li style="--r:2px"><i></i><b>xs</b><span>2 · бейджи, код</span></li>
+            <li style="--r:4px"><i></i><b>sm</b><span>4 · поля, малые кнопки</span></li>
+            <li style="--r:8px"><i></i><b>md</b><span>8 · карточки, панели, кнопки</span></li>
+            <li style="--r:12px"><i></i><b>lg</b><span>12 · модальные окна</span></li>
+            <li style="--r:16px"><i></i><b>xl</b><span>16 · выдвижные панели</span></li>
+            <li style="--r:20px"><i></i><b>2xl</b><span>20 · акцентные блоки</span></li>
+            <li style="--r:24px"><i></i><b>3xl</b><span>24 · маркетинговые блоки</span></li>
+            <li style="--r:999px"><i></i><b>full</b><span>999 · пилюли, аватары</span></li>
+          </ol>
+          <p class="t-label-mono">Тени · shadow, тонированы vino-950</p>
+          <ol class="iv-shadows">
+            <li class="s-none"><i></i><b>none</b><span>строки таблиц</span></li>
+            <li class="s-xs"><i></i><b>xs</b><span>лёгкий подъём</span></li>
+            <li class="s-sm"><i></i><b>sm</b><span>карточка, панель</span></li>
+            <li class="s-md"><i></i><b>md</b><span>меню, подсказка</span></li>
+            <li class="s-lg"><i></i><b>lg</b><span>модальное окно</span></li>
+            <li class="s-xl"><i></i><b>xl</b><span>командная палитра</span></li>
+          </ol>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 10 — ФОРМЫ</span><span>значения из Semantic Shape · чаще всего sm и md</span></figcaption>
+      </figure>
+
+<!-- block: practice-fig -->
+<figure class="fig">
+        <div class="iv-pair">
+          <p class="t-label-mono">В библиотеке · Media Card</p>
+          <div class="iv-shot"><img src="../assets/in-vino/media-card.png" width="1808" height="541" loading="lazy" decoding="async" alt="Компонент Media Card в Figma: изображение, категория и тег, заголовок, описание, автор и ссылка «Посмотреть» в пяти вариантах"></div>
+          <p class="t-label-mono">На сайте · карточки кейсов</p>
+          <div class="iv-shot"><img src="../assets/in-vino/site-case-cards.png" width="2080" height="808" loading="lazy" decoding="async" alt="Карточки кейсов на главной странице портфолио: SWEET.TV, In Vino и Re:Instance со статусом «Ещё в работе»"></div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 11 — КОМПОНЕНТ И ЕГО ПРИМЕНЕНИЕ</span><span>та же структура: обложка, теги, заголовок, описание, действие</span></figcaption>
+      </figure>
+
+<!-- block: practice-fig-2 -->
+<figure class="fig fig--wide">
+        <div class="iv-shot iv-shot--screen"><img src="../assets/in-vino/portfolio-home.webp" width="2000" height="1019" loading="lazy" decoding="async" alt="Первый экран портфолио: имя и роль, схема «Human-computer interaction unit» с фотографией и подписями, панели Inspector и Behaviour"></div>
+        <figcaption class="t-code-sm"><span>FIG. 12 — ПОРТФОЛИО НА IN VINO</span><span>первый экран сайта · тема Default</span></figcaption>
+      </figure>

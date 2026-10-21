@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>In Vino — кейс · Екатерина Метельская</title>
+<meta name="description" content="Собственная дизайн-система, на которой собрано это портфолио: многоуровневые токены, слоты и свойства компонентов.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Екатерина Метельская">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="In Vino — кейс · Екатерина Метельская">
+<meta property="og:description" content="Собственная дизайн-система, на которой собрано это портфолио: многоуровневые токены, слоты и свойства компонентов.">
+<meta property="og:image" content="../assets/og/invino.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="In Vino — кейс · Екатерина Метельская">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../assets/fonts/IBMPlexSans-Regular-Cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../css/case.css">
+<link rel="stylesheet" href="../css/case-v2.css">
+<link rel="stylesheet" href="../css/kv.css">
+<link rel="stylesheet" href="../css/in-vino.css">
+<script>try{var s=localStorage.getItem('em-scheme');if(s&&s!=='default')document.documentElement.dataset.scheme=s}catch(e){}if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')</script>
+</head>
+<body class="v2">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M3.33 8h9.34M8.67 4l4 4-4 4"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M12.67 8H3.33M7.33 4l-4 4 4 4"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l4 4-4 4"/></symbol>
+  <symbol id="i-up" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10l4-4 4 4"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></symbol>
+  <symbol id="i-back" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4L3 7l3 3"/><path d="M3 7h6.5a3.5 3.5 0 010 7H8"/></symbol>
+  <symbol id="i-epg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4l2.5 1.5L2 7"/><path d="M7 4h7M7 8h7M2 12h12"/></symbol>
+  <symbol id="i-full" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M8 13.5S2 10 2 5.8A3 3 0 018 4.2a3 3 0 016 1.6C14 10 8 13.5 8 13.5z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></symbol>
+  <symbol id="i-user" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5.5" r="3"/><path d="M2.5 14.5c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5"/></symbol>
+  <symbol id="i-home" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M2.5 7L8 2.5 13.5 7v6.5h-4v-4h-3v4h-4z"/></symbol>
+  <symbol id="i-tv" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="1.5" y="3" width="13" height="8.5" rx="1"/><path d="M5 14h6"/></symbol>
+  <symbol id="i-reel" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="5" r="1.2"/><circle cx="8" cy="11" r="1.2"/><circle cx="5" cy="8" r="1.2"/><circle cx="11" cy="8" r="1.2"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="1.5" y="5.5" width="9" height="7" rx="1"/><path d="M10.5 8l4-2v6l-4-2"/><circle cx="4" cy="3.5" r="1.5"/><circle cx="8" cy="3.5" r="1.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 16 16"><path d="M5 3.5v9l7.5-4.5z" fill="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 16 16"><path d="M4.5 3h2.5v10H4.5zM9 3h2.5v10H9z" fill="currentColor"/></symbol>
+  <symbol id="i-note" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 12V3.5l7-1.5V10.5"/><circle cx="4.5" cy="12" r="1.5"/><circle cx="11.5" cy="10.5" r="1.5"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="../index.html" class="logo" aria-label="На главную">ЕМ.</a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="../index.html#about">Обо мне</a>
+      <a href="../index.html#work" aria-current="true">Избранные кейсы</a>
+      <a href="../index.html#process">Как я работаю</a>
+      <a href="../index.html#experience">Опыт</a>
+      <a href="../index.html#match">Сработаемся?</a>
+      <a href="../index.html#contacts">Контакты</a>
+    </nav>
+    <div class="header-right">
+      <span class="status t-label">Открыта к предложениям</span>
+      <a class="btn btn--outline btn--sm" href="../assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>CV</a>
+    </div>
+  </div>
+  <span class="read-progress" aria-hidden="true"></span>
+</header>
+
+<main>
+
+<!-- ============ Case hero ============ -->
+<section class="case-hero">
+  <div class="wrap">
+    <nav class="back crumbs" aria-label="Хлебные крошки">
+      <ol>
+        <li><a href="../projects.html">Все проекты</a></li>
+        <li><a href="../projects.html#own">Собственные инструменты</a></li>
+        <li><span aria-current="page">In Vino</span></li>
+      </ol>
+      <span class="badge badge--neutral">Design system · Figma</span>
+    </nav>
+
+    <div class="case-hero-grid">
+      <div class="case-hero-text">
+        <h1 class="t-display-md">In Vino — дизайн-⁠система</h1>
+        <p class="case-lead">Собственная библиотека компонентов, на которой собрано это портфолио: многоуровневые токены, слоты и свойства компонентов вместо лишних вариантов.</p>
+        <dl class="case-facts">
+          <div><dt class="t-label-mono">Роль</dt><dd>Автор дизайн-⁠системы</dd></div>
+          <div><dt class="t-label-mono">Формат</dt><dd>Личный проект в Figma; на нём собрано это портфолио</dd></div>
+        </dl>
+      </div>
+      <figure class="case-cover case-cover--art iv-cover">
+      <div class="cover cover-invino"><div class="cover-art"><div>
+  <div style="position:absolute;inset:0;overflow:hidden">
+    <div style="position:absolute;background:#450c19;inset:8.33% 7.14% 8.33% 64.29%;overflow:hidden;border-radius:10px">
+      <div style="position:absolute;inset:22.67% 28.33% 42.67% 28.33%">
+        <img alt="" style="position:absolute;display:block;inset:0;width:100%;height:100%" src="../assets/invino-logo.svg" />
+      </div>
+      <p style="position:absolute;font:600 18px/normal 'IBM Plex Serif',Georgia,serif;inset:65.33% 23.75% 19.33% 23.75%;font-size:18px;color:#fff;white-space:nowrap">
+        In Vino
+      </p>
+    </div>
+    <div style="position:absolute;background:#7d1f34;inset:13.33% 87.62% 73.33% 6.67%;border-radius:6px" ></div>
+    <div style="position:absolute;background:#7d1f34;inset:13.33% 80.48% 73.33% 13.81%;border-radius:6px" ></div>
+    <div style="position:absolute;background:#7d1f34;inset:13.33% 73.33% 73.33% 20.95%;border-radius:6px" ></div>
+    <div style="position:absolute;background:#d33a5d;inset:30% 87.62% 56.67% 6.67%;border-radius:6px" ></div>
+    <div style="position:absolute;background:#d33a5d;inset:30% 80.48% 56.67% 13.81%;border-radius:6px" ></div>
+    <div style="position:absolute;background:#d33a5d;inset:30% 73.33% 56.67% 20.95%;border-radius:6px" ></div>
+    <div style="position:absolute;background:#d33a5d;inset:13.33% 42.86% 70% 33.33%;border-radius:15px" ></div>
+    <div style="position:absolute;background:rgba(255,255,255,0.9);inset:20% 47.14% 76.67% 37.62%;border-radius:3px" ></div>
+    <div style="position:absolute;border-width:1.5px;border-color:#7d1f34;border-style:solid;inset:34.44% 42.86% 48.89% 33.33%;border-radius:15px" ></div>
+    <div style="position:absolute;background:#7d1f34;inset:41.11% 47.14% 55.56% 37.62%;border-radius:3px" ></div>
+    <div style="position:absolute;background:#d33a5d;inset:53.33% 82.86% 33.33% 6.67%;border-radius:12px" ></div>
+    <div style="position:absolute;inset:55% 83.57% 35% 12.14%">
+      <img alt="" style="position:absolute;display:block;inset:0;width:100%;height:100%" src="../assets/invino-ellipse.svg" />
+    </div>
+    <div style="position:absolute;background:#7d1f34;inset:54.44% 75.24% 34.44% 20%;border-radius:5px" ></div>
+    <div style="position:absolute;background:#7d1f34;inset:54.44% 59.52% 34.44% 26.67%;border-radius:10px" ></div>
+    <div style="position:absolute;background:#7d1f34;inset:58.89% 61.9% 38.89% 29.05%;border-radius:2px" ></div>
+    <div style="position:absolute;background:#fff;border-width:1px;border-color:#7d1f34;border-style:solid;inset:72.22% 42.86% 11.11% 6.67%;border-radius:8px" ></div>
+    <div style="position:absolute;background:#7d1f34;inset:79.44% 69.05% 18.33% 9.52%;border-radius:2px" ></div>
+    <div style="position:absolute;background:#d33a5d;inset:77.78% 90.12% 16.67% 9.52%;border-radius:1px" ></div>
+    <div style="position:absolute;background:#fff;border-width:1px;border-color:#d33a5d;border-style:solid;inset:54.44% 42.86% 34.44% 42.86%;border-radius:10px" ></div>
+    <div style="position:absolute;background:#d33a5d;inset:58.89% 45.71% 38.89% 45.71%;border-radius:2px" ></div>
+  </div>
+</div></div></div>
+    </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Body ============ -->
+<div class="wrap split case-body">
+  <nav class="toc" aria-label="Содержание кейса">
+    <p class="t-label-mono">Содержание</p>
+    <ol>
+      <li><a href="#about">О проекте</a></li>
+      <li><a href="#different">Что хотелось сделать иначе</a></li>
+      <li><a href="#tokens">Архитектура токенов</a></li>
+      <li><a href="#components">Архитектура компонентов</a></li>
+      <li><a href="#states">Работа с состояниями</a></li>
+      <li><a href="#visual">Визуальный язык</a></li>
+      <li><a href="#practice">Применение на практике</a></li>
+      <li><a href="#learnings">Итоги</a></li>
+    </ol>
+  </nav>
+
+  <article class="prose">
+    <section id="about">
+      <h2 class="t-heading-lg">О проекте</h2>
+      <p>За годы работы я успела познакомиться с разными дизайн-⁠системами: Consta, Ant Design, Tailwind, Carbon и Material Design. В каждой находила удачные решения, которые хотелось использовать, но ни одна полностью не отвечала моим представлениям об удобной библиотеке компонентов.</p>
+      <p>Так появилась идея собрать собственную дизайн-⁠систему. Я хотела создать инструмент, с которым мне самой будет комфортно работать и который смогу использовать в будущих проектах.</p>
+      <p>In Vino стала такой основой. На ней я собираю своё портфолио и планирую разрабатывать другие небольшие продукты. При этом продолжаю развивать саму систему, пересматривать отдельные решения и пробовать новые возможности Figma.</p>
+    </section>
+
+    <section id="different">
+      <h2 class="t-heading-lg">Что хотелось сделать иначе</h2>
+      <p>Работая с готовыми дизайн-⁠системами, я часто сталкивалась с ограничениями компонентов. Особенно это касалось таблиц и других элементов для отображения данных. Изменить содержимое ячейки или карточки, адаптировать её под конкретную задачу не всегда получалось без отсоединения экземпляра.</p>
+      <p>С другими компонентами возникали свои сложности. Где-⁠то было слишком много вариантов, в которых приходилось разбираться, а где-⁠то не хватало даже базовых состояний, например Hover.</p>
+      <p>В In Vino я постаралась найти баланс между гибкостью и удобством. Для настройки содержимого использовала слоты и свойства компонентов, а варианты оставила для действительно необходимых различий и состояний.</p>
+      <p>Отдельное внимание уделила токенам. Я хотела с самого начала выстроить систему переменных, чтобы управлять оформлением централизованно и не менять каждый компонент вручную.</p>
+    </section>
+
+    <section id="tokens">
+      <h2 class="t-heading-lg">Архитектура токенов</h2>
+      <p>Прежде чем приступить к созданию библиотеки, я подробно изучила возможности Figma Variables. Разбиралась в документации, смотрела примеры использования и сравнивала разные подходы к организации токенов.</p>
+      <p>В итоге остановилась на многоуровневой структуре. В её основе лежат примитивы с базовыми значениями цветов, размеров, типографики и других параметров. На них опираются семантические токены, разделённые по назначению.</p>
+      <p>Для визуального оформления предусмотрены светлая и тёмная темы. Плотность интерфейса можно переключать между Default, Compact и Comfortable. Отдельные коллекции отвечают за типографику, размеры, формы и движение.</p>
+      <p>На последнем уровне находятся токены компонентов. Они наследуют значения из семантического слоя и позволяют управлять оформлением отдельных элементов, не затрагивая всю систему.</p>
+      <figure class="fig fig--wide">
+        <div class="pg-controls" data-pg-controls>
+          <div class="pg-group"><span class="t-label-mono">Тема</span><div class="ap-seg" role="radiogroup" aria-label="Тема" data-mode="theme"><button type="button" role="radio" aria-checked="true" data-v="light">Light</button><button type="button" role="radio" aria-checked="false" data-v="dark">Dark</button></div></div>
+          <div class="pg-group"><span class="t-label-mono">Выразительность</span><div class="ap-seg" role="radiogroup" aria-label="Выразительность" data-mode="expr"><button type="button" role="radio" aria-checked="true" data-v="neutral">Neutral</button><button type="button" role="radio" aria-checked="false" data-v="vino">In Vino</button><button type="button" role="radio" aria-checked="false" data-v="signature">Signature</button></div></div>
+          <div class="pg-group"><span class="t-label-mono">Плотность</span><div class="ap-seg" role="radiogroup" aria-label="Плотность" data-mode="density"><button type="button" role="radio" aria-checked="false" data-v="compact">Compact</button><button type="button" role="radio" aria-checked="true" data-v="default">Default</button><button type="button" role="radio" aria-checked="false" data-v="comfortable">Comfortable</button></div></div>
+          <div class="pg-group"><span class="t-label-mono">Движение</span><div class="ap-seg" role="radiogroup" aria-label="Движение" data-mode="motion"><button type="button" role="radio" aria-checked="true" data-v="standard">Standard</button><button type="button" role="radio" aria-checked="false" data-v="reduced">Reduced</button></div></div>
+        </div>
+        <div class="pg" data-pg data-theme="light" data-expr="neutral" data-density="default" data-motion="standard">
+          <div class="pg-stage">
+            <article class="pg-card" data-token="card/bg">
+              <div class="pg-card-head">
+                <span class="pg-meta" data-token="meta">REQ-⁠102</span>
+                <span class="pg-tag" data-token="tag">На ревью</span>
+              </div>
+              <h3 class="pg-title" data-token="card/text">Вход через SSO</h3>
+              <p class="pg-text" data-token="card/text-secondary">Пользователь входит через корпоративный SSO; сессия завершается через 30 минут бездействия.</p>
+              <div class="pg-actions">
+                <button type="button" class="pg-btn pg-btn--primary" data-token="button/primary/bg">Утвердить</button>
+                <button type="button" class="pg-btn pg-btn--secondary" data-token="button/secondary/border">Комментировать</button>
+              </div>
+              <span class="pg-spec" aria-hidden="true"></span>
+            </article>
+            <div class="pg-snackbar" data-token="snackbar/bg"><span>3 переменные требуют внимания</span><b>Показать</b></div>
+          </div>
+          <aside class="pg-inspector" aria-live="polite">
+            <p class="t-label-mono">Инспектор токенов</p>
+            <p class="pg-hint" data-touch="Нажмите на элемент">Наведите на элемент или нажмите на него</p>
+            <ol class="pg-chain" data-pg-chain></ol>
+            <dl class="pg-readout" data-pg-readout></dl>
+          </aside>
+        </div>
+        <p class="try t-code-sm" data-touch="Попробуйте: переключите режимы и нажмите на элементы карточки">Попробуйте: переключите режимы и наведите на элементы карточки</p>
+        <figcaption class="t-code-sm"><span>FIG. 1 — ОДИН КОМПОНЕНТ, ЧЕТЫРЕ ОСИ РЕЖИМОВ</span><span>значения из Variables</span></figcaption>
+      </figure>
+      <p>Архитектура остаётся гибкой. При необходимости я могу добавлять новые режимы, расширять существующие коллекции или пересматривать зависимости между ними.</p>
+    </section>
+
+    <section id="components">
+      <h2 class="t-heading-lg">Архитектура компонентов</h2>
+      <p>При создании библиотеки я старалась придерживаться композиционного подхода. Сначала собирала базовые элементы, а затем использовала их для построения более сложных компонентов.</p>
+      <p>Обычно структура ограничивается тремя уровнями вложенности. Это помогает повторно использовать элементы и упрощает работу с компонентами, когда нужно что-⁠то изменить.</p>
+      <dl class="iv-stats" data-inv-stats aria-label="Масштаб библиотеки"></dl>
+      <p>Для настройки содержимого использовала разные возможности Figma. Варианты и свойства позволяют управлять предусмотренными состояниями и параметрами компонентов. Там, где содержимое может меняться сильнее, использовала слоты.</p>
+      <p>Такой подход особенно пригодился в таблицах, карточках, меню и списках. Например, внутри ячейки таблицы можно заменить вложенный компонент или изменить состав содержимого, сохранив связь с библиотекой.</p>
+      <figure class="fig">
+        <div class="sl-wrap" data-slots>
+          <div class="sl-side">
+            <p class="t-label-mono">Вставить в слот</p>
+            <div class="sl-target ap-seg" role="radiogroup" aria-label="Слот" data-sl-target>
+              <button type="button" role="radio" aria-checked="false" data-v="header">Header</button>
+              <button type="button" role="radio" aria-checked="true" data-v="content">Content</button>
+              <button type="button" role="radio" aria-checked="false" data-v="footer">Footer</button>
+            </div>
+            <div class="sl-palette" data-sl-palette></div>
+            <p class="t-label-mono">Свойства</p>
+            <label class="iv-check"><input type="checkbox" checked data-sl-show="header"> Show header</label>
+            <label class="iv-check"><input type="checkbox" checked data-sl-show="footer"> Show footer</label>
+            <div class="sl-prop"><span class="t-label-mono">Surface</span><div class="ap-seg" role="radiogroup" aria-label="Surface" data-sl-surface><button type="button" role="radio" aria-checked="true" data-v="outlined">Outlined</button><button type="button" role="radio" aria-checked="false" data-v="elevated">Elevated</button><button type="button" role="radio" aria-checked="false" data-v="subtle">Subtle</button></div></div>
+            <div class="sl-prop"><span class="t-label-mono">State</span><div class="ap-seg" role="radiogroup" aria-label="State" data-sl-state><button type="button" role="radio" aria-checked="true" data-v="default">Default</button><button type="button" role="radio" aria-checked="false" data-v="selected">Selected</button><button type="button" role="radio" aria-checked="false" data-v="loading">Loading</button></div></div>
+          </div>
+          <div class="sl-canvas">
+            <article class="sl-card" data-sl-card data-surface="outlined" data-state="default">
+              <div class="sl-slot" data-slot="header"><span class="sl-label">Header</span><div class="sl-items"></div></div>
+              <div class="sl-slot" data-slot="content"><span class="sl-label">Content</span><div class="sl-items"></div></div>
+              <div class="sl-slot" data-slot="footer"><span class="sl-label">Footer</span><div class="sl-items"></div></div>
+            </article>
+            <p class="sl-readout t-code-sm" data-sl-readout></p>
+          </div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: добавьте блоки в слот и смените Surface — содержимое сохранится</p>
+        <figcaption class="t-code-sm"><span>FIG. 2 — CARD: HEADER, CONTENT, FOOTER</span><span>поведение как в библиотеке</span></figcaption>
+      </figure>
+      <figure class="fig">
+        <div class="dt-wrap" data-dt>
+          <div class="dt-side">
+            <p class="t-label-mono">Слот Content в ячейке</p>
+            <p class="dt-picked t-code-sm" data-dt-picked></p>
+            <div class="sl-palette" data-dt-palette></div>
+            <label class="iv-check"><input type="checkbox" data-dt-col> Заменить во всей колонке</label>
+          </div>
+          <div class="dt-side dt-comp">
+            <p class="t-label-mono">Композиция</p>
+            <ol class="dt-tree" data-dt-tree aria-live="polite"></ol>
+          </div>
+          <div class="sl-canvas dt-canvas">
+            <div class="dt-scroll"><table class="dt-table" data-dt-table aria-label="Data Table"></table></div>
+            <p class="sl-readout t-code-sm" data-dt-readout></p>
+          </div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: выберите ячейку и поменяйте её содержимое — таблица остаётся экземпляром библиотеки</p>
+        <figcaption class="t-code-sm"><span>FIG. 3 — DATA TABLE: СЛОТ В ЯЧЕЙКЕ</span><span>Data Table → Table Row → Table Cell · три уровня вложенности</span></figcaption>
+      </figure>
+      <figure class="fig">
+        <div class="ag" data-ag>
+          <div class="ag-controls">
+            <div class="ag-count"><button type="button" class="ag-step" data-ag-step="-1" aria-label="Убрать участника">−</button><output data-ag-out>6</output><button type="button" class="ag-step" data-ag-step="1" aria-label="Добавить участника">+</button><span class="t-label-mono">участников</span></div>
+            <div class="sl-prop"><span class="t-label-mono">Size</span><div class="ap-seg" role="radiogroup" aria-label="Size" data-ag-size><button type="button" role="radio" aria-checked="false" data-v="24">24</button><button type="button" role="radio" aria-checked="true" data-v="32">32</button><button type="button" role="radio" aria-checked="false" data-v="40">40</button></div></div>
+            <label class="iv-check"><input type="checkbox" checked data-ag-overflow> Show overflow</label>
+          </div>
+          <div class="ag-stage"><div class="ag-group" data-ag-group></div><p class="t-code-sm ag-note" data-ag-note></p></div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: добавьте участников и смените Size — лишние уйдут в счётчик «+N»</p>
+        <figcaption class="t-code-sm"><span>FIG. 4 — AVATAR GROUP: СЛОТ ITEMS</span><span>3 варианта размера вместо варианта на каждое число</span></figcaption>
+      </figure>
+      <figure class="fig">
+        <div class="bp" data-bp>
+          <div class="bp-stage"><div class="bp-preview" data-bp-preview></div><p class="bp-name t-code-sm" data-bp-name></p></div>
+          <div class="bp-panel" data-bp-panel aria-label="Свойства Button"></div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: поменяйте свойства на панели — она устроена как панель инстанса в Figma</p>
+        <figcaption class="t-code-sm"><span>FIG. 5 — BUTTON · 390 ВАРИАНТОВ</span><span>свойства из библиотеки</span></figcaption>
+      </figure>
+    </section>
+
+    <section id="states">
+      <h2 class="t-heading-lg">Работа с состояниями</h2>
+      <p>Для интерактивных компонентов я определила базовый набор состояний. Но по мере использования библиотеки обнаруживались сценарии, которые изначально не учла.</p>
+      <p>Например, у карточки в состоянии Active тоже должен быть Hover. Это стало заметно уже во время работы с компонентами, поэтому набор состояний пришлось дополнить.</p>
+      <figure class="fig">
+        <div class="iv-states">
+          <div class="iv-state-col">
+            <article class="iv-scard is-active"><span class="iv-scard-meta">REQ-⁠102</span><b>Вход через SSO</b><span class="iv-scard-text">Сессия завершается через 30 минут бездействия</span></article>
+            <code class="t-code-sm">State=Active</code>
+          </div>
+          <div class="iv-state-col">
+            <article class="iv-scard is-active is-hover"><span class="iv-scard-meta">REQ-⁠102</span><b>Вход через SSO</b><span class="iv-scard-text">Сессия завершается через 30 минут бездействия</span></article>
+            <code class="t-code-sm">State=Active + Hover</code>
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 6 — СОСТОЯНИЕ, КОТОРОЕ ПРИШЛОСЬ ДОБАВИТЬ</span><span>схема · у активной карточки тоже есть отклик на наведение</span></figcaption>
+      </figure>
+      <figure class="fig">
+        <div class="iv-shot iv-matrix">
+          <ol class="iv-matrix-cols iv-matrix-cols--card" aria-hidden="true"><li>Default</li><li>Hover</li><li>Focus</li><li>Selected</li><li>Disabled</li><li>Loading</li></ol>
+          <div class="iv-matrix-body">
+            <ol class="iv-matrix-rows iv-matrix-rows--card" aria-hidden="true"><li>Outlined</li><li>Elevated</li><li>Subtle</li></ol>
+            <img src="../assets/in-vino/card-variants.png" width="2160" height="779" loading="lazy" decoding="async" alt="Компонент Card в библиотеке Figma: поверхности Outlined, Elevated и Subtle в состояниях Default, Hover, Focus, Selected, Disabled и Loading">
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 7 — CARD В БИБЛИОТЕКЕ</span><span>18 вариантов: 3 Surface × 6 State · Figma</span></figcaption>
+      </figure>
+      <p>Сейчас я сама использую In Vino и постепенно дорабатываю её под возникающие задачи. В дальнейшем планирую открыть библиотеку для других дизайнеров и собирать обратную связь.</p>
+    </section>
+
+    <section id="visual">
+      <h2 class="t-heading-lg">Визуальный язык</h2>
+      <p>Больше всего времени при работе над визуальным языком In Vino занял подбор цветовой палитры. В течение нескольких месяцев я экспериментировала с оттенками и их сочетаниями, стараясь найти гармоничную палитру, которая будет хорошо восприниматься на разных экранах.</p>
+      <p>При этом основной акцент не должен был конкурировать с цветами состояний. Поэтому я остановилась на фиолетовом, который хорошо сочетается с остальной палитрой и не смешивается визуально с цветами успеха, предупреждения и ошибки.</p>
+      <figure class="fig">
+        <div class="iv-palette" data-iv-palette data-surface="light">
+          <div class="iv-palette-head">
+            <p class="t-label-mono">Палитра интерфейса · 8 семейств из .Primitives</p>
+            <div class="ap-seg" role="radiogroup" aria-label="Поверхность" data-iv-surface><button type="button" role="radio" aria-checked="true" data-v="light">Light</button><button type="button" role="radio" aria-checked="false" data-v="dark">Dark</button></div>
+          </div>
+          <div class="iv-ramps" data-iv-ramps></div>
+        </div>
+        <div class="iv-shot iv-matrix iv-matrix--status">
+          <ol class="iv-matrix-cols iv-matrix-cols--status" aria-hidden="true"><li>Neutral</li><li>Brand</li><li>Info</li><li>Success</li><li>Warning</li><li>Error</li></ol>
+          <div class="iv-matrix-body">
+            <ol class="iv-matrix-rows iv-matrix-rows--status" aria-hidden="true"><li>Filled</li><li>Subtle</li><li>Outlined</li></ol>
+            <img src="../assets/in-vino/status-label.png" width="840" height="476" loading="lazy" decoding="async" alt="Компонент Status Label в Figma: варианты Filled, Subtle и Outlined в тонах Neutral, Brand, Info, Success, Warning и Error, по три размера">
+          </div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: переключите поверхность Light / Dark</p>
+        <figcaption class="t-code-sm"><span>FIG. 8 — ЦВЕТ</span><span>значения из Figma · фиолетовый Brand рядом с Success, Warning и Error в Status Label</span></figcaption>
+      </figure>
+      <p>К отступам и скруглениям подошла более прагматично, опираясь на распространённые стандарты проектирования интерфейсов. С типографикой определилась быстрее. Основой стали IBM Plex Sans и IBM Plex Mono.</p>
+      <figure class="fig">
+        <div class="iv-shot iv-typescale" data-iv-type></div>
+        <figcaption class="t-code-sm"><span>FIG. 9 — ТИПОГРАФИКА</span><span>17 текстовых стилей · размер / межстрочный · привязаны к Semantic Typography</span></figcaption>
+      </figure>
+      <figure class="fig">
+        <div class="iv-shot iv-forms">
+          <p class="t-label-mono">Скругления · radius</p>
+          <ol class="iv-radii">
+            <li style="--r:0"><i></i><b>none</b><span>0 · таблицы, разделители</span></li>
+            <li style="--r:2px"><i></i><b>xs</b><span>2 · бейджи, код</span></li>
+            <li style="--r:4px"><i></i><b>sm</b><span>4 · поля, малые кнопки</span></li>
+            <li style="--r:8px"><i></i><b>md</b><span>8 · карточки, панели, кнопки</span></li>
+            <li style="--r:12px"><i></i><b>lg</b><span>12 · модальные окна</span></li>
+            <li style="--r:16px"><i></i><b>xl</b><span>16 · выдвижные панели</span></li>
+            <li style="--r:20px"><i></i><b>2xl</b><span>20 · акцентные блоки</span></li>
+            <li style="--r:24px"><i></i><b>3xl</b><span>24 · маркетинговые блоки</span></li>
+            <li style="--r:999px"><i></i><b>full</b><span>999 · пилюли, аватары</span></li>
+          </ol>
+          <p class="t-label-mono">Тени · shadow, тонированы vino-⁠950</p>
+          <ol class="iv-shadows">
+            <li class="s-none"><i></i><b>none</b><span>строки таблиц</span></li>
+            <li class="s-xs"><i></i><b>xs</b><span>лёгкий подъём</span></li>
+            <li class="s-sm"><i></i><b>sm</b><span>карточка, панель</span></li>
+            <li class="s-md"><i></i><b>md</b><span>меню, подсказка</span></li>
+            <li class="s-lg"><i></i><b>lg</b><span>модальное окно</span></li>
+            <li class="s-xl"><i></i><b>xl</b><span>командная палитра</span></li>
+          </ol>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 10 — ФОРМЫ</span><span>значения из Semantic Shape · чаще всего sm и md</span></figcaption>
+      </figure>
+      <p>В итоге получился набор визуальных правил, который я могу использовать как отправную точку для новых интерфейсов.</p>
+    </section>
+
+    <section id="practice">
+      <h2 class="t-heading-lg">Применение на практике</h2>
+      <p>Первым проектом на основе In Vino стало моё собственное портфолио. Я использую библиотеку для проектирования интерфейса сайта и одновременно проверяю, насколько удобно работать с её компонентами в реальных макетах.</p>
+      <figure class="fig">
+        <div class="iv-pair">
+          <p class="t-label-mono">В библиотеке · Media Card</p>
+          <div class="iv-shot"><img src="../assets/in-vino/media-card.png" width="1808" height="541" loading="lazy" decoding="async" alt="Компонент Media Card в Figma: изображение, категория и тег, заголовок, описание, автор и ссылка «Посмотреть» в пяти вариантах"></div>
+          <p class="t-label-mono">На сайте · карточки кейсов</p>
+          <div class="iv-shot"><img src="../assets/in-vino/site-case-cards.png" width="2080" height="808" loading="lazy" decoding="async" alt="Карточки кейсов на главной странице портфолио: SWEET.TV, In Vino и Re:Instance со статусом «Ещё в работе»"></div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 11 — КОМПОНЕНТ И ЕГО ПРИМЕНЕНИЕ</span><span>та же структура: обложка, теги, заголовок, описание, действие</span></figcaption>
+      </figure>
+      <p>В процессе появляются новые задачи, которые помогают находить ограничения существующих решений и постепенно дорабатывать систему.</p>
+      <p>В дальнейшем планирую использовать In Vino и в других собственных проектах, в том числе при разработке интерфейсов плагинов для Figma.</p>
+      <figure class="fig fig--wide">
+        <div class="iv-shot iv-shot--screen"><img src="../assets/in-vino/portfolio-home.webp" width="2000" height="1019" loading="lazy" decoding="async" alt="Первый экран портфолио: имя и роль, схема «Human-computer interaction unit» с фотографией и подписями, панели Inspector и Behaviour"></div>
+        <figcaption class="t-code-sm"><span>FIG. 12 — ПОРТФОЛИО НА IN VINO</span><span>первый экран сайта · тема Default</span></figcaption>
+      </figure>
+    </section>
+
+    <section id="learnings" class="finale">
+      <h2 class="t-heading-lg">Итоги и дальнейшее развитие</h2>
+      <p>In Vino продолжает развиваться вместе с проектами, для которых я её создаю. Сейчас я сама выступаю основным пользователем библиотеки, поэтому могу проверять решения в работе и постепенно улучшать то, что оказалось неудобным.</p>
+      <p>В дальнейшем хочу открыть систему для других дизайнеров и собирать обратную связь. Мне интересно посмотреть, насколько понятной и удобной она окажется за пределами моих собственных сценариев.</p>
+    </section>
+    <a class="next-link" href="production-control.html">
+      <span class="t-label-mono">Следующий кейс</span>
+      <span class="next-link-title">Система производственного контроля</span>
+      <svg><use href="#i-arrow-right"/></svg>
+    </a>
+  </article>
+</div>
+
+<section class="case-cta is-dark" id="contact">
+  <div class="wrap">
+    <div class="case-cta-text">
+      <h2 class="t-heading-lg">Кажется, нам по пути?</h2>
+      <p class="case-cta-lead t-title">Буду рада поработать вместе.</p>
+      <p class="t-body-lg">Открыта к предложениям и интересным продуктовым задачам.</p>
+      <p class="case-cta-where t-label-mono">Новосибирск · UTC+3–UTC+7 · Удалённо или гибрид</p>
+    </div>
+    <div class="case-cta-actions">
+      <a class="btn btn--primary" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener"><svg><use href="#i-arrow-right"/></svg>Написать в Telegram</a>
+      <a class="btn btn--outline" href="../assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>Скачать CV</a>
+      <a class="case-cta-mail t-title" href="mailto:metelskaya.ek@gmail.com">metelskaya.ek@gmail.com</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+<div class="is-dark">
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-left">
+        <a class="logo" href="../index.html">ЕМ.</a>
+        <span class="t-body-sm">© 2026 Екатерина Метельская</span>
+      </div>
+      <nav class="footer-links" aria-label="Ссылки">
+        <a class="t-label-mono" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener">Telegram</a>
+        <a class="t-label-mono" href="https://www.linkedin.com/in/ekaterina-metelskaya/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="t-label-mono" href="https://novosibirsk.hh.ru/resume/f022f4cfff10b37b790039ed1f5a3039745752" target="_blank" rel="noopener">hh.ru</a>
+        <a class="btn btn--outline btn--sm" href="../assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>CV</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+<script src="../js/case.js"></script>
+<script src="../js/menu.js"></script>
+<script src="../js/in-vino.js"></script>
+</body>
+</html>

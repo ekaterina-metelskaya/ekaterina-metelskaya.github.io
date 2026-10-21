@@ -1,0 +1,74 @@
+name: Publish portfolio to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build HTML and prepare public files
+        shell: bash
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          set -euo pipefail
+          # Works when site/ is nested or when its contents are at repository root.
+          if [[ -f "site/tools/build.js" ]]; then
+            SITE_DIR="site"
+          elif [[ -f "tools/build.js" ]]; then
+            SITE_DIR="."
+          else
+            echo "Cannot find tools/build.js in repository root or site/" >&2
+            exit 1
+          fi
+
+          # Default for a user/organization Pages repository: <owner>.github.io.
+          # Set the SITE_URL repository variable after connecting a custom domain.
+          SITE_URL="${SITE_URL:-https://${GITHUB_REPOSITORY_OWNER}.github.io}"
+          SITE_URL="$SITE_URL" node "$SITE_DIR/tools/build.js"
+
+          mkdir -p _site
+          cp "$SITE_DIR/index.html" "$SITE_DIR/projects.html" "$SITE_DIR/.nojekyll" _site/
+          cp -R "$SITE_DIR/assets" "$SITE_DIR/cases" "$SITE_DIR/css" "$SITE_DIR/js" _site/
+          if [[ -f "$SITE_DIR/CNAME" ]]; then
+            cp "$SITE_DIR/CNAME" _site/
+          fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

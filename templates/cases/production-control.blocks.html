@@ -1,0 +1,142 @@
+<!-- Схемы и интерактивные блоки кейса. В тексте (content/production-control.md) вставляются строкой [[имя]] -->
+
+<!-- block: context-pains -->
+<ul class="pains" aria-label="Что мешало пользователям">
+        <li><b>Лишнее время</b><span>на привычные действия</span></li>
+        <li><b>Поиск</b><span>нужного среди множества элементов</span></li>
+        <li><b>Ошибки</b><span>которых можно было избежать при вводе</span></li>
+      </ul>
+
+<!-- block: start-directions -->
+<ol class="directions directions--preview">
+        <li><a href="#solution-1">
+          <span class="dp dp-groups" aria-hidden="true"><i class="is-open"></i><i class="is-target"></i><i></i><i></i></span>
+          <span class="t-label-mono dir-num">Решение 01</span><span class="t-title">Организовать и систематизировать сложную информацию</span></a></li>
+        <li><a href="#solution-2">
+          <span class="dp dp-form" aria-hidden="true"><i class="is-ok"></i><i class="is-err"></i><b>Подсказка у поля</b></span>
+          <span class="t-label-mono dir-num">Решение 02</span><span class="t-title">Предотвратить ошибки</span></a></li>
+        <li><a href="#navigation">
+          <span class="dp dp-nav" aria-hidden="true"><i></i><i></i><i class="is-cur"></i><i></i></span>
+          <span class="t-label-mono dir-num">Решение 03</span><span class="t-title">Упростить навигацию</span></a></li>
+      </ol>
+
+<!-- block: solution-1-fig -->
+<figure class="fig fig--wide">
+        <div class="fig-cols">
+          <div class="fig-col">
+            <span class="badge badge--neutral">Было</span>
+            <div class="wf wf-scroll" aria-label="Схема: длинная страница со всеми элементами подряд">
+              <span class="wf-row"></span><span class="wf-row w60"></span><span class="wf-row w80"></span>
+              <span class="wf-row"></span><span class="wf-row w40"></span><span class="wf-row w70"></span>
+              <span class="wf-row"></span><span class="wf-row w60"></span>
+              <span class="wf-row is-target">нужное поле</span>
+              <span class="wf-row w80"></span><span class="wf-row w50"></span>
+              <span class="wf-scrollbar"></span>
+            </div>
+            <p class="t-body-sm fig-note">Все элементы видны сразу, нужное приходится искать прокруткой</p>
+          </div>
+          <div class="fig-col">
+            <div class="fig-col-head"><span class="badge badge--brand">Стало</span><span class="fig-try"><svg class="ico-cursor" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5l9 5.2-3.9 1.1-1.6 3.9z" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>Попробуйте: раскройте группы и добавьте блок</span></div>
+            <div class="wf" data-demo="groups">
+              <details class="wf-group">
+                <summary><svg><use href="#i-chevron"/></svg>Группа A<span class="wf-count">3</span></summary>
+                <div class="wf-group-body"><span class="wf-row"></span><span class="wf-row w60"></span><span class="wf-row w80"></span></div>
+              </details>
+              <details class="wf-group" open>
+                <summary><svg><use href="#i-chevron"/></svg>Группа B<span class="wf-count">2</span></summary>
+                <div class="wf-group-body">
+                  <span class="wf-row is-target">нужное поле</span>
+                  <div class="wf-repeat" data-repeat>
+                    <div class="wf-item"><span class="wf-row w70"></span><button type="button" class="wf-remove" aria-label="Удалить блок">×</button></div>
+                  </div>
+                  <button type="button" class="wf-add" data-add>+ Добавить блок</button>
+                </div>
+              </details>
+              <details class="wf-group">
+                <summary><svg><use href="#i-chevron"/></svg>Группа C<span class="wf-count">4</span></summary>
+                <div class="wf-group-body"><span class="wf-row w50"></span><span class="wf-row"></span><span class="wf-row w70"></span><span class="wf-row w40"></span></div>
+              </details>
+            </div>
+            <p class="t-body-sm fig-note">Связанные элементы сгруппированы и раскрываются по необходимости, повторяющиеся блоки добавляются и удаляются</p>
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 2 — ОРГАНИЗАЦИЯ ИНФОРМАЦИИ</span><span>схема</span></figcaption>
+      </figure>
+
+<!-- block: solution-2-fig -->
+<figure class="fig fig--wide">
+        <div class="fig-cols">
+          <div class="fig-col">
+            <span class="badge badge--neutral">Было</span>
+            <div class="wf wf-form">
+              <div class="wf-banner is-error">Ошибка заполнения формы</div>
+              <label class="wf-field"><span>Поле 1</span><span class="wf-input"></span></label>
+              <label class="wf-field"><span>Поле 2</span><span class="wf-input"></span></label>
+              <label class="wf-field"><span>Поле 3</span><span class="wf-input"></span></label>
+              <div class="wf-toast">Данные сброшены</div>
+            </div>
+            <p class="t-body-sm fig-note">Непонятно, какое поле с ошибкой, введённое теряется</p>
+          </div>
+          <div class="fig-col">
+            <div class="fig-col-head"><span class="badge badge--brand">Стало</span><span class="fig-try"><svg class="ico-cursor" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5l9 5.2-3.9 1.1-1.6 3.9z" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>Попробуйте: введите значение или нажмите «Завершить»</span></div>
+            <form class="wf wf-form" data-demo="form" novalidate>
+              <label class="wf-field">
+                <span>Значение <i class="req">*</i></span>
+                <input class="wf-input" type="text" inputmode="numeric" placeholder="от 0 до 100" data-range aria-describedby="hint-range">
+                <span class="wf-hint" id="hint-range">Целое число от 0 до 100</span>
+              </label>
+              <label class="wf-field">
+                <span>Комментарий <i class="req">*</i></span>
+                <input class="wf-input" type="text" placeholder="Обязательное поле" data-required aria-describedby="hint-comment">
+                <span class="wf-hint" id="hint-comment">Заполните перед завершением</span>
+              </label>
+              <div class="wf-footer">
+                <span class="wf-draft" aria-live="polite">Черновик не сохранён</span>
+                <button type="submit" class="wf-submit">Завершить</button>
+              </div>
+            </form>
+            <p class="t-body-sm fig-note">Подсказка и ошибка у поля, проверка обязательных полей при завершении, черновик</p>
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 3 — ВВОД ДАННЫХ</span><span>схема</span></figcaption>
+      </figure>
+
+<!-- block: navigation-fig -->
+<figure class="fig fig--wide">
+        <div class="fig-cols">
+          <div class="fig-col">
+            <span class="badge badge--neutral">Было</span>
+            <div class="wf wf-nav-before" aria-label="Схема: три меню с пересекающимися пунктами">
+              <div class="nb-top"><span>Раздел 1</span><span class="is-dup">Отчёты</span><span>Раздел 2</span></div>
+              <div class="nb-body">
+                <div class="nb-side"><span>Раздел 3</span><span class="is-dup">Отчёты</span><span>Раздел 4</span><span>Раздел 5</span></div>
+                <div class="nb-main">
+                  <div class="nb-tabs"><span>Вкладка</span><span class="is-dup">Отчёты</span></div>
+                  <span class="wf-row"></span><span class="wf-row w60"></span><span class="wf-row w80"></span>
+                </div>
+              </div>
+            </div>
+            <p class="t-body-sm fig-note">Три меню, назначение пересекается: куда идти — неочевидно</p>
+          </div>
+          <div class="fig-col">
+            <span class="badge badge--brand">Стало</span>
+            <div class="wf wf-nav-after" aria-label="Схема: единое меню">
+              <div class="na-side">
+                <span class="na-group">Группа</span>
+                <span>Раздел 1</span><span>Раздел 2</span>
+                <span class="na-group">Группа</span>
+                <span class="is-current">Отчёты</span><span>Раздел 3</span><span>Раздел 4</span>
+              </div>
+              <div class="nb-main"><span class="wf-row"></span><span class="wf-row w60"></span><span class="wf-row w80"></span><span class="wf-row w40"></span></div>
+            </div>
+            <p class="t-body-sm fig-note">Одна структура: у каждого раздела одно место</p>
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 4 — НАВИГАЦИЯ</span><span>схема</span></figcaption>
+      </figure>
+
+<!-- block: results-finale-stat -->
+<div class="finale-stat">
+        <span class="finale-num" aria-hidden="true">×8</span>
+        <p>быстрее выполняется основная задача пользователя</p>
+      </div>

@@ -1,0 +1,137 @@
+<!-- Схемы и интерактивные блоки кейса. В тексте (content/planning.md) вставляются строкой [[имя]] -->
+
+<!-- block: start-directions -->
+<ol class="directions directions--preview">
+        <li><a href="#solution-1">
+          <span class="dp dp-groups" aria-hidden="true"><i class="is-open"></i><i class="is-target"></i><i></i><i></i></span>
+          <span class="t-label-mono dir-num">Решение 01</span><span class="t-title">Сделать работу с данными удобнее</span></a></li>
+        <li><a href="#solution-2">
+          <span class="dp dp-rows" aria-hidden="true"><i></i><i class="is-changed"></i><i></i><i class="is-changed"></i></span>
+          <span class="t-label-mono dir-num">Решение 02</span><span class="t-title">Справиться с потоком правок</span></a></li>
+        <li><a href="#solution-3">
+          <span class="dp dp-chips" aria-hidden="true"><i style="--c:#e7e5e4"></i><i style="--c:#ddd6fe"></i><i style="--c:#fde68a"></i><i style="--c:#bbf7d0"></i></span>
+          <span class="t-label-mono dir-num">Решение 03</span><span class="t-title">Встроить новые разделы</span></a></li>
+      </ol>
+
+<!-- block: solution-1-fig -->
+<figure class="fig">
+        <div class="seg" role="radiogroup" aria-label="Вариант представления данных" data-seg="views">
+          <button type="button" role="radio" aria-checked="false" data-v="wide">Широкая таблица</button>
+          <button type="button" role="radio" aria-checked="false" data-v="new">Новая структура</button>
+          <button type="button" role="radio" aria-checked="true" data-v="nested">Вложенная таблица</button>
+        </div>
+        <div class="wf pl-view" data-view="wide" hidden>
+          <div class="pl-wide" aria-label="Схема: широкая таблица со столбцами от A до CZ">
+            <div class="pl-wide-head"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>…</span><span>CX</span><span>CY</span><span>CZ</span></div>
+            <div class="pl-wide-row"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="pl-wide-row"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="pl-wide-row"><span></span><span></span><span></span><span></span><span class="is-target"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="pl-wide-row"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="pl-wide-row"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <span class="pl-hscroll"></span>
+          </div>
+        </div>
+        <div class="wf pl-view" data-view="new" hidden>
+          <div class="pl-tiles" aria-label="Схема: данные в виде карточек">
+            <div class="pl-tile"><span class="wf-row w60"></span><span class="wf-row w40"></span><span class="pl-dots"><i></i><i></i><i></i></span></div>
+            <div class="pl-tile"><span class="wf-row w70"></span><span class="wf-row w50"></span><span class="pl-dots"><i></i><i></i></span></div>
+            <div class="pl-tile"><span class="wf-row w50"></span><span class="wf-row w60"></span><span class="pl-dots"><i></i><i></i><i></i><i></i></span></div>
+            <div class="pl-tile"><span class="wf-row w80"></span><span class="wf-row w40"></span><span class="pl-dots"><i></i></span></div>
+            <div class="pl-tile"><span class="wf-row w60"></span><span class="wf-row w70"></span><span class="pl-dots"><i></i><i></i></span></div>
+            <div class="pl-tile"><span class="wf-row w40"></span><span class="wf-row w50"></span><span class="pl-dots"><i></i><i></i><i></i></span></div>
+          </div>
+        </div>
+        <div class="wf pl-view" data-view="nested">
+          <div class="pl-nested" data-nested>
+            <div class="pl-tr pl-th"><span></span><span>Объект</span><span>Период</span><span>Статус</span></div>
+            <div class="pl-group">
+              <button type="button" class="pl-tr pl-parent" aria-expanded="true"><svg><use href="#i-chevron"/></svg><span>Объект 1 <span class="pl-count">3</span></span><span class="wf-row w60"></span><span class="wf-row w40"></span></button>
+              <div class="pl-children">
+                <div class="pl-tr"><span></span><span>Этап 1.1</span><span class="wf-row w50"></span><span class="wf-row w40"></span></div>
+                <div class="pl-tr"><span></span><span>Этап 1.2</span><span class="wf-row w70"></span><span class="wf-row w60"></span></div>
+                <div class="pl-tr"><span></span><span>Этап 1.3</span><span class="wf-row w40"></span><span class="wf-row w50"></span></div>
+              </div>
+            </div>
+            <div class="pl-group">
+              <button type="button" class="pl-tr pl-parent" aria-expanded="false"><svg><use href="#i-chevron"/></svg><span>Объект 2 <span class="pl-count">2</span></span><span class="wf-row w70"></span><span class="wf-row w40"></span></button>
+              <div class="pl-children" hidden>
+                <div class="pl-tr"><span></span><span>Этап 2.1</span><span class="wf-row w60"></span><span class="wf-row w50"></span></div>
+                <div class="pl-tr"><span></span><span>Этап 2.2</span><span class="wf-row w40"></span><span class="wf-row w70"></span></div>
+              </div>
+            </div>
+            <div class="pl-group">
+              <button type="button" class="pl-tr pl-parent" aria-expanded="false"><svg><use href="#i-chevron"/></svg><span>Объект 3 <span class="pl-count">4</span></span><span class="wf-row w50"></span><span class="wf-row w40"></span></button>
+              <div class="pl-children" hidden>
+                <div class="pl-tr"><span></span><span>Этап 3.1</span><span class="wf-row w50"></span><span class="wf-row w60"></span></div>
+                <div class="pl-tr"><span></span><span>Этап 3.2</span><span class="wf-row w70"></span><span class="wf-row w40"></span></div>
+                <div class="pl-tr"><span></span><span>Этап 3.3</span><span class="wf-row w40"></span><span class="wf-row w50"></span></div>
+                <div class="pl-tr"><span></span><span>Этап 3.4</span><span class="wf-row w60"></span><span class="wf-row w70"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <dl class="pl-verdict" data-verdict aria-live="polite"></dl>
+        <p class="try t-code-sm">Попробуйте: переключите варианты, во вложенной таблице раскройте строки</p>
+        <figcaption class="t-code-sm"><span>FIG. 2 — ТРИ ВАРИАНТА ПРЕДСТАВЛЕНИЯ ДАННЫХ</span><span>схема · по итогам сравнительного тестирования</span></figcaption>
+      </figure>
+
+<!-- block: solution-2-fig -->
+<figure class="fig">
+        <div class="wf pl-changes" data-changes>
+          <div class="pl-changes-head">
+            <span class="t-label-mono">Изменений на проверке: <b data-ch-count>3</b></span>
+            <button type="button" class="pl-link" data-ch-history-toggle aria-expanded="false">История изменений</button>
+          </div>
+          <div class="pl-ct">
+            <div class="pl-ct-row pl-ct-th"><span>Объект</span><span>Срок</span><span>Объём</span><span></span></div>
+            <div class="pl-ct-row"><span>Объект 1</span><span class="wf-row w60"></span><span class="wf-row w50"></span><span></span></div>
+            <div class="pl-ct-row is-changed" data-change="Объект 2 · срок"><span>Объект 2</span><span class="pl-diff"><s>14.03</s><b>28.03</b></span><span class="wf-row w40"></span><span class="pl-acts"><button type="button" data-ok aria-label="Подтвердить изменение">✓</button><button type="button" data-no aria-label="Отклонить изменение">✕</button></span></div>
+            <div class="pl-ct-row is-changed" data-change="Объект 3 · объём"><span>Объект 3</span><span class="wf-row w70"></span><span class="pl-diff"><s>120</s><b>150</b></span><span class="pl-acts"><button type="button" data-ok aria-label="Подтвердить изменение">✓</button><button type="button" data-no aria-label="Отклонить изменение">✕</button></span></div>
+            <div class="pl-ct-row"><span>Объект 4</span><span class="wf-row w50"></span><span class="wf-row w60"></span><span></span></div>
+            <div class="pl-ct-row is-changed" data-change="Объект 5 · срок"><span>Объект 5</span><span class="pl-diff"><s>02.04</s><b>09.04</b></span><span class="wf-row w70"></span><span class="pl-acts"><button type="button" data-ok aria-label="Подтвердить изменение">✓</button><button type="button" data-no aria-label="Отклонить изменение">✕</button></span></div>
+          </div>
+          <ol class="pl-history" data-ch-history hidden><li class="pl-history-empty">Пока пусто — подтвердите или отклоните изменение</li></ol>
+        </div>
+        <p class="t-body-sm fig-note">Изменение видно прямо в данных: старое значение, новое и действие рядом. Подробности — в истории</p>
+        <p class="try t-code-sm">Попробуйте: подтвердите или отклоните изменения и откройте историю</p>
+        <figcaption class="t-code-sm"><span>FIG. 3 — ИЗМЕНЕНИЯ В КОНТЕКСТЕ ДАННЫХ</span><span>схема · значения условные</span></figcaption>
+      </figure>
+
+<!-- block: solution-3-fig -->
+<figure class="fig">
+        <div class="fig-cols">
+          <div class="fig-col">
+            <span class="badge badge--neutral">Существующий раздел</span>
+            <div class="wf pl-status">
+              <span class="pl-light pl-light--road" aria-hidden="true"><i></i><i></i><i></i></span>
+              <ul class="pl-chips">
+                <li class="st st--neutral">Черновик</li>
+                <li class="st st--brand">На согласовании</li>
+                <li class="st st--success">Согласовано</li>
+                <li class="st st--error">Отклонено</li>
+              </ul>
+            </div>
+            <p class="t-body-sm fig-note">Тот же компонент статуса, свой набор состояний</p>
+          </div>
+          <div class="fig-col">
+            <span class="badge badge--brand">Новый раздел</span>
+            <div class="wf pl-status">
+              <span class="pl-light pl-light--rail" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              <ul class="pl-chips">
+                <li class="st st--neutral">Запланировано</li>
+                <li class="st st--brand">В работе</li>
+                <li class="st st--warning">Приостановлено</li>
+                <li class="st st--success">Завершено</li>
+              </ul>
+            </div>
+            <p class="t-body-sm fig-note">Логика та же: статус в одном месте, те же действия и переходы</p>
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 4 — ОДИН КОМПОНЕНТ, РАЗНЫЕ НАБОРЫ СТАТУСОВ</span><span>схема · названия статусов условные</span></figcaption>
+      </figure>
+
+<!-- block: results-finale-stat -->
+<div class="finale-stat">
+        <span class="finale-num" aria-hidden="true">×3</span>
+        <p>примерно во столько раз выросла скорость выполнения рабочего процесса после внедрения системы</p>
+      </div>

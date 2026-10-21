@@ -1,0 +1,267 @@
+/* ============================================================
+   Case page template (every case page: <body class="v2">).
+   Loaded after case.css; the key visuals themselves live in ../kv.css
+   ============================================================ */
+
+/* ---------- The left column belongs to the contents ----------
+   The list rides along with the reader; captions, takeaways and numbers live in the text column,
+   so nothing ever lands on the menu. Figures take the full width of the text column */
+@media (min-width: 1101px) {
+  .v2 .case-body { --col-side: 370px; --col-gap: clamp(56px, calc(100vw - 1168px), 122px); }
+  .v2 .toc { position: sticky; top: 100px; max-height: calc(100vh - 124px); overflow-y: auto; }
+  .v2 .prose .insight, .v2 .prose .pull-stat { position: static; width: auto; }
+  .v2 .fig:not(.fig--wide) > figcaption { position: static; width: auto; flex-direction: row; gap: 16px; }
+  .v2 .fig--wide { margin-left: 0; }
+  .v2 .fig--wide > figcaption { display: flex; }
+  .v2 .prose section.finale { margin-left: 0; display: block; }
+}
+
+/* ---------- One right edge for the whole page ----------
+   Same container as the home page (1440). The contents column is the home page's side column (370px);
+   the gap is sized so the reading column is ~820px at full width (1312 − 370 − 122).
+   Paragraphs, schemes, callouts and the hero image all end on the page's right edge */
+.v2 .prose section > :not(figure) { max-width: none; }
+/* 17px keeps ~90 characters per line on the wider column, as before */
+.v2 .prose section > p { font-size: 17px; line-height: 28px; }
+
+/* ---------- Contents: one rhythm, a clear current item ---------- */
+.v2 .toc a { padding-block: 6px; line-height: 18px; }
+.v2 .toc .toc-sub a { padding-block: 6px; }
+.v2 .toc a[aria-current="true"] { background: var(--color-primary-subtle); border-left-color: var(--accent-600); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-weight: 600; }
+
+/* ---------- Rhythm ----------
+   Sections: 40 + divider + 40 ≈ 80px. Heading → text 28px, paragraphs 16px.
+   Last paragraph → scheme 44px, caption → next paragraph 36px */
+.v2 .prose section { padding-bottom: 44px; }
+.v2 .prose section + section { padding-top: 52px; }
+.v2 .prose h2 { margin-bottom: 28px; }
+.v2 .section-num, .directions--preview .dir-num { margin-bottom: 12px !important; font: 600 13px/18px var(--font-mono) !important; letter-spacing: .5px; color: var(--color-text-brand) !important; }
+.directions--preview .dir-num { margin-bottom: 0 !important; }
+.v2 .fig { margin: 44px 0 36px; }
+/* «Контекст» and «С чего начала» are one introduction */
+.v2 #context { padding-bottom: 36px; }
+.v2 #start { padding-top: 36px; }
+.v2 .prose h2 + p { margin-top: 0; }
+
+/* ---------- Directions: number first, previews on one line ---------- */
+.directions--preview { margin-top: 36px; align-items: stretch; }
+.directions--preview a { display: grid; grid-template-rows: 88px 18px minmax(66px, auto); align-content: start; align-items: start; row-gap: 12px; padding: 16px 16px 20px; }
+.directions--preview .dp { height: 88px; margin: 0; }
+@media (max-width: 720px) {
+  .directions--preview a { grid-template-rows: 88px auto auto; }
+  .v2 .fig-cols { row-gap: 28px; }
+}
+
+
+/* ---------- Schemes ---------- */
+/* «Стало» is the interactive one: it gets more room. Both sides of a pair share a height (subgrid) and start at the top */
+.v2 .fig--wide .fig-cols { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); column-gap: 20px; }
+.v2 .fig--wide .wf { justify-content: flex-start; padding: 24px; gap: 12px; font-size: 14px; line-height: 20px; }
+/* Content ~25% larger */
+.v2 .fig--wide .wf-row { height: 14px; }
+.v2 .fig--wide .wf-row.is-target { height: auto; padding: 3px 10px; }
+.v2 .fig--wide .wf-group summary { padding: 10px 12px; font-size: 14px; line-height: 20px; border-radius: 6px; transition: background-color .15s, color .15s; }
+.v2 .fig--wide .wf-group summary svg { width: 14px; height: 14px; }
+.v2 .fig--wide .wf-count { font-size: 12px; }
+.v2 .fig--wide .wf-group-body { gap: 10px; padding: 4px 12px 14px 34px; }
+.v2 .fig--wide .wf-add { font-size: 13px; padding: 6px 12px; }
+.v2 .fig--wide .wf-remove { width: 24px; height: 24px; font-size: 16px; }
+.v2 .fig--wide .wf-field { font-size: 14px; line-height: 20px; gap: 6px; }
+.v2 .fig--wide .wf-input { height: 40px; font-size: 15px; line-height: 38px; padding: 0 12px; }
+.v2 .fig--wide .wf-hint, .v2 .fig--wide .wf-draft { font-size: 12px; line-height: 16px; }
+.v2 .fig--wide .wf-submit { padding: 8px 16px; font-size: 14px; }
+.v2 .fig--wide .wf-banner, .v2 .fig--wide .wf-toast { font-size: 13px; padding: 8px 12px; }
+.v2 .fig--wide .wf-nav-before, .v2 .fig--wide .wf-nav-after { height: auto; min-height: 240px; font-size: 14px; }
+.v2 .fig--wide .nb-side, .v2 .fig--wide .na-side, .v2 .fig--wide .nb-main { gap: 10px; padding: 14px; }
+.v2 .fig--wide .nb-top { padding: 12px 14px; gap: 16px; }
+.v2 .fig--wide .na-group { font-size: 11px; }
+.v2 .fig--wide .wf-nav-after { font-size: 15px; line-height: 22px; }
+.v2 .fig--wide .wf-nav-after .na-side { gap: 12px; padding: 18px; }
+.v2 .fig--wide .wf-nav-after .na-group { font-size: 12px; }
+.v2 .fig--wide .wf-nav-after .nb-main { gap: 14px; padding: 18px; }
+.v2 .fig--wide .wf-nav-after .wf-row { height: 16px; }
+.v2 .fig--wide .fig-note { font: 400 13px/18px var(--font-sans); }
+/* «Было» / «Стало» badges: same box, colour only differs */
+/* (also inside the «Стало» line next to the hint) */
+.v2 .fig-col .badge { height: 26px; padding: 0 12px; border: 1px solid var(--color-border-default); font-size: 12px; }
+.v2 .fig-col .badge--brand { border-color: var(--accent-300); background: var(--accent-100); color: var(--accent-800); }
+/* Interactive parts look touchable */
+.v2 .wf-group summary:hover { background: var(--color-primary-subtle); color: var(--color-text-brand); }
+.v2 .wf-group summary:focus-visible, .v2 .wf-add:focus-visible, .v2 .wf-remove:focus-visible, .v2 .wf-submit:focus-visible { outline: 2px solid var(--accent-600); outline-offset: 2px; }
+.v2 .wf-group[open] { border-color: var(--accent-300); }
+.v2 .wf-add, .v2 .wf-remove, .v2 .wf-submit { cursor: pointer; }
+/* FIG. caption is the figure's id, not an instruction */
+.v2 .fig > figcaption { margin-top: 20px; }
+
+/* «Попробуйте» sits on the same line as the «Стало» badge: badge left, hint right, wraps under it on narrow columns */
+.fig-col-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; justify-self: stretch; }
+/* flex-basis = the hint’s full length and no shrinking: next to the badge it either fits whole or drops below it; below, it wraps within the column */
+.fig-try { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; max-width: 100%; font: 500 13px/18px var(--font-sans); color: var(--color-text-brand); }
+.ico-cursor { flex: none; width: 14px; height: 14px; }
+
+/* ---------- Problems in the context: a short summary row, not cards ---------- */
+.pains { list-style: none; margin: 22px 0 32px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pains li { display: flex; flex-direction: column; gap: 6px; padding: 8px 24px; }
+.pains li:first-child { padding-left: 0; }
+.pains li + li { border-left: 1px solid var(--color-border-default); }
+.pains b { font: 600 18px/24px var(--font-sans); color: var(--color-text-primary); }
+.pains li > span { font: 400 14px/20px var(--font-sans); color: var(--color-text-secondary); }
+
+/* ---------- Takeaways: a light marker, no fill — easy to find, not louder than the solution ---------- */
+.v2 .prose .insight { margin: 32px 0 0; padding: 16px 0 16px 24px; border-left: 3px solid var(--accent-600); border-radius: 0; background: none; }
+.v2 .prose .insight .t-label-mono { margin-bottom: 6px; }
+.v2 .prose .insight + p { margin-top: 28px; }
+
+/* ---------- Results: ×8 and its explanation as one statement ---------- */
+.v2 .finale-stat { gap: 24px; margin-bottom: 28px; }
+.v2 .prose .finale .finale-stat p { max-width: 260px; }
+/* Section dividers: one thin neutral line everywhere, the one before «Результаты» included */
+.v2 .prose section.finale, .v2 .prose section + section.finale { padding-block: 48px 40px; border-top: 1px solid var(--color-border-default); }
+.v2 .prose section.finale + section.finale { padding-top: 64px; }
+.v2 .prose section.finale > h2 { margin: 0 0 28px; }
+.v2 .prose section#learnings { padding-bottom: 80px; }
+
+@media (max-width: 720px) {
+  .pains { grid-template-columns: 1fr; }
+  .pains li { padding: 12px 0; }
+  .pains li + li { border-left: 0; border-top: 1px solid var(--color-border-default); }
+  .v2 .fig--wide .fig-cols { grid-template-columns: 1fr; }
+  .v2 .fig--wide .wf { padding: 16px; }
+  .v2 .prose .insight { padding: 12px 0 12px 16px; }
+  .v2 .prose section#learnings { padding-bottom: 56px; }
+}
+
+/* ---------- Breadcrumbs: where the case lives, every step clickable ---------- */
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; flex-basis: 100% !important; }
+.crumbs ol { display: flex; flex-wrap: wrap; align-items: center; margin: 0; padding: 0; list-style: none; font: 500 14px/20px var(--font-sans); }
+.crumbs li { display: flex; align-items: center; min-width: 0; }
+.crumbs li + li::before { content: "/"; margin: 0 10px; color: var(--color-border-strong); }
+.crumbs a { color: var(--color-text-brand); text-underline-offset: 3px; }
+.crumbs a:hover { text-decoration: underline; }
+.crumbs [aria-current="page"] { color: var(--color-text-tertiary); }
+@media (max-width: 720px) { .crumbs li:has(> [aria-current="page"]) { display: none; } }
+
+/* ---------- Hero: the number leads, the sentence stays short ---------- */
+.case-result--light { gap: 24px; }
+.case-result--light .case-result-num { font-size: 88px; letter-spacing: -4px; }
+.case-result--light p { max-width: 440px; font: 500 18px/26px var(--font-sans); }
+
+/* ---------- Hero layout, as on the home page: text on the left, the visual on the right and larger ---------- */
+.case-hero-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; margin-top: 28px; }
+.case-hero-text { display: flex; flex-direction: column; min-width: 0; }
+/* The text group centres on the image itself, not on image + caption: same 30px the caption takes under the image */
+@media (min-width: 1101px) { .case-hero-text { margin-bottom: 30px; } }
+.case-hero-grid h1.t-display-md { margin-top: 0; font-size: 36px; line-height: 42px; letter-spacing: -.6px; }
+.case-hero-grid .case-lead { font-size: 18px; line-height: 27px; }
+.case-hero-grid .case-result { margin-top: 32px; }
+.case-hero-grid .case-result--light p { font-size: 17px; line-height: 25px; }
+/* The visual: taller, caption under it like FIG. 1 on the home page. Same box for the NDA key visual and the illustrated covers */
+.case-hero-grid .case-cover { height: clamp(340px, 31vw, 440px); margin: 0 0 30px; overflow: visible; }
+.case-hero-grid .case-cover > figcaption { top: calc(100% + 12px); bottom: auto; left: 0; right: 0; color: var(--color-text-tertiary); }
+.case-hero-grid .case-cover--art { overflow: visible; }
+.case-hero-grid .case-cover--art > .cover { border-radius: inherit; overflow: hidden; }
+/* Role and format: a quiet list under the result */
+.case-facts { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 20px; margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--color-border-default); }
+.case-facts > div { display: contents; }
+.case-facts dt { padding-top: 2px; color: var(--color-text-tertiary); }
+.case-facts dd { margin: 0; font: 400 14px/20px var(--font-sans); color: var(--color-text-secondary); }
+.case-facts > div:first-child dd { font-weight: 500; color: var(--color-text-primary); }
+
+/* NDA cover: the scheme sits under a frosted NDA panel (same glass as the crystal covers);
+   on hover or focus (a tap on touch screens) the panel lifts and the scheme comes into focus */
+.kv { cursor: zoom-in; outline: none; }
+.kv:focus-visible { box-shadow: 0 0 0 3px var(--color-bg-canvas), 0 0 0 5px var(--accent-600); }
+.kv:hover .kv-nda, .kv:focus .kv-nda, .kv:focus-within .kv-nda { opacity: 0; letter-spacing: 8px !important; pointer-events: none; }
+.kv:hover .kv-art, .kv:focus .kv-art { transform: scale(1.02); }
+.kv > .kv-art { border-radius: inherit; overflow: hidden; }
+.kv figcaption { display: flex; justify-content: space-between; gap: 16px; z-index: 1; }
+.kv-tip { display: inline-flex; align-items: center; gap: 6px; font: 500 13px/18px var(--font-sans); color: var(--color-text-brand); }
+.kv:hover .kv-tip, .kv:focus .kv-tip { visibility: hidden; }
+
+/* SWEET.TV: three outcomes instead of a number (no metrics under NDA) */
+.case-points { margin: 32px 0 0; }
+.case-points ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: point; }
+.case-points > .t-label-mono { color: var(--color-text-brand); margin-bottom: 12px; }
+.case-points li { counter-increment: point; display: grid; grid-template-columns: 28px 1fr; font: 500 16px/23px var(--font-sans); color: var(--color-text-primary); }
+.case-points li::before { content: counter(point, decimal-leading-zero); padding-top: 2px; font: 600 13px/20px var(--font-mono); color: var(--color-text-brand); }
+
+@media (max-width: 1100px) {
+  .case-hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .case-hero-grid .case-cover { height: 320px; }
+}
+@media (max-width: 720px) {
+  .case-hero-grid h1.t-display-md { font-size: min(30px, 8.6vw); line-height: 1.2; }
+  .case-hero-grid .case-cover { height: 220px; margin-bottom: 64px; }
+}
+
+/* ---------- Early anchor: each direction previews its scheme ---------- */
+.directions--preview a:hover .dp { border-color: var(--accent-300); }
+.dp {
+  display: flex; flex-direction: column; justify-content: center; gap: 6px; height: 88px; margin-bottom: 4px; padding: 12px;
+  border-radius: var(--radius-md); background: var(--color-bg-subtle); border: 1px solid var(--color-border-subtle); transition: border-color .15s;
+}
+.dp i { display: block; height: 12px; border-radius: 3px; border: 1px solid var(--color-border-strong); background: var(--color-bg-canvas); }
+.dp-groups i.is-open { width: 70%; }
+.dp-groups i.is-target { width: 55%; margin-left: 14px; border: 1px dashed var(--accent-600); background: var(--color-status-brand-bg); }
+.dp-groups i:nth-child(3) { width: 80%; } .dp-groups i:nth-child(4) { width: 60%; }
+.dp-form i { height: 16px; }
+.dp-form i.is-ok { border-color: var(--color-status-success-text); }
+.dp-form i.is-err { border-color: #dc2626; }
+.dp-form b { font: 400 10px/12px var(--font-sans); color: #dc2626; }
+.dp-nav { flex-direction: column; align-items: flex-start; }
+.dp-nav i { width: 50%; height: 12px; background: var(--color-border-default); }
+.dp-nav i.is-cur { width: 60%; border-color: var(--accent-600); background: var(--color-status-brand-bg); }
+.dp-rows i:nth-child(1) { width: 80%; } .dp-rows i:nth-child(3) { width: 70%; } .dp-rows i:nth-child(4) { width: 60%; }
+.dp-rows i.is-changed { width: 90%; border-color: var(--accent-600); background: var(--color-status-brand-bg); box-shadow: inset 3px 0 0 var(--accent-600); }
+.dp-chips { flex-direction: row; flex-wrap: wrap; align-content: center; gap: 6px; }
+.dp-chips i { width: auto; height: 16px; padding: 0 10px; border-radius: 99px; border-color: transparent; background: var(--c); }
+.dp-bars { gap: 10px; position: relative; }
+.dp-bars i { height: 10px; border-radius: 5px; background: var(--color-border-strong); border: 0; }
+.dp-bars i.is-brand { background: var(--accent-600); }
+.dp-bars::after { content: ""; position: absolute; left: 62%; top: 14px; bottom: 14px; width: 2px; background: var(--color-text-primary); }
+.dp-summary { flex-direction: row; flex-wrap: wrap; align-content: center; gap: 6px; }
+.dp-summary i { flex: 1 1 20%; height: 28px; }
+.dp-summary i.is-on { border-color: var(--accent-600); background: var(--color-status-brand-bg); }
+.dp-summary b { flex-basis: 100%; height: 8px; border-radius: 2px; background: var(--color-border-default); }
+.dp-groups2 { flex-direction: row; gap: 8px; }
+.dp-groups2 span { flex: 1; display: flex; flex-direction: column; gap: 5px; padding: 6px; border-radius: 4px; border: 1px solid var(--color-border-strong); background: var(--color-bg-canvas); }
+.dp-groups2 i { height: 8px; border: 0; background: var(--color-border-default); }
+.dp-groups2 i.is-moved { background: var(--accent-300); }
+
+/* Hints that sit above a scheme with no «Стало» to stand next to (case.js lifts them out of the caption) */
+.fig-try--top { display: flex; width: fit-content; margin: 0 0 12px auto !important; text-align: left; }
+.fig-try--inline { display: flex; margin: 12px 0 0 !important; }
+.fig-try { align-items: flex-start; }
+.fig-try .ico-cursor { margin-top: 2px; }
+
+/* ---------- End of page ---------- */
+.next-link {
+  position: relative; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 16px;
+  padding: 20px 48px 20px 0; border-top: 1px solid var(--color-border-default); border-bottom: 1px solid var(--color-border-default);
+}
+.next-link .t-label-mono { color: var(--color-text-tertiary); }
+.next-link-title { font: 600 18px/24px var(--font-sans); color: var(--color-text-primary); transition: color .15s; }
+.next-link svg { position: absolute; right: 8px; top: 50%; width: 20px; height: 20px; margin-top: -10px; color: var(--color-text-brand); transition: transform .15s; }
+.next-link:hover .next-link-title { color: var(--color-text-brand); }
+.next-link:hover svg { transform: translateX(3px); }
+
+/* The CTA is the closing block: no extra gap before the footer */
+.case-cta + .is-dark .site-footer { border-top: 1px solid var(--color-border-default); }
+.v2 .case-body { padding-bottom: 64px; }
+
+@media (max-width: 720px) {
+  .case-result--light .case-result-num { font-size: 72px; }
+  .case-result--light p { font-size: 17px; line-height: 24px; }
+  .dp { height: 72px; }
+}
+
+/* Every «Попробуйте» hint looks the same on every case: violet, Sans Medium 13/18, cursor icon.
+   Hints made from <p> otherwise inherit «.prose p» (16px, grey) or a case's own paragraph size */
+.v2 .prose .fig-try { font: 500 13px/18px var(--font-sans); color: var(--color-text-brand); }
+
+/* Hero result: the number carries the weight, the sentence next to it stays calm (Regular 16/24, secondary).
+   A wide number («6 мес») no longer squeezes the sentence into a ten-line column: below ~300px the text wraps under it */
+.case-result--light { flex-wrap: wrap; row-gap: 12px; }
+.case-result--light p,
+.case-hero-grid .case-result--light p { flex: 1 1 300px; font: 400 16px/24px var(--font-sans); color: var(--color-text-secondary); }
+@media (max-width: 720px) { .case-result--light p, .case-hero-grid .case-result--light p { flex: none; font-size: 16px; line-height: 24px; } }

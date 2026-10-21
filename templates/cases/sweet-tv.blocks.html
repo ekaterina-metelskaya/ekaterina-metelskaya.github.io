@@ -1,0 +1,322 @@
+<!-- Схемы и интерактивные блоки кейса. В тексте (content/sweet-tv.md) вставляются строкой [[имя]] -->
+
+<!-- block: context-case-result -->
+<div class="case-result case-result--light">
+        <span class="case-result-num" aria-hidden="true">6</span>
+        <p><span class="t-label-mono">Платформ</span>за интерфейсы которых я отвечала как единственный дизайнер</p>
+      </div>
+
+<!-- block: tasks-fig -->
+<figure class="fig">
+        <div class="matrix" aria-label="Схема: матрица ценность / усилия">
+          <span class="mx-axis mx-y t-code-sm">Ценность ↑</span>
+          <span class="mx-axis mx-x t-code-sm">Усилия →</span>
+          <div class="mx-cell"><span class="t-label-mono">Быстрые победы</span><span class="mx-chip is-hot">SVG-анимация загрузки</span><span class="mx-chip">Красный бейдж «Запись»</span></div>
+          <div class="mx-cell"><span class="t-label-mono">Большие задачи</span><span class="mx-chip">Меню плеера</span><span class="mx-chip">Переход эфир ↔ запись на ТВ</span></div>
+          <div class="mx-cell"><span class="t-label-mono">Мелочи</span><span class="mx-chip">Отступы в таб-баре</span><span class="mx-chip">Иконки жанров</span></div>
+          <div class="mx-cell"><span class="t-label-mono">Отложить</span><span class="mx-chip">Анимированные обложки каналов</span><span class="mx-chip">Своя клавиатура поиска на ТВ</span></div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 2 — ЦЕННОСТЬ / УСИЛИЯ</span><span>схема · примеры задач</span></figcaption>
+      </figure>
+
+<!-- block: solution-1-fig -->
+<figure class="fig fig--device fig--wide">
+        <div class="device-row">
+          <div class="phone-box">
+            <div class="phone" data-phone>
+              <div class="ph-status"><span>12:30</span></div>
+              <div class="ph-player">
+                <div class="scene" data-ph-scene></div>
+                <span class="ph-mark" data-ph-mark></span>
+                <button type="button" class="ph-golive" data-ph-golive hidden>В эфир ▸</button>
+                <span class="ph-audio"><svg><use href="#i-note"/></svg>Аудио</span>
+                <button type="button" class="ph-pause" data-ph-pause aria-label="Пауза"><svg><use href="#i-pause"/></svg></button>
+                <div class="ph-paywall" data-ph-paywall hidden>
+                  <p class="pw-title">Телеканал доступен в подписке</p>
+                  <p class="pw-text">Подключай прямо сейчас и наслаждайся просмотром любимых телеканалов</p>
+                  <button type="button" class="pw-btn" data-ph-subscribe>Подключить</button>
+                </div>
+                <div class="ph-bar">
+                  <span class="ph-time" data-ph-time>12:40:00 <span class="ph-state">● Эфир</span></span>
+                  <span class="ph-ico"><svg><use href="#i-heart"/></svg><svg><use href="#i-full"/></svg></span>
+                  <span class="ph-track"><span class="ph-fill" data-ph-fill></span></span>
+                </div>
+              </div>
+              <div class="ph-tabs" role="tablist" aria-label="Режим списка">
+                <button type="button" role="tab" aria-selected="false" data-ph-tab="genres">Жанры</button>
+                <button type="button" role="tab" aria-selected="true" data-ph-tab="epg">Телепрограмма</button>
+              </div>
+              <div class="ph-list" data-ph-panel="genres" hidden>
+                <!-- channels injected by JS -->
+              </div>
+              <div class="ph-list" data-ph-panel="epg">
+                <div class="ph-days" role="tablist" aria-label="День" data-ph-days></div>
+                <div data-ph-rows><!-- programme injected by JS --></div>
+              </div>
+              <p class="ph-toast" data-ph-toast role="status" hidden></p>
+              <nav class="ph-nav" aria-hidden="true">
+                <span><svg><use href="#i-home"/></svg>Главная</span>
+                <span class="is-on"><svg><use href="#i-tv"/></svg>ТВ</span>
+                <span><svg><use href="#i-reel"/></svg>Премьеры</span>
+                <span><svg><use href="#i-cam"/></svg>Кино</span>
+                <span><svg><use href="#i-user"/></svg>Кабинет</span>
+              </nav>
+            </div>
+          </div>
+          <div class="device-notes">
+            <p class="t-label-mono">Мобильное приложение</p>
+            <ul class="t-body-sm">
+              <li>Плеер сверху, под ним переключатель «Жанры / Телепрограмма»</li>
+              <li>Эфир и запись различаются бейджем: белый «Эфир», красная «Запись»</li>
+              <li>Запись прошедшей передачи запускается в верхнем плеере — без перехода на другой экран</li>
+              <li>Архив — 14 дней</li>
+            </ul>
+            <p class="try t-code-sm">Попробуйте: поставьте эфир на паузу — он станет записью, «В эфир» вернёт трансляцию</p>
+          </div>
+        </div>
+
+        <div class="device-notes device-notes--tv">
+          <p class="t-label-mono">Smart TV</p>
+          <ul class="t-body-sm">
+            <li>Одновременно видны каналы, видео, текущая и соседние передачи</li>
+            <li>Смена канала сразу переключает видео; передача включается только по OK</li>
+            <li>Полный экран — OK, иконка или зелёная кнопка пульта; вся телепрограмма — жёлтая</li>
+            <li>В полноэкранном плеере кнопка «Эфир» возвращает из записи к трансляции, «Свернуть» — к маленькому экрану</li>
+          </ul>
+          <p class="try t-code-sm" data-touch="Попробуйте: кнопками пульта под экраном → к передачам, OK на прошедшей — запись на весь экран, жёлтая кнопка — вся телепрограмма">Попробуйте: → к передачам, OK на прошедшей — запись на весь экран, Y — вся телепрограмма</p>
+        </div>
+        <div class="tv-wrap">
+          <div class="tv-scroll"><div class="tv-box" data-tv-box>
+            <div class="tv" data-tv tabindex="0" role="application" aria-label="Интерфейс Smart TV: стрелки, Enter — OK, Backspace — назад, G — зелёная кнопка, Y — жёлтая">
+              <div class="scene tv-video" data-tv-scene></div>
+              <div class="tv-fade tv-fade--x"></div>
+              <div class="tv-fade tv-fade--y"></div>
+              <div class="tv-shade"></div>
+              <header class="tv-top">
+                <span class="tv-logo">● TV</span>
+                <nav><span class="is-on">ТВ</span><span>Кино</span><span>Премьеры</span><span>Сериалы</span><span>Мультфильмы</span></nav>
+                <span class="tv-icons"><svg><use href="#i-search"/></svg><svg><use href="#i-user"/></svg></span>
+              </header>
+              <!-- Live view -->
+              <div class="tv-view" data-tv-view="live">
+                <div class="tv-cat"><svg><use href="#i-chevron" transform="rotate(180 8 8)"/></svg><span>Все</span><svg><use href="#i-chevron"/></svg></div>
+                <ol class="tv-channels" data-tv-channels></ol>
+                <button type="button" class="tv-full" data-tv-full aria-label="Полный экран"><svg><use href="#i-full"/></svg><i class="key-green"></i></button>
+                <p class="tv-full-tip" data-tv-full-tip hidden>Нажмите <i class="key-green"></i> на пульте для полноэкранного режима</p>
+                <ol class="tv-programs" data-tv-programs></ol>
+              </div>
+              <!-- Full programme -->
+              <div class="tv-view tv-epg" data-tv-view="epg" hidden>
+                <div class="tv-epg-title"><svg><use href="#i-back"/></svg><span class="tv-logo">● TV</span><b>Телепрограмма</b><span class="tv-epg-ch" data-tv-epg-ch></span></div>
+                <svg class="tv-epg-arrow up" data-tv-epg-up><use href="#i-up"/></svg>
+                <ol class="tv-epg-days" data-tv-days aria-hidden="true"></ol>
+                <ol class="tv-epg-list" data-tv-epg></ol>
+                <svg class="tv-epg-arrow down" data-tv-epg-down><use href="#i-down"/></svg>
+              </div>
+              <!-- Full screen: the picture with an info bar -->
+              <div class="tv-fs" data-tv-fs hidden></div>
+              <div class="tv-paywall" data-tv-paywall hidden>
+                <p class="pw-title">Телеканал доступен в подписке</p>
+                <p class="pw-text">Подключай прямо сейчас и наслаждайся просмотром любимых телеканалов</p>
+                <button type="button" class="pw-btn" data-tv-subscribe tabindex="-1">Подключить</button>
+              </div>
+              <p class="tv-toast" data-tv-toast role="status" hidden></p>
+            </div>
+          </div></div>
+          <div class="remote" aria-label="Пульт" data-tv-remote>
+            <button type="button" data-key="ArrowUp" aria-label="Вверх"><svg><use href="#i-up"/></svg></button>
+            <button type="button" data-key="ArrowLeft" aria-label="Влево"><svg><use href="#i-chevron" transform="rotate(180 8 8)"/></svg></button>
+            <button type="button" data-key="Enter" class="ok">OK</button>
+            <button type="button" data-key="ArrowRight" aria-label="Вправо"><svg><use href="#i-chevron"/></svg></button>
+            <button type="button" data-key="ArrowDown" aria-label="Вниз"><svg><use href="#i-down"/></svg></button>
+            <button type="button" data-key="Backspace" class="back" aria-label="Назад"><svg><use href="#i-back"/></svg></button>
+            <button type="button" data-key="Green" class="color green" aria-label="Зелёная кнопка — полный экран"></button>
+            <button type="button" data-key="Yellow" class="color yellow" aria-label="Жёлтая кнопка — вся телепрограмма"></button>
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 3 — ОДИН СЦЕНАРИЙ, ДВЕ ОРГАНИЗАЦИИ</span><span>пересобрано по макетам · видео: Sintel, Tears of Steel, Big Buck Bunny © Blender Foundation, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a></span></figcaption>
+      </figure>
+
+<!-- block: solution-2-fig -->
+<figure class="fig">
+        <div class="ap-controls">
+          <div class="ap-seg" role="radiogroup" aria-label="Вариант">
+            <button type="button" role="radio" aria-checked="true" data-ap-mode="auto">Гипотеза: трейлер стартует сам</button>
+            <button type="button" role="radio" aria-checked="false" data-ap-mode="still">Итог: трейлер по OK</button>
+          </div>
+        </div>
+        <div class="tv-wrap tv-wrap--ap">
+        <div class="tv-scroll"><div class="tv-box tv-box--ap" data-tv-box>
+          <div class="tv tv--ap" data-ap tabindex="0" role="application" aria-label="Каталог Smart TV: ← → — выбор, Enter — OK, Backspace — назад">
+            <header class="tv-top">
+              <span class="tv-logo">● TV</span>
+              <nav><span>ТВ</span><span class="is-on">Кино</span><span>Премьеры</span><span>Сериалы</span><span>Мультфильмы</span></nav>
+              <span class="tv-icons"><svg><use href="#i-search"/></svg><svg><use href="#i-user"/></svg></span>
+            </header>
+            <div class="scene ap-feature" data-ap-feature></div>
+            <div class="ap-feature-text"><p class="ap-genre">Триллер · 2025</p><p class="ap-feature-title">Неон</p></div>
+            <p class="ap-shelf-title">Громкие премьеры</p>
+            <ol class="ap-shelf" data-ap-shelf></ol>
+            <div class="ap-open" data-ap-open hidden>
+              <div class="ap-stage" data-ap-stage>
+                <div class="scene ap-bg" data-ap-scene></div>
+                <div class="ap-fade ap-fade--x"></div>
+                <div class="ap-fade ap-fade--y"></div>
+              </div>
+              <div class="ap-info">
+                <p class="ap-genre" data-ap-genre></p>
+                <h3 class="ap-title" data-ap-title></h3>
+                <p class="ap-desc" data-ap-desc></p>
+                <div class="ap-btns">
+                  <button type="button" class="ap-btn" data-ap-primary>Смотреть фильм</button>
+                  <button type="button" class="ap-btn" data-ap-trailer>Трейлер</button>
+                </div>
+                <p class="ap-countdown" data-ap-countdown hidden></p>
+              </div>
+              <div class="ap-playing" data-ap-playing>
+                <span class="ap-live"><svg><use href="#i-play"/></svg>Трейлер · воспроизведение</span>
+                <span class="ap-progress"><span></span></span>
+              </div>
+              <button type="button" class="ap-close" data-ap-close aria-label="Закрыть карточку"><svg><use href="#i-back"/></svg></button>
+            </div>
+          </div>
+        </div></div>
+          <div class="remote" aria-label="Пульт" data-ap-remote>
+            <button type="button" data-key="ArrowUp" aria-label="Вверх"><svg><use href="#i-up"/></svg></button>
+            <button type="button" data-key="ArrowLeft" aria-label="Влево"><svg><use href="#i-chevron" transform="rotate(180 8 8)"/></svg></button>
+            <button type="button" data-key="Enter" class="ok">OK</button>
+            <button type="button" data-key="ArrowRight" aria-label="Вправо"><svg><use href="#i-chevron"/></svg></button>
+            <button type="button" data-key="ArrowDown" aria-label="Вниз"><svg><use href="#i-down"/></svg></button>
+            <button type="button" data-key="Backspace" class="back" aria-label="Назад"><svg><use href="#i-back"/></svg></button>
+          </div>
+        </div>
+        <p class="try t-code-sm" data-touch="Попробуйте: кнопками пульта под экраном ← → по постерам, OK — открыть карточку, затем сравните два варианта">Попробуйте: ← → по постерам, OK — открыть карточку, затем сравните два варианта</p>
+        <figcaption class="t-code-sm"><span>FIG. 4 — РАСКРЫТИЕ ИЗ УГЛА ЭКРАНА</span><span>пересобрано · названия вымышленные · кадры © Blender Foundation, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a></span></figcaption>
+      </figure>
+
+<!-- block: solution-3-fig -->
+<figure class="fig">
+        <div class="rd-controls">
+          <label class="rd-range t-code-sm">Расстояние до экрана <input type="range" min="1" max="5" step="0.5" value="1" data-rd-distance><output data-rd-out>1 м</output></label>
+          <label class="rd-range t-code-sm">Цветовое восприятие
+            <select data-rd-vision>
+              <option value="none">обычное</option>
+              <option value="deutan">дейтеранопия</option>
+              <option value="protan">протанопия</option>
+              <option value="achroma">монохром</option>
+            </select>
+          </label>
+          <label class="loc-rules t-code-sm"><input type="checkbox" data-rd-myopia> близорукость</label>
+        </div>
+        <div class="fig-cols rd-cols" data-rd>
+          <div class="fig-col">
+            <span class="badge badge--neutral">Было</span>
+            <div class="rd-screen rd-before"><div class="rd-zoom">
+              <span class="rd-row"><b>8</b>Северный свет</span>
+              <span class="rd-row is-focus"><b>9</b>▸ Кинокадр<i>›</i></span>
+              <span class="rd-row"><b>10</b>Дорога</span>
+              <span class="rd-row"><b>11</b>Лаборатория</span>
+            </div></div>
+            <p class="t-body-sm fig-note">Тёмный фон с куском видео, фокус — градиентная плашка: с расстояния текст сливается с картинкой</p>
+          </div>
+          <div class="fig-col">
+            <span class="badge badge--brand">Стало</span>
+            <div class="rd-screen rd-after"><div class="rd-zoom">
+              <span class="rd-row"><b>8</b>Северный свет</span>
+              <span class="rd-row is-focus"><b>9</b>Кинокадр<i>›</i></span>
+              <span class="rd-row"><b>10</b>Дорога</span>
+              <span class="rd-row"><b>11</b>Лаборатория</span>
+            </div></div>
+            <p class="t-body-sm fig-note">Ровная заливка, контрастный текст, заметный фокус</p>
+          </div>
+        </div>
+        <p class="try t-code-sm">Попробуйте: подвигайте расстояние до 5 м, смените тип зрения и включите близорукость</p>
+        <figcaption class="t-code-sm"><span>FIG. 5 — ЧИТАЕМОСТЬ С РАССТОЯНИЯ</span><span>демонстрационная схема, не инструмент проверки зрения</span></figcaption>
+      </figure>
+
+<!-- block: solution-3-svg -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <filter id="cvd-deutan"><feColorMatrix type="matrix" values="0.367 0.861 -0.228 0 0  0.280 0.673 0.047 0 0  -0.012 0.043 0.969 0 0  0 0 0 1 0"/></filter>
+        <filter id="cvd-protan"><feColorMatrix type="matrix" values="0.152 1.053 -0.205 0 0  0.115 0.786 0.099 0 0  -0.004 -0.048 1.052 0 0  0 0 0 1 0"/></filter>
+      </svg>
+
+<!-- block: solution-4-fig -->
+<figure class="fig">
+        <div class="kit2">
+          <div class="kit-shared">
+            <p class="t-label-mono">Общая палитра · Mobile и Smart TV</p>
+            <ul class="swatches swatches--row">
+              <li style="--c:#20bec6"><span></span>Primary<small>акцент, активные элементы</small><code>#20bec6</code></li>
+              <li style="--c:#f6bf48"><span></span>Warning · Smart btn<small>предупреждения, подсказки</small><code>#f6bf48</code></li>
+              <li style="--c:#ffffff"><span></span>Title-Active<small>текст: 100 · 70 · 50%</small><code>#ffffff</code></li>
+            </ul>
+          </div>
+          <div class="kit-platforms">
+            <div class="kit-col">
+              <p class="t-label-mono">Mobile</p>
+              <p class="kit-sub">Текстовые стили</p>
+              <p class="kit-note">Экран смартфона, 360 dp в ширину: стили компактнее — телефон держат в руке, в 30–40 см от глаз. Показаны в натуральную величину</p>
+              <ul class="type-specimens type-specimens--mobile">
+                <li><span style="font:500 20px/26px Roboto,system-ui,sans-serif">Телепрограмма</span><code>Heading · 20/26 · Medium</code></li>
+                <li><span style="font:500 15px/20px Roboto,system-ui,sans-serif">Режиссёрская версия</span><code>Title · 15/20 · Medium</code></li>
+                <li><span style="font:400 12px/16px Roboto,system-ui,sans-serif">Вчера · 11:15 – 12:15</span><code>Body · 12/16 · Regular</code></li>
+                <li><span style="font:500 10px/12px Roboto,system-ui,sans-serif">Главная · ТВ · Кино</span><code>Caption · 10/12 · Medium</code></li>
+              </ul>
+              <p class="kit-sub">Свои цвета</p>
+              <ul class="swatches">
+                <li style="--c:#182936"><span></span>Background<code>#182936</code></li>
+                <li style="--c:#15394c"><span></span>Primary dark<code>#15394c</code></li>
+                <li style="--c:#d8271c"><span></span>Запись<code>#d8271c</code></li>
+                <li style="--c:linear-gradient(135deg,#ff7d7d,#d7208e)"><span></span>Gradient primary<code>#ff7d7d → #d7208e</code></li>
+              </ul>
+            </div>
+            <div class="kit-col">
+              <p class="t-label-mono">Smart TV</p>
+              <p class="kit-sub">Текстовые стили «Smart»</p>
+              <p class="kit-note">Экран 1920×1080: шрифты крупнее, чтобы читались с дивана. Показаны в масштабе 1:2</p>
+              <ul class="type-specimens type-specimens--tv">
+                <li><span style="font-weight:600;font-size:21px;line-height:26px;letter-spacing:1px">Телепрограмма</span><code>Headline Secondary · 42/52 · Demi</code></li>
+                <li><span style="font-weight:600;font-size:17px;line-height:24px;letter-spacing:1px">Режиссёрская версия</span><code>Title · 34/48 · Demi</code></li>
+                <li><span style="font-weight:500;font-size:13px;line-height:16px">12:15 · Эфир</span><code>Subtitle · 26/24 · Medium</code></li>
+              </ul>
+              <p class="kit-sub">Свои цвета</p>
+              <ul class="swatches">
+                <li style="--c:#141414"><span></span>Background<code>#141414</code></li>
+                <li style="--c:#202020"><span></span>Element background<code>#202020</code></li>
+                <li style="--c:#2affff"><span></span>Secondary · фокус<code>#2affff</code></li>
+                <li class="swatch-keys"><span class="keys"><i style="background:#f64848"></i><i style="background:#2ccd4f"></i><i style="background:#f6bf48"></i></span><em class="nowrap">Smart btn · пульт</em><code title="#f64848 · #2ccd4f · #f6bf48">red · green · yellow</code></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <figcaption class="t-code-sm"><span>FIG. 6 — ОБЩАЯ ПАЛИТРА, СВОИ СТИЛИ ТЕКСТА</span><span>mobile · smart tv</span></figcaption>
+      </figure>
+
+<!-- block: solution-4-fig-2 -->
+<figure class="fig">
+        <div class="loc-controls">
+          <div class="ap-seg" role="radiogroup" aria-label="Язык">
+            <button type="button" role="radio" aria-checked="true" data-lang="ru">RU</button>
+            <button type="button" role="radio" aria-checked="false" data-lang="en">EN</button>
+            <button type="button" role="radio" aria-checked="false" data-lang="de">DE</button>
+            <button type="button" role="radio" aria-checked="false" data-lang="long">+40% длины</button>
+          </div>
+          <label class="loc-rules t-code-sm"><input type="checkbox" data-loc-rules> правила для длинных строк</label>
+        </div>
+        <div class="loc" data-loc>
+          <div class="loc-status" aria-hidden="true"><span>12:30</span></div>
+          <div class="loc-tabs"><span data-t="genres"></span><span class="is-on" data-t="epg"></span></div>
+          <div class="loc-row"><span class="loc-badge" data-t="record"></span><span class="loc-title" data-t="show"></span><button type="button" class="loc-more" data-loc-more hidden></button></div>
+          <div class="loc-btns"><span class="loc-btn" data-t="watch"></span><span class="loc-btn loc-btn--ghost" data-t="trailer"></span></div>
+          <div class="loc-tariff"><span class="loc-tariff-name" data-t="tariff"></span><svg class="loc-chev" aria-hidden="true"><use href="#i-chevron"/></svg></div>
+          <div class="loc-posters">
+            <div class="loc-poster"><span class="scene scene--dusk" data-scene="dusk"></span><span class="loc-film" data-t="film1"></span></div>
+            <div class="loc-poster"><span class="scene scene--desert" data-scene="desert"></span><span class="loc-film" data-t="film2"></span></div>
+            <div class="loc-poster"><span class="scene scene--fog" data-scene="fog"></span><span class="loc-film" data-t="film3"></span></div>
+          </div>
+          <nav class="loc-nav"><span data-t="home"></span><span class="is-on" data-t="tv"></span><span data-t="premieres"></span><span data-t="cinema"></span><span data-t="account"></span></nav>
+        </div>
+        <p class="loc-report t-code-sm" data-loc-report aria-live="polite"></p>
+        <p class="try t-code-sm">Попробуйте: переключите язык и включите правила для длинных строк</p>
+        <figcaption class="t-code-sm"><span>FIG. 7 — ПРОВЕРКА ЛОКАЛИЗАЦИИ В ДИЗАЙНЕ</span><span>схема</span></figcaption>
+      </figure>
