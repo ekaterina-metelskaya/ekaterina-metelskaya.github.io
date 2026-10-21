@@ -17,6 +17,8 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-arrow-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M3.33 8h9.34M8.67 4l4 4-4 4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.67v8M4.67 7.33 8 10.67l3.33-3.34M3.33 13.33h9.34"/></symbol>
+  <symbol id="i-telegram" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.3 18.7 19.6c-.24 1.07-.88 1.34-1.78.83l-4.93-3.63-2.38 2.29c-.26.26-.48.48-.99.48l.35-5.02 9.13-8.25c.4-.35-.09-.55-.61-.2L6.2 13.2l-4.86-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 2.8c.88-.32 1.65.2 1.39 1.5z"/></symbol>
   <symbol id="i-arrow-left" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M12.67 8H3.33M7.33 4l-4 4 4 4"/></symbol>
   <symbol id="i-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l4 4-4 4"/></symbol>
 </svg>
@@ -34,7 +36,7 @@
     </nav>
     <div class="header-right">
       <span class="status t-label">Открыта к предложениям</span>
-      <a class="btn btn--outline btn--sm" href="../assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>CV</a>
+      <a class="btn btn--outline btn--sm" href="../assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>CV</a>
     </div>
   </div>
   <span class="read-progress" aria-hidden="true"></span>
@@ -96,13 +98,12 @@
   <div class="wrap">
     <div class="case-cta-text">
       <h2 class="t-heading-lg">{{home.cta_title}}</h2>
-      <p class="case-cta-lead t-title">{{home.cta_lead}}</p>
-      <p class="t-body-lg">{{home.cta_text}}</p>
+      <p class="case-cta-lead t-body-lg">{{home.cta_lead}}</p>
       <p class="case-cta-where t-label-mono">{{home.cta_where}}</p>
     </div>
     <div class="case-cta-actions">
-      <a class="btn btn--primary" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener"><svg><use href="#i-arrow-right"/></svg>Написать в Telegram</a>
-      <a class="btn btn--outline" href="../assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>Скачать CV</a>
+      <a class="btn btn--primary" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener"><svg><use href="#i-telegram"/></svg>Написать в Telegram</a>
+      <a class="btn btn--outline" href="../assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>Скачать CV</a>
       <a class="case-cta-mail t-title" href="mailto:metelskaya.ek@gmail.com">metelskaya.ek@gmail.com</a>
     </div>
   </div>
@@ -121,7 +122,7 @@
         <a class="t-label-mono" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener">Telegram</a>
         <a class="t-label-mono" href="https://www.linkedin.com/in/ekaterina-metelskaya/" target="_blank" rel="noopener">LinkedIn</a>
         <a class="t-label-mono" href="https://novosibirsk.hh.ru/resume/f022f4cfff10b37b790039ed1f5a3039745752" target="_blank" rel="noopener">hh.ru</a>
-        <a class="btn btn--outline btn--sm" href="../assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>CV</a>
+        <a class="btn btn--outline btn--sm" href="../assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>CV</a>
       </nav>
     </div>
   </footer>

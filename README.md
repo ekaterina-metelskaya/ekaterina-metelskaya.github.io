@@ -16,12 +16,16 @@ content/                    ТЕКСТЫ — правятся здесь
   sweet-tv.md
   in-vino.md
   re-instance.md            только карточка, кейс в работе
+  match-texts.json.gz       «Сработаемся?»: словарь готовых текстов результата (title, paragraphs, ai_paragraphs), сжат gzip.
+                            Обновить: положить новый словарь как content/match-texts.json и запустить сборку —
+                            архив пересоберётся сам; .json в git не попадает
 templates/                  вёрстка
   index.html, projects.html шаблоны страниц
   cases/<кейс>.html         шаблон кейса: шапка, содержание, контакты
   cases/<кейс>.blocks.html  схемы и интерактивные демо, которые вставляются в текст
   partials/                 обложки-иллюстрации
 css/  js/  assets/          стили, скрипты, шрифты, изображения, видео, CV
+js/match-texts.js           собирается из content/match-texts.json.gz (руками не править)
 tools/build.js              сборка: content + templates → готовые .html
 tools/serve.js              локальный сервер для просмотра
 tools/og.js, og.html        картинки для превью ссылок (assets/og)

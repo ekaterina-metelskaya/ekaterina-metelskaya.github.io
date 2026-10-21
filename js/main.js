@@ -627,59 +627,214 @@
   });
 
   /* ---------- «Сработаемся?» ----------
-     portfolio_match_interactive_spec.md: every chip is a toggle; remote / hybrid / office exclude each other.
-     The result is checked top-down, the first matching state wins:
-     nothing → all → office → AI easter egg → something to discuss → match.
-     Not a rating: «110%» is a joke, and missing company conditions never make the answer worse. */
-  const matchChips = $$('.match-choices .chip');
-  if (matchChips.length) {
-    const title = $('[data-match-title]');
-    const text = $('[data-match-text]');
-    const card = $('.match-card');
-    const reset = $('[data-match-reset]');
-    const kind = (c, k) => (c.dataset.kind || '').split(' ').includes(k);
+     Texts: portfolio_match_texts_v10_paragraphs.json — ready title and paragraphs per scenario, copied to content/match-texts.json;
+     tools/build.js packs it into js/match-texts.js, loaded here when the visitor nears the block or picks the first chip.
+     Nothing is composed here: the scenario key (role, subject tasks and their groups, format, extra terms) picks one ready entry,
+     its paragraphs are shown as they are, each in its own <p>; with «AI-инструменты» picked — its ai_paragraphs.
+     The title never depends on AI.
+     Three lines only show which groups are filled in: role, tasks (any subject task — AI does not count), work format */
+  const matchCard = $('.match-card');
+  if (matchCard) {
+    const choices = $('.match-choices');
+    const chips = $$('.chip', choices);
+    const group = g => chips.filter(c => c.dataset.group === g);
     const on = c => c.getAttribute('aria-pressed') === 'true';
-    const states = {
-      empty: ['Проверим совместимость?', 'Здесь появится ответ, как только вы отметите первый вариант.'],
-      match: ['Похоже, мы подходим друг другу', 'Если у вас есть задачи, с которыми я могу помочь, пишите.'],
-      discuss: ['Давайте обсудим', 'Есть несколько моментов, которые лучше уточнить. Расскажите подробнее о задачах.'],
-      office: ['Давайте обсудим', 'Всё зависит от того, где находится офис. И немного от того, что в нём происходит.'],
-      vibe: ['Похоже, мы подходим друг другу', 'Могу навайбкодить в том числе. Но от хорошей команды не откажусь.'],
-      all: ['110%', 'Кажется, мы вышли в стратосферу.'],
+    const press = (c, v) => c.setAttribute('aria-pressed', String(v));
+    const tasksBox = $('.match-tasks', choices);
+    const taskSets = $$('[data-tasks]', choices);
+    const copy = $('[data-match-copy]', matchCard);
+    const title = $('[data-match-title]', matchCard);
+    const text = $('[data-match-text]', matchCard);
+    const segs = $$('[data-seg]', matchCard);
+    const reset = $('[data-match-reset]');
+    // Texts set from here skip the build typograph: keep short words and dashes on their line the same way
+    const nb = s => s.replace(/(^|[\s—])([а-яё]{1,2}) /gi, '$1$2\u00a0').replace(/(^|[\s—])([а-яё]{1,2}) /gi, '$1$2\u00a0').replace(/ —/g, '\u00a0—');
+
+    // The dictionary (C) arrives later; until then the card keeps the start text from the page
+    let C = null;
+    const start = { title: title.textContent, paragraphs: $$('p', text).map(p => ({ kind: p.dataset.kind, text: p.textContent })) };
+    // Same calculation as matchKey in tools/build.js, which checks at build time that every reachable key exists
+    const matchKey = s => {
+      const r = C.roles[s.role];
+      const tail = `${s.format || 'none'}|extras:${s.extras || '-'}`;
+      if (!s.tasks.length) return `${s.role}|no-tasks|${tail}`;
+      if (s.tasks.length === 1) return `${s.role}|${r.one}${s.tasks[0]}|${tail}`;
+      if (s.role === 'product' && s.tasks.length === r.all) return `${s.role}|all|${tail}`;
+      const groups = Object.keys(r.groups).filter(g => r.groups[g].some(t => s.tasks.includes(t))).join('');
+      return `${s.role}|${r.multi}${groups}|${tail}`;
     };
-    const result = () => {
-      const picked = matchChips.filter(on);
-      if (!picked.length) return 'empty';
-      const formats = picked.filter(c => kind(c, 'format')).length;
-      if (formats === 1 && matchChips.filter(c => !kind(c, 'format')).every(on)) return 'all';
-      if (picked.some(c => kind(c, 'office'))) return 'office';
-      if (picked.some(c => kind(c, 'vibe'))) return 'vibe';
-      if (picked.some(c => kind(c, 'discuss'))) return 'discuss';
-      return 'match';
+    // Entries are packed by the build (each string once): [title, [[kind, text]…], [[kind, text]…] with AI] — indexes into C.strings
+    const unpack = list => list.map(([k, i]) => ({ kind: C.kinds[k], text: C.strings[i] }));
+    // [state, title, paragraphs]. The state only colours the title: neutral before a role and with fewer than two tasks
+    const answer = s => {
+      if (!C) return ['empty', start.title, start.paragraphs];
+      if (!s.role) return ['empty', C.start.title, [{ kind: 'experience', text: C.start.text }]];
+      const [t, plain, withAi] = C.cases[matchKey(s)];
+      return [s.tasks.length < 2 ? 'first' : 'answer', C.strings[t], unpack(s.ai ? withAi : plain)];
     };
-    let last = 'empty';
+    const read = () => {
+      const role = group('role').find(on)?.dataset.role;
+      const set = taskSets.find(x => x.dataset.tasks === role);
+      return {
+        any: chips.some(on),
+        role,
+        // AI tools have no data-task: they never count as a task
+        tasks: set ? $$('[data-task]', set).filter(on).map(c => c.dataset.task) : [],
+        ai: !!set && $$('[data-kind="ai"]', set).some(on),
+        format: group('format').find(on)?.dataset.format,
+        // Extra terms: their letters in the dictionary's order (the chips are built in it)
+        extras: group('extra').filter(on).map(c => c.dataset.extra).join(''),
+      };
+    };
+    // Each paragraph (experience, extra terms, format) is its own <p>; the card simply grows with them
+    const render = paragraphs => text.replaceChildren(...paragraphs.map(p => {
+      const el = document.createElement('p');
+      el.className = `match-copy--${p.kind}`;
+      el.dataset.kind = p.kind;
+      el.textContent = nb(p.text);
+      return el;
+    }));
+
+    // Easter eggs (AI tools, office): a tooltip next to the chip — on the pick (4 s, also a tap on a phone), then again on hover
+    // or keyboard focus. It floats over the page and never reserves space, so the groups keep the same spacing.
+    // data-tip-sides lists where to try, in order; the first spot that covers no chip and no group label of its group wins,
+    // otherwise the one covering least (a label counts less than a chip). AI: always under it — AI is the last chip.
+    // Office: right, else above it (narrowed to the space beside the group label when two short lines still fit there), else under it
+    const TIP_GAP = 8;
+    const textRect = el => { const r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect(); };
+    const placeTip = c => {
+      const tip = c.nextElementSibling;
+      const host = c.parentElement;
+      const fieldset = c.closest('.chip-group');
+      const ownSet = c.closest('[data-tasks]');
+      const legend = textRect($('legend', fieldset));
+      // Chips of other roles' task sets are hidden, they do not count
+      const others = $$('.chip', fieldset).filter(x => x !== c && (!x.closest('[data-tasks]') || x.closest('[data-tasks]') === ownSet)).map(x => x.getBoundingClientRect());
+      const hr = host.getBoundingClientRect();
+      const cr = c.getBoundingClientRect();
+      const sides = (c.dataset.tipSides || 'below').split(' ');
+      let best;
+      for (const side of sides) {
+        tip.style.maxWidth = '';
+        if (side === 'above') { const room = hr.right - legend.right - 12; if (room >= 220 && room < tip.offsetWidth) tip.style.maxWidth = `${room}px`; }
+        const w = tip.offsetWidth; const h = tip.offsetHeight;
+        const l = side === 'right' ? cr.right + 10 : Math.max(hr.left, Math.min(cr.left, hr.right - w));
+        const t = side === 'right' ? cr.top + (cr.height - h) / 2 : side === 'below' ? cr.bottom + TIP_GAP : cr.top - TIP_GAP - h;
+        const hits = o => o.left < l + w && o.right > l && o.top < t + h && o.bottom > t;
+        const cost = l + w > hr.right + .5 ? Infinity : others.filter(hits).length + (hits(legend) ? .5 : 0);
+        if (!best || cost < best.cost) best = { side, l, t, w, cost, maxWidth: tip.style.maxWidth };
+        if (!cost) break;
+      }
+      tip.style.maxWidth = best.maxWidth;
+      tip.dataset.side = best.side;
+      tip.style.left = `${best.l - hr.left}px`;
+      tip.style.top = `${best.t - hr.top}px`;
+      tip.style.setProperty('--arrow-x', `${Math.max(12, Math.min(cr.left - best.l + 24, best.w - 12))}px`);
+    };
+    const tipChips = chips.filter(c => c.nextElementSibling?.classList.contains('match-tip'));
+
+    // The tasks area is as tall as the picked role's set, so the next group keeps the same spacing as the others;
+    // the height eases into place (CSS), so switching roles does not jerk the page. No role yet — as tall as the longest set
+    let fitAt = 0;
+    const fitTasks = () => {
+      const active = taskSets.find(x => x.classList.contains('is-active'));
+      tasksBox.style.height = `${active ? active.offsetHeight : Math.max(...taskSets.map(x => x.offsetHeight))}px`;
+    };
+    new ResizeObserver(() => {
+      if (tasksBox.clientWidth === fitAt) return;
+      fitAt = tasksBox.clientWidth;
+      tasksBox.classList.remove('is-fitted');
+      fitTasks();
+      requestAnimationFrame(() => tasksBox.classList.add('is-fitted'));
+    }).observe(tasksBox);
+    const tipLive = document.createElement('p');
+    tipLive.className = 'sr-only';
+    tipLive.setAttribute('role', 'status');
+    choices.append(tipLive);
+    let tipTimer;
+    const hideTip = () => { clearTimeout(tipTimer); $$('.match-tip.is-on', choices).forEach(t => t.classList.remove('is-on')); };
+    const showTip = (c, hold) => {
+      hideTip();
+      placeTip(c);
+      c.nextElementSibling.classList.add('is-on');
+      if (!hold) tipTimer = setTimeout(hideTip, 4000);
+    };
+    tipChips.forEach(c => {
+      const hold = () => { if (on(c)) showTip(c, true); };
+      const leave = () => { if (c.nextElementSibling.classList.contains('is-on') && !c.matches(':focus-visible')) hideTip(); };
+      c.addEventListener('mouseenter', hold);
+      c.addEventListener('mouseleave', leave);
+      c.addEventListener('focus', () => { if (c.matches(':focus-visible')) hold(); });
+      c.addEventListener('blur', hideTip);
+    });
+
+    let last = '';
     const update = () => {
-      const state = result();
-      reset.hidden = state === 'empty';
-      card.dataset.state = state;
-      if (state === last) return;
-      last = state;
-      [title.textContent, text.textContent] = states[state];
-      if (!reduceMotion) card.animate([{ opacity: .4, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2, .7, .2, 1)' });
+      const s = read();
+      taskSets.forEach(set => set.classList.toggle('is-active', set.dataset.tasks === s.role));
+      tasksBox.classList.toggle('has-role', !!s.role);
+      fitTasks();
+      // Filled in or not; AI tools alone do not fill the tasks line, extra terms alone do not fill the terms line
+      const filled = { role: !!s.role, tasks: s.tasks.length > 0 || s.metrics, terms: !!s.format };
+      segs.forEach(li => {
+        li.dataset.state = filled[li.dataset.seg] ? 'filled' : 'none';
+        $('[data-seg-status]', li).textContent = filled[li.dataset.seg] ? 'выбрано' : 'не выбрано';
+      });
+      reset.classList.toggle('is-hidden', !s.any);
+      // Office unpicked by choosing another format: its tooltip goes too
+      tipChips.forEach(c => { if (!on(c)) c.nextElementSibling.classList.remove('is-on'); });
+      const [state, t, x] = answer(s);
+      matchCard.dataset.state = state;
+      const signature = t + JSON.stringify(x);
+      if (signature === last) return;
+      last = signature;
+      title.textContent = nb(t);
+      render(x);
+      if (!reduceMotion) copy.animate([{ opacity: .4, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2, .7, .2, 1)' });
     };
-    matchChips.forEach(c => c.addEventListener('click', () => {
+    chips.forEach(c => c.addEventListener('click', () => {
+      const g = c.dataset.group;
       const next = !on(c);
-      // Work formats exclude each other
-      if (next && kind(c, 'format')) matchChips.filter(x => x !== c && kind(x, 'format')).forEach(x => x.setAttribute('aria-pressed', 'false'));
-      c.setAttribute('aria-pressed', String(next));
+      // Role and work format: one at a time; pressing the picked one again clears it
+      if (next && (g === 'role' || g === 'format')) group(g).forEach(x => x !== c && press(x, false));
+      press(c, next);
+      // Another role brings its own tasks: the old picks would stay hidden and skew the answer
+      if (g === 'role') { group('task').forEach(x => press(x, false)); hideTip(); }
+      if (tipChips.includes(c)) {
+        if (next) showTip(c); else hideTip();
+        tipLive.textContent = next ? c.nextElementSibling.textContent : '';
+      }
       update();
     }));
     reset.addEventListener('click', () => {
-      matchChips.forEach(c => c.setAttribute('aria-pressed', 'false'));
+      chips.forEach(c => press(c, false));
+      hideTip();
+      tipLive.textContent = '';
       update();
-      matchChips[0].focus();
+      group('role')[0].focus();
     });
     update();
+
+    // The dictionary is big, so it comes only when needed: when the block is about a screen away, or on the first pick.
+    // A plain <script> also works when the page is opened from disk
+    let loading = false;
+    const loadTexts = () => {
+      if (loading) return;
+      loading = true;
+      const script = document.createElement('script');
+      script.src = tasksBox.dataset.texts;
+      script.onload = () => {
+        C = window.MATCH_TEXTS;
+        last = '';
+        update();
+      };
+      document.head.append(script);
+    };
+    if ('IntersectionObserver' in window) {
+      const near = new IntersectionObserver(entries => { if (entries.some(e => e.isIntersecting)) { near.disconnect(); loadTexts(); } }, { rootMargin: '100% 0px' });
+      near.observe(choices);
+    } else loadTexts();
+    chips.forEach(c => c.addEventListener('pointerdown', loadTexts, { once: true }));
   }
 
   /* ---------- Reveal on scroll ---------- */

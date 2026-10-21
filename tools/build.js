@@ -153,26 +153,127 @@ const card = (slug, attrs = '') => {
           </li>`;
 };
 
-// «Сработаемся?» (portfolio_match_interactive_spec.md): three groups, all chips multi-select.
-// data-kind drives the result in main.js: format — remote / hybrid / office, mutually exclusive;
-// discuss — worth talking over; vibe — the AI easter egg; office — its own «Давайте обсудим»
-const matchGroups = [
-  ['01 / Кого вы ищете', [['Продуктовый дизайнер'], ['UX/UI-дизайнер'], ['Дизайнер дизайн-систем'], ['UX-исследователь']]],
-  ['02 / С какими задачами', [['Полный цикл дизайна'], ['Самостоятельное ведение продукта'], ['Сложные интерфейсы'], ['UX-исследования'], ['Информационная архитектура'], ['Дизайн-системы'], ['Продуктовые метрики', 'discuss'], ['Прототипирование'], ['AI-инструменты', 'vibe']]],
-  ['03 / Что вы предлагаете', [['Удалёнка', 'format'], ['Гибрид', 'format'], ['Офис', 'format office'], ['Гибкий график'], ['Влияние на продукт']]],
-];
+// «Сработаемся?»: тексты — готовые абзацы из content/match-texts.json.gz (portfolio_match_texts_v10_paragraphs.json),
+// логика совместимости — portfolio_match_logic_v3.md. Тексты не собираются из частей: main.js вычисляет ключ сценария
+// и выводит title и абзацы paragraphs (или ai_paragraphs) этого ключа как есть, каждый — отдельным <p>.
+// Ключ — «роль|сценарий|формат|extras:<буквы>»:
+// no-tasks — нет предметных задач; one:<подпись чипа> — одна; multi:<буквы групп по порядку групп роли> — две и больше;
+// product|all — все восемь задач продуктового дизайнера. Формат — none / remote / hybrid / office.
+// extras — отмеченные дополнительные условия буквами в порядке extra_order (IADF) или «-».
+// AI-инструменты в ключ не входят: при отмеченном чипе показываются ai_paragraphs того же ключа, заголовок не меняется.
+// Пасхалки — всплывающие подсказки у чипов «AI-инструменты» и «Офис»; на итог не влияют.
+// data-tip-sides — где main.js пробует открыть подсказку, по порядку: справа от чипа, над ним, под ним.
+// AI — всегда под чипом: он последний в наборе, ниже только свободное место. Офис — справа, сверху или снизу, где закрывает меньше.
+// Подсказки всплывают поверх страницы и места не резервируют: отступы между группами одинаковые
+// Словарь хранится в репозитории сжатым: content/match-texts.json.gz (≈190 КБ вместо 11,5 МБ).
+// Чтобы обновить тексты, положите новый словарь как content/match-texts.json и запустите сборку:
+// она возьмёт его и сама пересоберёт архив. Сам .json в git не попадает (.gitignore)
+const zlib = require('zlib');
+const matchSource = fs.existsSync(path.join(root, 'content/match-texts.json'))
+  ? read('content/match-texts.json')
+  : zlib.gunzipSync(fs.readFileSync(path.join(root, 'content/match-texts.json.gz'))).toString('utf8');
+const matchTexts = JSON.parse(matchSource);
+if (fs.existsSync(path.join(root, 'content/match-texts.json'))) {
+  fs.writeFileSync(path.join(root, 'content/match-texts.json.gz'), zlib.gzipSync(Buffer.from(matchSource, 'utf8'), { level: 9 }));
+  console.log('content/match-texts.json.gz обновлён из content/match-texts.json');
+}
+const AI_TIP = matchTexts.ai_behavior.tooltip;
+const OFFICE_TIP = 'Телепортацию пока не внедрила. Географию можно обсудить';
+const tipFor = id => `
+              <span class="match-tip t-body-sm" id="tip-${id}" role="tooltip">${id === 'office' ? OFFICE_TIP : AI_TIP}</span>`;
+// Роли и порядок чипов задач на сайте; подписи совпадают с subject_tasks словаря, они же — ключ data-task
+const matchRoles = [
+  { id: 'product', tasks: ['Сложные сценарии', 'Продуктовые гипотезы', 'UX-исследования', 'От идеи до релиза', 'Самостоятельное ведение', 'Дизайн-системы', 'Продуктовые метрики', 'Новые продукты'] },
+  { id: 'uxui', tasks: ['UX-сценарии', 'Сложные интерфейсы', 'Структура интерфейсов', 'Прототипирование', 'UI и адаптивы', 'UX-тестирование', 'Дизайн-системы'] },
+  { id: 'ds', tasks: ['Библиотеки компонентов', 'Токены и переменные', 'Состояния компонентов', 'UX-паттерны', 'Документация', 'Развитие библиотек'] },
+  { id: 'research', tasks: ['Глубинные интервью', 'UX-тестирования', 'CJM и сценарии', 'Проверка гипотез', 'Анализ результатов', 'Опросы', 'Конкурентный анализ'] },
+].map(r => ({ ...r, label: matchTexts.roles[r.id].label }));
+const matchFormats = [['remote', 'Удалёнка'], ['hybrid', 'Гибрид'], ['office', 'Офис']];
+// Дополнительные условия — из словаря, в порядке extra_order; буква — ключ data-extra
+const matchExtras = [...matchTexts.extra_order].map(id => [id, matchTexts.extra_conditions[id]]);
+// Ключ сценария — тот же расчёт, что matchKey в js/main.js (держать одинаковыми)
+const matchKey = (role, tasks, format, extras) => {
+  const r = matchTexts.roles[role];
+  const tail = `${format}|extras:${extras || '-'}`;
+  if (!tasks.length) return `${role}|no-tasks|${tail}`;
+  if (tasks.length === 1) return `${role}|${r.single_key_prefix}${tasks[0]}|${tail}`;
+  if (role === 'product' && tasks.length === r.subject_tasks.length) return `${role}|all|${tail}`;
+  const groups = Object.keys(r.groups).filter(g => r.groups[g].some(t => tasks.includes(t))).join('');
+  return `${role}|${r.multi_key_prefix}${groups}|${tail}`;
+};
+// Сборка падает, если у чипа нет строки в словаре или какой-то набор отметок не находит готового текста
+const subsets = list => Array.from({ length: 1 << list.length }, (_, mask) => list.filter((_, i) => mask & (1 << i)));
+for (const r of matchRoles) {
+  const known = matchTexts.roles[r.id].subject_tasks;
+  if (r.tasks.length !== known.length || r.tasks.some(t => !known.includes(t))) throw new Error(`content/match-texts.json: задачи роли ${r.id} не совпадают с чипами`);
+  for (const tasks of subsets(r.tasks)) for (const format of Object.keys(matchTexts.format_codes)) for (const extras of subsets([...matchTexts.extra_order])) {
+    const key = matchKey(r.id, tasks, format, extras.join(''));
+    const entry = matchTexts.cases[key];
+    if (!entry || !entry.title || !entry.paragraphs?.length || !entry.ai_paragraphs?.length) throw new Error(`content/match-texts.json: нет текста для ${key}`);
+  }
+}
+// В словаре почти 10 МБ повторов: у 4928 ключей всего несколько заголовков и ~170 разных абзацев. Для сайта каждая строка
+// хранится один раз (strings), а ключ — ссылками: [заголовок, [[вид, абзац], …], [[вид, абзац], …] для AI].
+// Это та же информация без потерь — сборка сразу разворачивает её обратно и сверяет с исходником.
+// Файл не встраивается в страницу: main.js подгружает js/match-texts.js, когда посетитель подходит к блоку или отмечает первый чип
+const matchStrings = [];
+const matchRef = new Map();
+const ref = s => { if (!matchRef.has(s)) { matchRef.set(s, matchStrings.length); matchStrings.push(s); } return matchRef.get(s); };
+const matchKinds = ['experience', 'conditions', 'format'];
+const packParagraphs = list => list.map(p => {
+  if (!matchKinds.includes(p.kind)) throw new Error(`content/match-texts.json: неизвестный вид абзаца ${p.kind}`);
+  return [matchKinds.indexOf(p.kind), ref(p.text)];
+});
+const matchCases = Object.fromEntries(Object.entries(matchTexts.cases).map(([key, c]) => [key, [ref(c.title), packParagraphs(c.paragraphs), packParagraphs(c.ai_paragraphs)]]));
+const unpack = list => list.map(([k, i]) => ({ kind: matchKinds[k], text: matchStrings[i] }));
+for (const [key, c] of Object.entries(matchTexts.cases)) {
+  const [t, p, ai] = matchCases[key];
+  if (matchStrings[t] !== c.title || JSON.stringify(unpack(p)) !== JSON.stringify(c.paragraphs) || JSON.stringify(unpack(ai)) !== JSON.stringify(c.ai_paragraphs)) throw new Error(`content/match-texts.json: ${key} не совпал после упаковки`);
+}
+const matchPayload = JSON.stringify({
+  start: matchTexts.start_empty,
+  roles: Object.fromEntries(Object.entries(matchTexts.roles).map(([id, r]) => [id, { groups: r.groups, all: r.subject_tasks.length, one: r.single_key_prefix, multi: r.multi_key_prefix }])),
+  kinds: matchKinds,
+  strings: matchStrings,
+  cases: matchCases,
+});
+write('js/match-texts.js', `// Собрано tools/build.js из content/match-texts.json — не править вручную\nwindow.MATCH_TEXTS = ${matchPayload};\n`);
+const matchTextsSrc = `js/match-texts.js?v=${require('crypto').createHash('md5').update(matchPayload).digest('hex').slice(0, 8)}`;
 const dot = '<span class="dot"><img src="assets/chip-check.svg" alt=""></span>';
-const chips = matchGroups.map(([title, items]) => `
+const chip = (text, attrs) => `
+              <button type="button" class="chip" aria-pressed="false" ${attrs}>${dot}<span class="chip-text">${text}</span></button>`;
+const taskChips = r => [
+  ...r.tasks.map(t => chip(t, `data-group="task" data-task="${t}"`)),
+  chip('AI-инструменты', `data-group="task" data-kind="ai" data-tip-sides="below" aria-describedby="tip-${r.id}"`),
+  tipFor(r.id),
+].join('');
+const chipGroup = (title, body) => `
           <fieldset class="chip-group">
-            <legend class="t-label-mono">${title}</legend>
-            <div class="chips">${items.map(([t, kind]) => `
-              <button type="button" class="chip" aria-pressed="false"${kind ? ` data-kind="${kind}"` : ''}>${dot}${t}</button>`).join('')}
+            <legend class="t-label-mono">${title}</legend>${body}
+          </fieldset>`;
+// All task sets share one grid cell, so the area is as tall as the longest set and does not jump when the role changes.
+// data-texts — the dictionary file main.js loads; its texts skip the build typograph, so main.js adds the non-breaking spaces itself
+const chips = [
+  chipGroup('01 / Кого вы ищете', `
+            <div class="chips">${matchRoles.map(r => chip(r.label, `data-group="role" data-role="${r.id}"`)).join('')}
+            </div>`),
+  chipGroup('02 / С какими задачами', `
+            <div class="match-tasks" data-texts="${matchTextsSrc}">
+              <p class="match-tasks-hint t-body" data-tasks-hint>Выберите роль, чтобы увидеть задачи</p>${matchRoles.map(r => `
+              <div class="chips" data-tasks="${r.id}">${taskChips(r)}
+              </div>`).join('')}
+            </div>`),
+  chipGroup('03 / Что вы предлагаете', `
+            <div class="chips" role="group" aria-label="Формат работы">${matchFormats.map(([id, t]) => chip(t, `data-group="format" data-format="${id}"${id === 'office' ? ' data-tip-sides="right above below" aria-describedby="tip-office"' : ''}`)).join('')}${tipFor('office')}
             </div>
-          </fieldset>`).join('');
+            <div class="chips" role="group" aria-label="Дополнительные условия">${matchExtras.map(([id, t]) => chip(t, `data-group="extra" data-extra="${id}"`)).join('')}
+            </div>`),
+].join('');
 
 // Типограф: неразрывные пробелы, чтобы предлоги, союзы и тире не висели на краю строки.
 // Меняет только текст между тегами; script, style, code, pre и svg не трогает.
-const NB = ' ';
+// Записан кодом  , а не самим символом: невидимый неразрывный пробел легко потерять при правке или копировании
+const NB = '\u00a0';
 const SHORT = 'для|без|под|над|при|про|или|что|как|это|все|его|её|их';
 const typo = text => text
   .replace(new RegExp(`(^|[\\s(«„"—])([а-яёa-z]{1,2}|${SHORT}) (?=\\S)`, 'gi'), `$1$2${NB}`)
@@ -180,6 +281,8 @@ const typo = text => text
   .replace(/ (—|–)(?=\s)/g, `${NB}$1`)
   .replace(/ (ли|же|бы|ль|ж|б)(?=[\s.,!?;:)»]|$)/gi, `${NB}$1`)
   .replace(/(\d[+%]?) (?=[а-яё%])/gi, `$1${NB}`)
+  // Результаты «в 8 раз быстрее», «в 3 раза меньше»: число, «раз» и следующее слово переносятся только целиком
+  .replace(/(\d\sраза?) (?=[а-яё])/gi, `$1${NB}`)
   .replace(/\bSmart TV\b/g, `Smart${NB}TV`)
   // «по-прежнему», «онлайн-кинотеатр»: не переносить по дефису. После дефиса — WORD JOINER (U+2060):
   // неразрывный дефис U+2011 есть не во всех шрифтах, а невидимый джойнер не требует глифа и не меняет вид дефиса.
@@ -218,7 +321,11 @@ const withOg = (html, page) => {
   if (key) meta.push('<meta name="twitter:card" content="summary_large_image">');
   return html.replace(/(<meta name="description" content="[^"]*">)/, `$1\n${meta.join('\n')}`);
 };
-const finish = (html, page) => typograph(withOg(html, page));
+// ?v=<хэш содержимого> у своих css и js: после правки браузер и GitHub Pages берут новый файл, а не старый из кэша
+const crypto = require('crypto');
+const versioned = html => html.replace(/(<(?:script|link)\b[^>]*?(?:src|href)=")((?:\.\.\/)?((?:css|js|assets\/fonts)\/[\w.-]+\.(?:css|js)))"/g,
+  (m, head, url, file) => `${head}${url}?v=${crypto.createHash('md5').update(read(file)).digest('hex').slice(0, 8)}"`);
+const finish = (html, page) => versioned(typograph(withOg(html, page)));
 
 // ---------- Главная ----------
 {

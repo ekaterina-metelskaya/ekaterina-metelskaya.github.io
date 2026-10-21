@@ -241,9 +241,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .section-head .t-body-lg { color: var(--color-text-secondary); }
 
 /* Section rhythm on the home page: every section has the same space above and below its content,
-   so a divider line sits exactly halfway and a tinted section has equal margins inside it */
-:root { --section-y: 48px; }
-@media (max-width: 720px) { :root { --section-y: 32px; } }
+   so a divider line sits exactly halfway and a tinted section has equal margins inside it.
+   Only the gaps between sections grow with the screen; spacing inside them stays the same */
+:root { --section-y: 80px; }
+@media (max-width: 1100px) { :root { --section-y: 64px; } }
+@media (max-width: 720px) { :root { --section-y: 48px; } }
 .divider { padding-top: 0; }
 .divider hr { margin: 0; border: 0; height: 1px; background: var(--rule-soft); }
 .divider--strong hr { background: var(--rule-strong); }
@@ -554,19 +556,65 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .match .wrap { padding-block: var(--section-y); }
 /* «Сработаемся?»: choices on the left, the live answer on the right (sticky while the chips scroll); stacked on phones */
 .match-col { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 40px; align-items: start; }
-.match-choices { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+.match-choices { position: relative; display: flex; flex-direction: column; gap: 28px; min-width: 0; }
 .chip-group { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .chip-group legend { padding: 0; margin-bottom: 12px; color: var(--color-text-tertiary); }
+/* Tasks: every role's set sits in the same grid cell, only the picked one is visible.
+   main.js sets the height to the picked set (the longest one while no role is picked); it eases on role change,
+   but not on load or resize (.is-fitted is added after the first fit) */
+.match-tasks { display: grid; grid-template-rows: auto; }
+.match-tasks.is-fitted { transition: height .25s cubic-bezier(.2, .7, .2, 1); }
+@media (prefers-reduced-motion: reduce) { .match-tasks.is-fitted { transition: none; } }
+.match-tasks > * { grid-area: 1 / 1; min-width: 0; }
+.match-tasks > .chips { position: relative; align-self: start; align-content: flex-start; }
+.match-tasks > .chips:not(.is-active) { visibility: hidden; }
+.match-tasks-hint {
+  display: grid; place-items: center; padding: 16px; text-align: center; color: var(--color-text-tertiary);
+  border: 1px dashed var(--color-border-default); border-radius: var(--radius-md);
+}
+.match-tasks.has-role .match-tasks-hint { visibility: hidden; }
+/* Easter eggs (AI tools, office): a small tooltip beside the chip; main.js picks the side that covers nothing.
+   Below the phone's sticky result card in z-order */
+.match-tip {
+  position: absolute; z-index: 4; left: 0; top: 0; width: max-content; max-width: min(280px, 100%); padding: 8px 12px;
+  border-radius: var(--radius-md); background: var(--color-text-primary); color: var(--color-bg-canvas);
+  box-shadow: 0 6px 18px rgba(28, 25, 23, .16); pointer-events: none;
+  visibility: hidden; opacity: 0; transform: translateY(-4px); transition: opacity .18s, transform .18s, visibility .18s;
+}
+.match-tip::before {
+  content: ""; position: absolute; top: -4px; left: var(--arrow-x, 24px); width: 8px; height: 8px; margin-left: -4px;
+  background: inherit; transform: rotate(45deg); border-radius: 1px;
+}
+.chip-group > .chips { position: relative; }
+.match-tip[data-side="right"] { transform: translateX(-4px); }
+.match-tip[data-side="right"]::before { top: 50%; left: 0; margin-top: -4px; }
+.match-tip[data-side="above"] { transform: translateY(4px); }
+.match-tip[data-side="above"]::before { top: auto; bottom: -4px; }
+.match-tip.is-on { visibility: visible; opacity: 1; transform: none; }
+.match-tasks > .chips:not(.is-active) .match-tip { visibility: hidden; }
 .match-card {
   position: sticky; top: 100px; display: flex; flex-direction: column; gap: 12px; padding: 28px;
   border-radius: var(--radius-lg); background: var(--color-primary-subtle); border: 1px solid var(--color-status-brand-border);
 }
+/* Three groups, one line each: solid — the group is filled in, grey — not yet. The lines show how much is filled in,
+   not how well it fits: whether to talk something over is said in the text below */
+.match-meter { display: flex; flex-direction: column; gap: 10px; padding-bottom: 16px; margin-bottom: 4px; border-bottom: 1px solid var(--color-status-brand-border); }
+.match-meter-bars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.match-meter-bars li { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.match-meter-label { color: var(--color-text-secondary); }
+.match-meter-line { height: 4px; border-radius: var(--radius-full); background: var(--color-border-default); transition: background-color .2s; }
+.match-meter-bars [data-state="filled"] .match-meter-line { background: var(--color-primary-bg); }
+/* The card follows its text: experience, extra terms and format are separate paragraphs (main.js), spaced here, not by empty elements */
+.match-card-copy { display: flex; flex-direction: column; gap: 12px; }
 .match-card-title { color: var(--color-text-brand); }
-.match-card[data-state="empty"] .match-card-title { color: var(--color-text-primary); }
-.match-card[data-state="all"] .match-card-title { font-size: 56px; line-height: 1; letter-spacing: -2px; }
+.match-card:is([data-state="empty"], [data-state="first"]) .match-card-title { color: var(--color-text-primary); }
 .match-card-text { color: var(--color-text-secondary); }
+.match-card-text p + p { margin-block-start: 10px; }
 .match-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 8px; }
-.match-reset { cursor: pointer; }
+/* Reset sits under the chips it clears, as a quiet text link; invisible but keeping its place while nothing is picked */
+.match-reset { align-self: flex-start; height: auto; gap: 6px; margin-top: -8px; color: var(--color-text-secondary); cursor: pointer; }
+.match-reset:hover { color: var(--button-link-fg); }
+.match-reset.is-hidden { visibility: hidden; }
 @media (max-width: 900px) {
   .match-col { grid-template-columns: 1fr; }
   .match-card { position: static; }
@@ -579,14 +627,18 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     background: color-mix(in srgb, var(--color-primary-subtle) 92%, transparent);
     -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 8px 24px rgba(28, 25, 23, .12);
   }
+  .match-meter { gap: 6px; padding-bottom: 10px; margin-bottom: 4px; }
+  .match-card-copy { gap: 4px; }
   .match-card-title { font-size: 18px; line-height: 24px; }
-  .match-card[data-state="all"] .match-card-title { font-size: 36px; }
-  .match-card-actions { margin-top: 4px; }
+  /* The card follows its text here, so the space before the button is set, not left over: 6px gap + 18px */
+  .match-card-actions { margin-top: 18px; }
   .match-card-actions .btn--primary { padding-block: 8px; }
 }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Width follows the text but never exceeds the row: a long label wraps inside the chip instead of overflowing */
 .chip {
-  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 12px; border-radius: var(--radius-full);
+  display: inline-flex; align-items: center; gap: 8px; max-width: 100%; min-height: 34px; padding: 8px 14px 8px 12px; border-radius: var(--radius-full);
+  text-align: left;
   background: var(--color-bg-canvas); border: 1px solid var(--color-border-default);
   font: 500 12px/16px var(--font-sans); letter-spacing: .5px; color: var(--color-text-primary);
   transition: background-color .15s, border-color .15s;
@@ -594,6 +646,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .chip:hover { border-color: #57534e; }
 .chip .dot { width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--color-border-default); display: grid; place-items: center; flex: none; }
 .chip .dot img { width: 10px; height: 10px; opacity: 0; }
+.chip-text { min-width: 0; overflow-wrap: anywhere; }
+/* A mouse click leaves only the chip's own border; the keyboard ring stays, following the pill shape
+   (the global focus ring would square its corners) */
+.chip:focus:not(:focus-visible) { outline: none; }
+.chip:focus-visible { border-radius: var(--radius-full); }
 .chip:is([aria-pressed="true"], [aria-checked="true"]) { background: var(--color-primary-subtle); border-color: var(--color-text-brand); }
 .chip:is([aria-pressed="true"], [aria-checked="true"]) .dot { background: var(--color-primary-bg); border-color: var(--color-primary-bg); }
 .chip:is([aria-pressed="true"], [aria-checked="true"]) .dot img { opacity: 1; }
@@ -940,9 +997,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .case-cta { padding-block: 80px; }
 .case-cta .wrap { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px 80px; align-items: end; }
 .case-cta-text h2 { margin-bottom: 16px; }
-.case-cta-lead { margin-bottom: 4px; }
-.case-cta-text .t-body-lg { max-width: 520px; color: var(--color-text-secondary); }
-.case-cta-where { margin-top: 20px; color: var(--color-text-tertiary); }
+.case-cta-lead { max-width: 520px; color: var(--color-text-secondary); }
+.case-cta-where { margin-top: 24px; color: var(--color-text-tertiary); }
 .case-cta-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
 .case-cta-mail { flex-basis: 100%; color: var(--color-text-secondary); text-decoration: underline; text-underline-offset: 3px; }
 .case-cta-mail:hover { color: var(--color-text-brand); }

@@ -15,6 +15,9 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-arrow-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M3.33 8h9.34M8.67 4l4 4-4 4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.67v8M4.67 7.33 8 10.67l3.33-3.34M3.33 13.33h9.34"/></symbol>
+  <symbol id="i-telegram" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.3 18.7 19.6c-.24 1.07-.88 1.34-1.78.83l-4.93-3.63-2.38 2.29c-.26.26-.48.48-.99.48l.35-5.02 9.13-8.25c.4-.35-.09-.55-.61-.2L6.2 13.2l-4.86-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 2.8c.88-.32 1.65.2 1.39 1.5z"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8a6 6 0 1 0 6-6 6.5 6.5 0 0 0-4.49 1.83L2 5.33"/><path d="M2 2v3.33h3.33"/></symbol>
   <symbol id="i-arrow-left" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M12.67 8H3.33M7.33 4l-4 4 4 4"/></symbol>
   <symbol id="i-arrow-down" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3.33v9.34M4 8.67l4 4 4-4"/></symbol>
 </svg>
@@ -33,7 +36,7 @@
     </nav>
     <div class="header-right">
       <span class="status t-label">Открыта к предложениям</span>
-      <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>CV</a>
+      <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>CV</a>
     </div>
   </div>
 </header>
@@ -292,13 +295,22 @@ X 120   Y 64</span>
       <div class="match-col">
         <div class="match-choices">
           <!--CHIPS-->
+          <button type="button" class="btn btn--link match-reset" data-match-reset><svg><use href="#i-reset"/></svg><span>Сбросить выбор</span></button>
         </div>
-        <aside class="match-card" aria-live="polite">
-          <p class="match-card-title t-heading-md" data-match-title>Проверим совместимость?</p>
-          <p class="match-card-text t-body" data-match-text>Здесь появится ответ, как только вы отметите первый вариант.</p>
+        <aside class="match-card" data-state="empty" aria-label="Результат">
+          <div class="match-meter">
+            <ol class="match-meter-bars" aria-label="Совпадение по критериям">
+              <li data-seg="role" data-state="none"><span class="match-meter-label t-code-sm">Роль</span><span class="match-meter-line" aria-hidden="true"></span><span class="sr-only" data-seg-status>не выбрано</span></li>
+              <li data-seg="tasks" data-state="none"><span class="match-meter-label t-code-sm">Задачи</span><span class="match-meter-line" aria-hidden="true"></span><span class="sr-only" data-seg-status>не выбрано</span></li>
+              <li data-seg="terms" data-state="none"><span class="match-meter-label t-code-sm">Условия</span><span class="match-meter-line" aria-hidden="true"></span><span class="sr-only" data-seg-status>не выбрано</span></li>
+            </ol>
+          </div>
+          <div class="match-card-copy" aria-live="polite" data-match-copy>
+            <p class="match-card-title t-heading-md" data-match-title>Кажется, нам по пути?</p>
+            <div class="match-card-text t-body" data-match-text><p class="match-copy--experience" data-kind="experience">Выберите роль и задачи — посмотрим, где пересекаемся.</p></div>
+          </div>
           <div class="match-card-actions">
-            <a class="btn btn--primary" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener"><svg><use href="#i-arrow-right"/></svg>Написать мне</a>
-            <button type="button" class="btn btn--link match-reset" data-match-reset hidden>Сбросить выбор</button>
+            <a class="btn btn--primary" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener"><svg><use href="#i-telegram"/></svg>Написать мне</a>
           </div>
         </aside>
       </div>
@@ -311,13 +323,12 @@ X 120   Y 64</span>
     <div class="wrap">
       <div class="case-cta-text">
         <h2 class="t-heading-lg">{{home.cta_title}}</h2>
-        <p class="case-cta-lead t-title">{{home.cta_lead}}</p>
-        <p class="t-body-lg">{{home.cta_text}}</p>
+        <p class="case-cta-lead t-body-lg">{{home.cta_lead}}</p>
         <p class="case-cta-where t-label-mono">{{home.cta_where}}</p>
       </div>
       <div class="case-cta-actions">
-        <a class="btn btn--primary" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener"><svg><use href="#i-arrow-right"/></svg>Написать в Telegram</a>
-        <a class="btn btn--outline" href="assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>Скачать CV</a>
+        <a class="btn btn--primary" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener"><svg><use href="#i-telegram"/></svg>Написать в Telegram</a>
+        <a class="btn btn--outline" href="assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>Скачать CV</a>
         <a class="case-cta-mail t-title" href="mailto:metelskaya.ek@gmail.com">metelskaya.ek@gmail.com</a>
       </div>
     </div>
@@ -333,7 +344,7 @@ X 120   Y 64</span>
         <a class="t-label-mono" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener">Telegram</a>
         <a class="t-label-mono" href="https://www.linkedin.com/in/ekaterina-metelskaya/" target="_blank" rel="noopener">LinkedIn</a>
         <a class="t-label-mono" href="https://novosibirsk.hh.ru/resume/f022f4cfff10b37b790039ed1f5a3039745752" target="_blank" rel="noopener">hh.ru</a>
-        <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" target="_blank" rel="noopener" data-cv><svg><use href="#i-arrow-right"/></svg>CV</a>
+        <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>CV</a>
       </nav>
     </div>
   </footer>
