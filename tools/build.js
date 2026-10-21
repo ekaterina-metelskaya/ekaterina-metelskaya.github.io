@@ -153,7 +153,7 @@ const card = (slug, attrs = '') => {
           </li>`;
 };
 
-// «Сработаемся?»: тексты — готовые абзацы из content/match-texts.json.gz (portfolio_match_texts_v10_paragraphs.json),
+// «Сработаемся?»: тексты — готовые абзацы из content/match-texts.json.gz (portfolio_match_copy_v11: match-texts.json),
 // логика совместимости — portfolio_match_logic_v3.md. Тексты не собираются из частей: main.js вычисляет ключ сценария
 // и выводит title и абзацы paragraphs (или ai_paragraphs) этого ключа как есть, каждый — отдельным <p>.
 // Ключ — «роль|сценарий|формат|extras:<буквы>»:

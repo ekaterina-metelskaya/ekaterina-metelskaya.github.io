@@ -627,7 +627,7 @@
   });
 
   /* ---------- «Сработаемся?» ----------
-     Texts: portfolio_match_texts_v10_paragraphs.json — ready title and paragraphs per scenario, copied to content/match-texts.json;
+     Texts: portfolio_match_copy_v11 — ready title and paragraphs per scenario, stored as content/match-texts.json.gz;
      tools/build.js packs it into js/match-texts.js, loaded here when the visitor nears the block or picks the first chip.
      Nothing is composed here: the scenario key (role, subject tasks and their groups, format, extra terms) picks one ready entry,
      its paragraphs are shown as they are, each in its own <p>; with «AI-инструменты» picked — its ai_paragraphs.
