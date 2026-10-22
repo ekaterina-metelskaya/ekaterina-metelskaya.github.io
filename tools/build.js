@@ -293,17 +293,23 @@ const typograph = html => html.replace(
   (m, skip, _t, tag, text) => text ? typo(text) : m,
 );
 
-// Open Graph: превью ссылки в мессенджерах из <title>, description и картинки assets/og/<ключ>.png (рисует tools/og.js).
-// SITE_URL — адрес сайта после публикации, например 'https://<логин>.github.io/<репозиторий>'. Мессенджерам нужен абсолютный адрес картинки:
-// пока SITE_URL пустой, ссылка относительная и превью с картинкой может не показаться. Можно задать и при сборке: SITE_URL=https://… node tools/build.js
-const SITE_URL = process.env.SITE_URL || '';
-if (!SITE_URL) console.warn('⚠ SITE_URL не задан: og:image будет относительным, превью в Telegram и LinkedIn придёт без картинки');
-const ogImages = { 'index.html': 'home', 'projects.html': 'home', 'privacy.html': 'home','production-control.html': 'control', 'planning.html': 'planning', 'documentation.html': 'docs', 'sweet-tv.html': 'tv', 'in-vino.html': 'invino' };
+// Open Graph и Twitter Card: превью ссылки в мессенджерах и соцсетях из <title> и description страницы
+// (у главной — свои og_title и og_description из content/home.md). Картинки рисует tools/og.js:
+// общая обложка сайта og-image-ru.png в корне, у кейсов — assets/og/<ключ>.png.
+// Для будущих английских страниц (/en/) есть og-image-en.png (node tools/og.js en): подключить его в ogImages для этих страниц.
+// Соцсетям нужны абсолютные адреса, поэтому SITE_URL — адрес сайта; другой можно задать при сборке: SITE_URL=https://… node tools/build.js
+const SITE_URL = (process.env.SITE_URL || 'https://metelskaya.design').replace(/\/$/, '');
+const SITE_IMAGE = ['og-image-ru.png','Екатерина Метельская — Product Designer'];
+const ogImages = {
+  'index.html': SITE_IMAGE, 'projects.html': SITE_IMAGE, 'privacy.html': SITE_IMAGE,
+  ...Object.fromEntries(Object.entries({ 'production-control.html': 'control', 'planning.html': 'planning', 'documentation.html': 'docs', 'sweet-tv.html': 'tv', 'in-vino.html': 'invino' })
+    .map(([p, key]) => [p, [`assets/og/${key}.png`]])),
+};
 const esc = s => s.replace(/"/g, '&quot;');
-const withOg = (html, page) => {
+const withOg = (html, page, og = {}) => {
   if (html.includes('property="og:')) return html;
-  const title = (/<title>([^<]*)<\/title>/.exec(html) || [])[1];
-  const desc = (/<meta name="description" content="([^"]*)">/.exec(html) || [])[1];
+  const title = og.title || (/<title>([^<]*)<\/title>/.exec(html) || [])[1];
+  const desc = og.description || (/<meta name="description" content="([^"]*)">/.exec(html) || [])[1];
   if (!title || !desc) return html;
   const tags = [
     ['og:type', html.includes('class="case-hero"') ? 'article' : 'website'],
@@ -311,25 +317,24 @@ const withOg = (html, page) => {
     ['og:locale', 'ru_RU'],
     ['og:title', title],
     ['og:description', desc],
+    ['og:url', `${SITE_URL}/${page === 'index.html' ? '' : page}`],
   ];
-  const key = ogImages[page.replace('cases/', '')];
-  if (key) {
-    const rel = `${page.startsWith('cases/') ? '../' : ''}assets/og/${key}.png`;
-    tags.push(['og:image', SITE_URL ? `${SITE_URL.replace(/\/$/, '')}/assets/og/${key}.png` : rel], ['og:image:width', '1200'], ['og:image:height', '630'], ['og:image:alt', title]);
-  }
+  const [image, alt] = ogImages[page.replace('cases/', '')] || [];
+  if (image) tags.push(['og:image', `${SITE_URL}/${image}`], ['og:image:width', '1200'], ['og:image:height', '630'], ['og:image:alt', alt || title]);
   const meta = tags.map(([p, v]) => `<meta property="${p}" content="${esc(v)}">`);
-  if (key) meta.push('<meta name="twitter:card" content="summary_large_image">');
+  if (image) meta.push('<meta name="twitter:card" content="summary_large_image">', `<meta name="twitter:image" content="${SITE_URL}/${image}">`);
   return html.replace(/(<meta name="description" content="[^"]*">)/, `$1\n${meta.join('\n')}`);
 };
 // ?v=<хэш содержимого> у своих css и js: после правки браузер и GitHub Pages берут новый файл, а не старый из кэша
 const crypto = require('crypto');
 const versioned = html => html.replace(/(<(?:script|link)\b[^>]*?(?:src|href)=")((?:\.\.\/)?((?:css|js|assets\/fonts)\/[\w.-]+\.(?:css|js)))"/g,
   (m, head, url, file) => `${head}${url}?v=${crypto.createHash('md5').update(read(file)).digest('hex').slice(0, 8)}"`);
-// Google Analytics по согласию: загрузчик сразу после <head> (templates/partials/gtag.html),
-// баннер согласия и js/consent.js перед </body> (templates/partials/consent.html) — на каждой странице
-const withGtag = html => html.replace(/<head>\r?\n/, m => m + read('templates/partials/gtag.html').replace(/\r\n/g, '\n'));
+// Google Analytics по согласию: загрузчик в начале <head>, сразу после <meta charset> — кодировка должна
+// оставаться в первых 1024 байтах, иначе браузеры и сборщики превью ссылок могут прочитать кириллицу неверно
+// (templates/partials/gtag.html); баннер согласия и js/consent.js перед </body> (templates/partials/consent.html) — на каждой странице
+const withGtag = html => html.replace(/<head>\r?\n<meta charset="utf-8">\r?\n/, m => m + read('templates/partials/gtag.html').replace(/\r\n/g, '\n'));
 const withConsent = (html, page) => html.replace(/<\/body>/, () => read('templates/partials/consent.html').replace(/\r\n/g, '\n').split('{{root}}').join(page.startsWith('cases/') ? '../' : '') + '</body>');
-const finish = (html, page) => withGtag(versioned(typograph(withConsent(withOg(html, page), page))));
+const finish = (html, page, og) => withGtag(versioned(typograph(withConsent(withOg(html, page, og), page))));
 
 // ---------- Главная ----------
 {
@@ -363,7 +368,7 @@ const finish = (html, page) => withGtag(versioned(typograph(withConsent(withOg(h
   const html = fill(read('templates/index.html'), vars, 'templates/index.html')
     .replace(/<!--CARD:([\w-]+)-->/g, (_, slug) => card(slug))
     .replace('<!--CHIPS-->', chips.trim());
-  write('index.html', finish(html, 'index.html'));
+  write('index.html', finish(html, 'index.html', { title: d.og_title, description: d.og_description }));
 }
 
 // ---------- Все проекты ----------

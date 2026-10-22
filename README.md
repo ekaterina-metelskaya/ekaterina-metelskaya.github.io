@@ -28,7 +28,7 @@ css/  js/  assets/          стили, скрипты, шрифты, изобр
 js/match-texts.js           собирается из content/match-texts.json.gz (руками не править)
 tools/build.js              сборка: content + templates → готовые .html
 tools/serve.js              локальный сервер для просмотра
-tools/og.js, og.html        картинки для превью ссылок (assets/og)
+tools/og.js, og*.html       картинки для превью ссылок: og-image-ru.png (сайт; og-image-en.png — для будущей /en/), assets/og (кейсы)
 .nojekyll                   отключает Jekyll на GitHub Pages
 ```
 
@@ -67,7 +67,7 @@ tools/og.js, og.html        картинки для превью ссылок (a
 1. Создайте репозиторий и загрузите в него содержимое этой папки (не саму папку): в корне репозитория должны оказаться `index.html` и `.nojekyll`.
 2. Settings → Pages → Build and deployment → Source: **Deploy from a branch**, ветка `main`, папка `/ (root)`.
 3. Через минуту сайт откроется по адресу `https://<логин>.github.io/<репозиторий>/`.
-4. Чтобы превью ссылок в Telegram и LinkedIn показывали картинку, соберите сайт с адресом:
+4. Превью ссылок ссылаются на https://metelskaya.design. Для другого адреса соберите сайт так:
    ```bash
-   SITE_URL=https://<логин>.github.io/<репозиторий> node tools/build.js
+   SITE_URL=https://<адрес> node tools/build.js
    ```

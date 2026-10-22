@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<!-- Site-wide link preview, 1200×630. Rendered by tools/og.js: ?lang=ru → og-image-ru.png, ?lang=en → og-image-en.png.
+     Only tokens and fonts of the site: a solid muted violet (accent ramp mixed with the stone neutrals),
+     labels in the four corners, the name block at the vertical centre. -->
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+  /* Muted violet: accent-900 dusted with the warm stone-700 of the site (#453963) */
+  :root { --og-bg: color-mix(in oklab, var(--accent-900) 42%, #44403c); }
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: var(--og-bg); }
+  .og { display: grid; grid-template-rows: auto 1fr auto; width: 1200px; height: 630px; padding: 56px 72px; box-sizing: border-box; color: #fafaf9; }
+  .og-row { display: flex; align-items: center; justify-content: space-between; }
+  .og-label { font: 500 22px/28px var(--font-mono); letter-spacing: 1.3px; text-transform: uppercase; color: var(--accent-200); }
+  .og-logo { font: 600 28px/28px var(--font-sans); }
+  .og-main { align-self: center; display: flex; flex-direction: column; gap: 20px; }
+  .og-name { margin: 0; font: 600 77px/84px var(--font-sans); letter-spacing: -1.8px; white-space: nowrap; }
+  .og-role { font: 500 42px/52px var(--font-sans); color: var(--accent-200); white-space: nowrap; }
+  .og-url { font: 400 26px/32px var(--font-mono); color: var(--accent-200); }
+  .og-arrow { width: 32px; height: 32px; color: var(--accent-200); }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="og-row">
+    <span class="og-label">Portfolio</span>
+    <span class="og-logo" data-t="logo"></span>
+  </div>
+  <div class="og-main">
+    <h1 class="og-name" data-t="name"></h1>
+    <span class="og-role" data-t="role"></span>
+  </div>
+  <div class="og-row">
+    <span class="og-url">metelskaya.design</span>
+    <!-- The site's arrow icon (stroke 1.33 on a 16px grid), turned to the upper right -->
+    <svg class="og-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.67 11.33l6.66-6.66M5.33 4.67h6v6"/></svg>
+  </div>
+</div>
+<script>
+  const texts = {
+    ru: { logo: 'ЕМ.', name: 'Екатерина Метельская', role: 'Product Designer · 8+ лет опыта' },
+    en: { logo: 'EM.', name: 'Ekaterina Metelskaya', role: 'Product Designer · 8+ years of experience' },
+  };
+  const q = new URLSearchParams(location.search);
+  const lang = texts[q.get('lang')] ? q.get('lang') : 'ru';
+  document.documentElement.lang = lang;
+  for (const el of document.querySelectorAll('[data-t]')) el.textContent = texts[lang][el.dataset.t];
+</script>
+</body>
+</html>

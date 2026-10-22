@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<!-- Link-preview image template, 1200×630. Rendered to assets/og/<key>.png by tools/og.js (?k=home|control|planning|docs|tv|invino) -->
+<!-- Link-preview image template, 1200×630. Rendered to assets/og/<key>.png by tools/og.js (?k=control|planning|docs|tv|invino) -->
 <link rel="stylesheet" href="../assets/fonts/fonts.css">
 <link rel="stylesheet" href="../css/styles.css">
 <link rel="stylesheet" href="../css/kv.css">
@@ -40,7 +40,6 @@
 </div>
 <script>
   const pages = {
-    home: { kicker: 'Портфолио', title: 'Екатерина Метельская', lead: 'Продуктовый дизайнер. Разбираюсь в сложных цифровых продуктах и делаю их понятнее для пользователей.', art: 'tv', foot: false },
     control: { kicker: 'Кейс · Внутренние системы', title: 'Система производственного контроля и мониторинга', metric: ['×8', 'быстрее выполняется основная задача пользователя'], art: 'control' },
     planning: { kicker: 'Кейс · Внутренние системы', title: 'Корпоративная система планирования', metric: ['×3', 'примерно во столько раз быстрее рабочий процесс'], art: 'planning' },
     docs: { kicker: 'Кейс · Внутренние системы', title: 'Система управления документацией', metric: ['×3', 'расчётное снижение трудозатрат на работу с документацией'], art: 'docs' },
@@ -48,7 +47,7 @@
     invino: { kicker: 'Кейс · Собственные инструменты', title: 'In Vino — дизайн-система', lead: 'Многоуровневые токены, слоты и свойства компонентов. На ней собрано это портфолио.', art: 'invino' },
   };
   const covers = { tv: ['cover-tv', 'linear-gradient(to right, #0e1b26, #17324a)'], invino: ['cover-invino', '#fdf2f2'] };
-  const p = pages[new URLSearchParams(location.search).get('k')] || pages.home;
+  const p = pages[new URLSearchParams(location.search).get('k')] || pages.control;
   const $ = s => document.querySelector(s);
   $('[data-kicker]').textContent = p.kicker;
   $('[data-title]').textContent = p.title;
