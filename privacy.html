@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<!-- Google Analytics 4 (gtag.js) по согласию посетителя — Basic Consent Mode v2.
+     Библиотека Google загружается только после «Разрешить» в баннере (templates/partials/consent.html, js/consent.js).
+     Выбор хранится в localStorage под ключом em-analytics: granted | denied -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+  window.emAnalytics = {
+    id: 'G-QF1XHVLY6B',
+    loaded: false,
+    grant: function () {
+      window['ga-disable-' + this.id] = false;
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+      // Уже запущен на этой странице: без повторного config, чтобы не задвоить page_view
+      if (this.loaded) return;
+      this.loaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + this.id;
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', this.id);
+    },
+    // Отзыв: GA4 перестаёт отправлять данные, удаляются только его cookie (_ga, _ga_<ID>, _gid, _gat)
+    revoke: function () {
+      window['ga-disable-' + this.id] = true;
+      gtag('consent', 'update', { analytics_storage: 'denied' });
+      var parts = location.hostname.split('.');
+      document.cookie.split(';').forEach(function (c) {
+        var name = c.split('=')[0].trim();
+        if (!/^_ga($|_)|^_gid$|^_gat/.test(name)) return;
+        document.cookie = name + '=; Max-Age=0; path=/';
+        for (var i = 0; i < parts.length; i++) document.cookie = name + '=; Max-Age=0; path=/; domain=.' + parts.slice(i).join('.');
+      });
+    }
+  };
+  try { if (localStorage.getItem('em-analytics') === 'granted') emAnalytics.grant(); } catch (e) {}
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Политика конфиденциальности · Екатерина Метельская</title>
+<meta name="description" content="Как сайт metelskaya.design использует Google Analytics, зачем это нужно и как изменить своё решение.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Екатерина Метельская">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Политика конфиденциальности · Екатерина Метельская">
+<meta property="og:description" content="Как сайт metelskaya.design использует Google Analytics, зачем это нужно и как изменить своё решение.">
+<meta property="og:image" content="assets/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Политика конфиденциальности · Екатерина Метельская">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="assets/fonts/IBMPlexSans-Regular-Cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=89807e13">
+<link rel="stylesheet" href="css/styles.css?v=19df389e">
+<script>try{var s=localStorage.getItem('em-scheme');if(s&&s!=='default')document.documentElement.dataset.scheme=s}catch(e){}</script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M3.33 8h9.34M8.67 4l4 4-4 4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.67v8M4.67 7.33 8 10.67l3.33-3.34M3.33 13.33h9.34"/></symbol>
+  <symbol id="i-telegram" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.3 18.7 19.6c-.24 1.07-.88 1.34-1.78.83l-4.93-3.63-2.38 2.29c-.26.26-.48.48-.99.48l.35-5.02 9.13-8.25c.4-.35-.09-.55-.61-.2L6.2 13.2l-4.86-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 2.8c.88-.32 1.65.2 1.39 1.5z"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M12.67 8H3.33M7.33 4l-4 4 4 4"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="logo" aria-label="На главную">ЕМ.</a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="index.html#about">Обо мне</a>
+      <a href="index.html#work">Избранные кейсы</a>
+      <a href="index.html#process">Как я работаю</a>
+      <a href="index.html#experience">Опыт</a>
+      <a href="index.html#match">Сработаемся?</a>
+      <a href="index.html#contacts">Контакты</a>
+    </nav>
+    <div class="header-right">
+      <span class="status t-label">Открыта к предложениям</span>
+      <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>CV</a>
+    </div>
+  </div>
+</header>
+
+<main class="projects-page privacy-page">
+  <div class="wrap">
+    <a class="btn btn--link projects-back" href="index.html"><svg><use href="#i-arrow-left"/></svg><span>На главную</span></a>
+    <div class="section-head projects-head">
+      <p class="t-label-mono">Обновлено 22 октября 2026</p>
+      <h1 class="t-display-md">Политика конфиденциальности</h1>
+      <p class="t-body-lg">Коротко о том, какие данные собирает этот сайт, зачем и как отозвать согласие.</p>
+    </div>
+    <div class="privacy-body">
+      <h2 class="t-heading-sm">Кто отвечает за сайт</h2>
+      <p>Сайт metelskaya.design — личное портфолио Екатерины Метельской. По вопросам, связанным с данными, пишите на <a href="mailto:metelskaya.ek@gmail.com">metelskaya.ek@gmail.com</a>.</p>
+      <h2 class="t-heading-sm">Какие данные собираются</h2>
+      <p>На сайте нет форм, и он не просит имя, телефон или другие контактные данные. Аналитика работает, только если вы нажали «Разрешить» в баннере. Тогда Google Analytics 4 получает сведения о посещении:</p>
+      <ul>
+        <li>какие страницы открывались и с какого сайта был переход;</li>
+        <li>дата и время посещения, действия на странице, которые Google Analytics фиксирует автоматически, например прокрутку или переход по внешней ссылке;</li>
+        <li>тип устройства, браузер, операционная система, язык и размер экрана;</li>
+        <li>примерное местоположение (страна, город), которое Google определяет по IP-⁠адресу;</li>
+        <li>случайный идентификатор браузера в cookie <code>_ga</code> и <code>_ga_QF1XHVLY6B</code>.</li>
+      </ul>
+      <p>Часть этих сведений может считаться персональными данными. Я пользуюсь только обобщёнными отчётами Google Analytics.</p>
+      <h2 class="t-heading-sm">Зачем</h2>
+      <p>Чтобы понимать, какие страницы и кейсы интересны посетителям, и делать сайт лучше. Данные не используются для рекламы: сайт не даёт Google согласия на рекламные cookie и персонализацию объявлений.</p>
+      <h2 class="t-heading-sm">Кто обрабатывает данные</h2>
+      <p>Данные обрабатывает Google по своим правилам: <a href="https://policies.google.com/privacy">Политика конфиденциальности Google</a> и <a href="https://policies.google.com/technologies/partner-sites">как Google использует данные с сайтов партнёров</a>. Серверы Google могут находиться за пределами вашей страны.</p>
+      <h2 class="t-heading-sm">О хранении данных</h2>
+      <p>Срок хранения пользовательских данных и событий определяется настройками Google Analytics. Агрегированные отчёты могут храниться дольше.</p>
+      <h2 class="t-heading-sm">Если вы не дали согласия</h2>
+      <p>Без вашего разрешения Google Analytics не загружается и не собирает статистику посещений.</p>
+      <p>Выбор сохраняется в браузере, чтобы не спрашивать вас при каждом посещении. Отдельно сайт запоминает выбранную цветовую тему.</p>
+      <h2 class="t-heading-sm">Как изменить решение</h2>
+      <p>Нажмите «Настройки конфиденциальности» внизу любой страницы. Если отозвать согласие, Google Analytics перестанет собирать новые данные, а его cookie будут удалены с этого сайта.</p>
+      <p>Ранее собранные данные могут сохраняться в Google Analytics. По вопросам их обработки и удаления можно написать на почту, указанную выше.</p>
+      <p><button type="button" class="btn btn--outline" data-consent-open>Настройки конфиденциальности</button></p>
+    </div>
+  </div>
+</main>
+
+<div class="is-dark">
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-left">
+        <a class="logo" href="index.html">ЕМ.</a>
+        <span class="t-body-sm">© 2026 Екатерина Метельская</span>
+        <span class="footer-legal t-body-sm"><a href="privacy.html">Политика конфиденциальности</a><button type="button" data-consent-open>Настройки конфиденциальности</button></span>
+      </div>
+      <nav class="footer-links" aria-label="Ссылки">
+        <a class="t-label-mono" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener">Telegram</a>
+        <a class="t-label-mono" href="https://www.linkedin.com/in/ekaterina-metelskaya/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="t-label-mono" href="https://novosibirsk.hh.ru/resume/f022f4cfff10b37b790039ed1f5a3039745752" target="_blank" rel="noopener">hh.ru</a>
+        <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>CV</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+<script src="js/menu.js?v=95926471"></script>
+<!-- Баннер согласия на аналитику. Показывает js/consent.js, пока посетитель не выбрал;  — путь к корню сайта -->
+<section class="consent" data-consent hidden aria-labelledby="consent-title">
+  <div class="consent-text">
+    <h2 class="t-title" id="consent-title">Немного аналитики?</h2>
+    <p class="t-body">Хочу понимать, какие страницы вам интересны, и делать сайт лучше. Для этого использую Google Analytics. <a href="privacy.html">Политика конфиденциальности</a></p>
+  </div>
+  <div class="consent-actions">
+    <button type="button" class="btn btn--outline" data-consent-choice="denied">Отклонить</button>
+    <button type="button" class="btn btn--outline" data-consent-choice="granted">Разрешить</button>
+  </div>
+</section>
+<script src="js/consent.js?v=1b1e830c"></script>
+</body>
+</html>

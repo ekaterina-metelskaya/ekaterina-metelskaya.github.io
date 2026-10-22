@@ -48,7 +48,7 @@ jobs:
           SITE_URL="$SITE_URL" node "$SITE_DIR/tools/build.js"
 
           mkdir -p _site
-          cp "$SITE_DIR/index.html" "$SITE_DIR/projects.html" "$SITE_DIR/.nojekyll" _site/
+          cp "$SITE_DIR/index.html" "$SITE_DIR/projects.html" "$SITE_DIR/privacy.html" "$SITE_DIR/.nojekyll" _site/
           cp -R "$SITE_DIR/assets" "$SITE_DIR/cases" "$SITE_DIR/css" "$SITE_DIR/js" _site/
           if [[ -f "$SITE_DIR/CNAME" ]]; then
             cp "$SITE_DIR/CNAME" _site/

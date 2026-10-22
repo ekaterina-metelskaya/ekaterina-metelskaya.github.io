@@ -993,6 +993,44 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .projects-filter .chip { flex: none; }
 }
 
+/* ============================================================
+   Privacy: footer links, analytics consent banner, policy page
+   ============================================================ */
+.footer-left { flex-wrap: wrap; row-gap: 8px; }
+.footer-legal { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.footer-legal :is(a, button) { color: var(--color-text-tertiary); }
+.footer-legal :is(a, button):hover { color: var(--color-text-brand); }
+
+/* Compact panel at the bottom, no backdrop: the page stays usable while it is open */
+.consent {
+  position: fixed; z-index: 50; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; gap: 24px; width: min(760px, calc(100% - 2 * var(--gutter))); padding: 16px 16px 16px 20px;
+  transform: translateX(-50%); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg);
+  background: var(--color-surface-elevated); color: var(--color-text-primary); box-shadow: 0 8px 24px rgba(28, 25, 23, .12);
+  animation: consent-in .2s ease-out;
+}
+.consent-text { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.consent-text .t-body { color: var(--color-text-secondary); }
+.consent-text a { color: var(--color-text-brand); text-decoration: underline; text-underline-offset: 3px; }
+.consent-actions { display: flex; gap: 8px; flex: none; }
+@keyframes consent-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .consent { animation: none; } }
+@media (max-width: 720px) {
+  .consent { flex-direction: column; align-items: stretch; gap: 12px; padding: 16px; }
+  .consent-actions .btn { flex: 1; }
+  .footer-legal :is(a, button) { display: inline-block; padding-block: 14px; margin-block: -14px; }
+}
+
+.privacy-body { max-width: 720px; margin-top: 40px; }
+.privacy-body h2 { margin: 40px 0 12px; }
+.privacy-body h2:first-child { margin-top: 0; }
+.privacy-body :is(p, li) { font: 400 16px/24px var(--font-sans); color: var(--color-text-secondary); }
+.privacy-body p + p, .privacy-body p + ul, .privacy-body ul + p { margin-top: 12px; }
+.privacy-body ul { padding-left: 20px; list-style: disc; }
+.privacy-body li + li { margin-top: 4px; }
+.privacy-body a { color: var(--color-text-brand); text-decoration: underline; text-underline-offset: 3px; }
+.privacy-body .btn { margin-top: 16px; }
+
 /* Closing call to action: the same block on every page, right above the footer */
 .case-cta { padding-block: 80px; }
 .case-cta .wrap { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px 80px; align-items: end; }

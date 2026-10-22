@@ -1,9 +1,38 @@
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QF1XHVLY6B"></script>
+<!-- Google Analytics 4 (gtag.js) по согласию посетителя — Basic Consent Mode v2.
+     Библиотека Google загружается только после «Разрешить» в баннере (templates/partials/consent.html, js/consent.js).
+     Выбор хранится в localStorage под ключом em-analytics: granted | denied -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-QF1XHVLY6B');
+  gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+  window.emAnalytics = {
+    id: 'G-QF1XHVLY6B',
+    loaded: false,
+    grant: function () {
+      window['ga-disable-' + this.id] = false;
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+      // Уже запущен на этой странице: без повторного config, чтобы не задвоить page_view
+      if (this.loaded) return;
+      this.loaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + this.id;
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', this.id);
+    },
+    // Отзыв: GA4 перестаёт отправлять данные, удаляются только его cookie (_ga, _ga_<ID>, _gid, _gat)
+    revoke: function () {
+      window['ga-disable-' + this.id] = true;
+      gtag('consent', 'update', { analytics_storage: 'denied' });
+      var parts = location.hostname.split('.');
+      document.cookie.split(';').forEach(function (c) {
+        var name = c.split('=')[0].trim();
+        if (!/^_ga($|_)|^_gid$|^_gat/.test(name)) return;
+        document.cookie = name + '=; Max-Age=0; path=/';
+        for (var i = 0; i < parts.length; i++) document.cookie = name + '=; Max-Age=0; path=/; domain=.' + parts.slice(i).join('.');
+      });
+    }
+  };
+  try { if (localStorage.getItem('em-analytics') === 'granted') emAnalytics.grant(); } catch (e) {}
 </script>

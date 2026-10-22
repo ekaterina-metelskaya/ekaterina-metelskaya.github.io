@@ -298,7 +298,7 @@ const typograph = html => html.replace(
 // пока SITE_URL пустой, ссылка относительная и превью с картинкой может не показаться. Можно задать и при сборке: SITE_URL=https://… node tools/build.js
 const SITE_URL = process.env.SITE_URL || '';
 if (!SITE_URL) console.warn('⚠ SITE_URL не задан: og:image будет относительным, превью в Telegram и LinkedIn придёт без картинки');
-const ogImages = { 'index.html': 'home', 'projects.html': 'home', 'production-control.html': 'control', 'planning.html': 'planning', 'documentation.html': 'docs', 'sweet-tv.html': 'tv', 'in-vino.html': 'invino' };
+const ogImages = { 'index.html': 'home', 'projects.html': 'home', 'privacy.html': 'home','production-control.html': 'control', 'planning.html': 'planning', 'documentation.html': 'docs', 'sweet-tv.html': 'tv', 'in-vino.html': 'invino' };
 const esc = s => s.replace(/"/g, '&quot;');
 const withOg = (html, page) => {
   if (html.includes('property="og:')) return html;
@@ -325,9 +325,11 @@ const withOg = (html, page) => {
 const crypto = require('crypto');
 const versioned = html => html.replace(/(<(?:script|link)\b[^>]*?(?:src|href)=")((?:\.\.\/)?((?:css|js|assets\/fonts)\/[\w.-]+\.(?:css|js)))"/g,
   (m, head, url, file) => `${head}${url}?v=${crypto.createHash('md5').update(read(file)).digest('hex').slice(0, 8)}"`);
-// Тег Google Analytics — сразу после <head> на каждой странице (templates/partials/gtag.html)
+// Google Analytics по согласию: загрузчик сразу после <head> (templates/partials/gtag.html),
+// баннер согласия и js/consent.js перед </body> (templates/partials/consent.html) — на каждой странице
 const withGtag = html => html.replace(/<head>\r?\n/, m => m + read('templates/partials/gtag.html').replace(/\r\n/g, '\n'));
-const finish = (html, page) => withGtag(versioned(typograph(withOg(html, page))));
+const withConsent = (html, page) => html.replace(/<\/body>/, () => read('templates/partials/consent.html').replace(/\r\n/g, '\n').split('{{root}}').join(page.startsWith('cases/') ? '../' : '') + '</body>');
+const finish = (html, page) => withGtag(versioned(typograph(withConsent(withOg(html, page), page))));
 
 // ---------- Главная ----------
 {
@@ -380,6 +382,15 @@ const finish = (html, page) => withGtag(versioned(typograph(withOg(html, page)))
   write('projects.html', finish(html, 'projects.html'));
 }
 
+// ---------- Политика конфиденциальности ----------
+{
+  const file = 'content/privacy.md';
+  const { data, body } = parseMd(file);
+  const text = sections(body, file).map(s => `      <h2 class="t-heading-sm">${inline(s.text)}</h2>\n      ${s.chunks.map(c => chunk(c, {}, file)).join('\n      ')}`).join('\n');
+  const html = fill(read('templates/privacy.html'), { ...textVars(data), ...shared }, 'templates/privacy.html').replace('<!--BODY-->', text);
+  write('privacy.html', finish(html, 'privacy.html'));
+}
+
 // ---------- Кейсы ----------
 // templates/cases/<slug>.html — вёрстка страницы, <slug>.blocks.html — схемы, content/<slug>.md — текст
 for (const f of fs.readdirSync(path.join(root, 'templates/cases')).filter(f => /^[\w-]+\.html$/.test(f) && !f.endsWith('.blocks.html'))) {
@@ -424,4 +435,4 @@ for (const f of fs.readdirSync(path.join(root, 'templates/cases')).filter(f => /
     .replace('<!--COVER:invino-->', read('templates/partials/cover-invino.html').split('src="assets/').join('src="../assets/'));
   write(`cases/${slug}.html`, finish(html, `cases/${slug}.html`));
 }
-console.log('Готово: index.html, projects.html, cases/*.html');
+console.log('Готово: index.html, projects.html, privacy.html, cases/*.html');
