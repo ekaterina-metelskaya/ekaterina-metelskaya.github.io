@@ -325,7 +325,9 @@ const withOg = (html, page) => {
 const crypto = require('crypto');
 const versioned = html => html.replace(/(<(?:script|link)\b[^>]*?(?:src|href)=")((?:\.\.\/)?((?:css|js|assets\/fonts)\/[\w.-]+\.(?:css|js)))"/g,
   (m, head, url, file) => `${head}${url}?v=${crypto.createHash('md5').update(read(file)).digest('hex').slice(0, 8)}"`);
-const finish = (html, page) => versioned(typograph(withOg(html, page)));
+// Тег Google Analytics — сразу после <head> на каждой странице (templates/partials/gtag.html)
+const withGtag = html => html.replace(/<head>\r?\n/, m => m + read('templates/partials/gtag.html').replace(/\r\n/g, '\n'));
+const finish = (html, page) => withGtag(versioned(typograph(withOg(html, page))));
 
 // ---------- Главная ----------
 {
