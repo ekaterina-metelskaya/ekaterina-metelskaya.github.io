@@ -99,6 +99,58 @@ test('blocked Metrica can retry and does not block GA4', () => {
   s.context.emAnalytics.grant();
   assert.equal(s.appended.filter(el => el.src.includes('mc.yandex.ru')).length, 2);
 });
+
+test('Metrica sends post-consent events after init, with page context and derived goals', () => {
+  const s = setup({ stored: 'granted', home: false });
+  const script = s.appended.find(el => el.src.includes('mc.yandex.ru'));
+  s.context.emAnalytics.track('cv_click', { location: 'header' });
+  assert.equal(s.context.ym.a, undefined);
+  script.onload();
+  assert.equal(s.context.ym.a[0][1], 'init');
+  const cv = s.context.ym.a[1];
+  assert.equal(cv[0], 113747202);
+  assert.equal(cv[1], 'reachGoal');
+  assert.equal(cv[2], 'cv_click');
+  assert.equal(cv[3].page_path, '/cases/planning.html');
+  assert.equal(cv[3].page_type, 'case');
+  assert.equal(cv[3].location, 'header');
+  s.context.emAnalytics.track('scroll_depth', { percent_scrolled: 50 });
+  s.context.emAnalytics.track('match_selection', { group: 'role', action: 'select' });
+  s.context.emAnalytics.track('match_selection', { group: 'task', action: 'select' });
+  s.context.emAnalytics.track('match_selection', { group: 'task', action: 'deselect' });
+  const names = s.context.ym.a.filter(e => e[1] === 'reachGoal').map(e => e[2]);
+  assert.deepEqual(Array.from(names), ['cv_click', 'scroll_depth', 'scroll_depth_50',
+    'match_selection', 'match_role_select', 'match_selection', 'match_task_select', 'match_selection']);
+});
+
+test('Metrica goals are independent from Google opt-out and respect consent revocation', () => {
+  const s = setup({ stored: 'granted' });
+  s.appended.find(el => el.src.includes('mc.yandex.ru')).onload();
+  s.context['ga-disable-' + s.context.emAnalytics.id] = true;
+  assert.equal(s.context.emAnalytics.track('contact_click', { channel: 'telegram' }), true);
+  assert.equal(s.events('contact_click').length, 0);
+  assert.equal(s.context.ym.a.at(-1)[2], 'contact_click');
+  s.context.emAnalytics.revoke();
+  const count = s.context.ym.a.length;
+  assert.equal(s.context.emAnalytics.track('cv_click', {}), false);
+  assert.equal(s.context.ym.a.length, count);
+});
+
+test('revocation and failed library load discard pending Metrica goals', () => {
+  const s = setup({ stored: 'granted' });
+  s.context.emAnalytics.track('cv_click', { location: 'header' });
+  s.context.emAnalytics.revoke();
+  s.appended.find(el => el.src.includes('mc.yandex.ru')).onload();
+  s.context.emAnalytics.grant();
+  assert.equal(s.context.ym.a.filter(e => e[1] === 'reachGoal').length, 0);
+
+  const failed = setup({ stored: 'granted' });
+  failed.context.emAnalytics.track('contact_click', { channel: 'email' });
+  failed.appended.find(el => el.src.includes('mc.yandex.ru')).onerror();
+  failed.context.emAnalytics.grant();
+  failed.appended.filter(el => el.src.includes('mc.yandex.ru')).at(-1).onload();
+  assert.equal(failed.context.ym.a.filter(e => e[1] === 'reachGoal').length, 0);
+});
 test('thresholds fire once per page view including jumps and bfcache', () => {
   const s = setup({ stored: 'granted' });
   s.scroll(1600); s.scroll(4000); s.scroll(8000); s.scroll(0); s.scroll(9500);

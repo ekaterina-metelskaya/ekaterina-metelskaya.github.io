@@ -17,6 +17,20 @@
     metrikaLoaded: false,
     metrikaLoading: false,
     metrikaActive: false,
+    metrikaPending: [],
+    sendMetrikaEvent: function (name, params) {
+      if (!this.granted || !this.metrikaActive) return;
+      var goals = [name];
+      if (name === 'scroll_depth' && [25, 50, 75, 90].indexOf(params.percent_scrolled) !== -1) {
+        goals.push('scroll_depth_' + params.percent_scrolled);
+      }
+      if (name === 'match_selection' && params.action === 'select') {
+        if (params.group === 'role') goals.push('match_role_select');
+        if (params.group === 'task') goals.push('match_task_select');
+      }
+      var self = this;
+      goals.forEach(function (goal) { ym(self.metrikaId, 'reachGoal', goal, params); });
+    },
     startMetrika: function () {
       if (!this.granted || !this.metrikaLoaded || this.metrikaActive) return;
       this.metrikaActive = true;
@@ -24,6 +38,10 @@
         ssr: true, webvisor: true, clickmap: true, ecommerce: 'dataLayer',
         referrer: document.referrer, url: location.href,
         accurateTrackBounce: true, trackLinks: true
+      });
+      var self = this;
+      this.metrikaPending.splice(0).forEach(function (event) {
+        self.sendMetrikaEvent(event.name, event.params);
       });
     },
     loadMetrika: function () {
@@ -42,16 +60,27 @@
         self.metrikaLoaded = true;
         self.startMetrika();
       };
-      script.onerror = function () { self.metrikaLoading = false; script.remove(); };
+      script.onerror = function () {
+        self.metrikaLoading = false;
+        self.metrikaPending.length = 0;
+        script.remove();
+      };
       document.head.appendChild(script);
     },
     track: function (name, params) {
-      if (!this.granted || window['ga-disable-' + this.id]) return false;
-      gtag('event', name, Object.assign({
+      if (!this.granted) return false;
+      var eventParams = Object.assign({
         page_path: location.pathname,
         page_type: /\/cases\//.test(location.pathname) ? 'case' : /(?:\/|\/index\.html)$/.test(location.pathname) ? 'home' : 'other'
-      }, params));
-      return true;
+      }, params);
+      var googleEnabled = !window['ga-disable-' + this.id];
+      if (googleEnabled) gtag('event', name, eventParams);
+      if (this.metrikaActive) this.sendMetrikaEvent(name, eventParams);
+      else if (this.metrikaLoading && this.metrikaPending.length < 100) {
+        // Only post-consent events may wait for the library; init must precede reachGoal.
+        this.metrikaPending.push({ name: name, params: eventParams });
+      }
+      return googleEnabled || this.metrikaActive || this.metrikaLoading;
     },
     grant: function () {
       this.granted = true;
@@ -72,6 +101,7 @@
     // Отзыв: остановить обе системы и удалить их доступные сайту cookie.
     revoke: function () {
       this.granted = false;
+      this.metrikaPending.length = 0;
       if (this.metrikaActive) {
         ym(this.metrikaId, 'destruct');
         this.metrikaActive = false;
