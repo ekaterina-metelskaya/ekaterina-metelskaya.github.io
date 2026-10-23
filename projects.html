@@ -2,9 +2,9 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<!-- Google Analytics 4 (gtag.js) по согласию посетителя — Basic Consent Mode v2.
-     Библиотека Google загружается только после «Разрешить» в баннере (templates/partials/consent.html, js/consent.js).
-     Выбор хранится в localStorage под ключом em-analytics: granted | denied -->
+<!-- Google Analytics 4 и Яндекс Метрика загружаются только после согласия.
+     em-analytics-v2: новое согласие включает Метрику с Вебвизором и картой кликов.
+     Старый выбор em-analytics относился только к GA4 и здесь не используется. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -12,11 +12,54 @@
   window.emAnalytics = {
     id: 'G-QF1XHVLY6B',
     loaded: false,
+    granted: false,
+    metrikaId: 113747202,
+    metrikaLoaded: false,
+    metrikaLoading: false,
+    metrikaActive: false,
+    startMetrika: function () {
+      if (!this.granted || !this.metrikaLoaded || this.metrikaActive) return;
+      this.metrikaActive = true;
+      ym(this.metrikaId, 'init', {
+        ssr: true, webvisor: true, clickmap: true, ecommerce: 'dataLayer',
+        referrer: document.referrer, url: location.href,
+        accurateTrackBounce: true, trackLinks: true
+      });
+    },
+    loadMetrika: function () {
+      if (this.metrikaLoaded) { this.startMetrika(); return; }
+      if (this.metrikaLoading) return;
+      this.metrikaLoading = true;
+      window.ym = window.ym || function () { (window.ym.a = window.ym.a || []).push(arguments); };
+      window.ym.l = window.ym.l || +new Date();
+      var self = this;
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://mc.yandex.ru/metrika/tag.js?id=' + this.metrikaId;
+      // Инициализация после загрузки: отзыв согласия во время запроса не запустит счётчик.
+      script.onload = function () {
+        self.metrikaLoading = false;
+        self.metrikaLoaded = true;
+        self.startMetrika();
+      };
+      script.onerror = function () { self.metrikaLoading = false; script.remove(); };
+      document.head.appendChild(script);
+    },
+    track: function (name, params) {
+      if (!this.granted || window['ga-disable-' + this.id]) return false;
+      gtag('event', name, Object.assign({
+        page_path: location.pathname,
+        page_type: /\/cases\//.test(location.pathname) ? 'case' : /(?:\/|\/index\.html)$/.test(location.pathname) ? 'home' : 'other'
+      }, params));
+      return true;
+    },
     grant: function () {
+      this.granted = true;
+      this.loadMetrika();
       window['ga-disable-' + this.id] = false;
       gtag('consent', 'update', { analytics_storage: 'granted' });
       // Уже запущен на этой странице: без повторного config, чтобы не задвоить page_view
-      if (this.loaded) return;
+      if (this.loaded) { document.dispatchEvent(new Event('em:consent')); return; }
       this.loaded = true;
       var s = document.createElement('script');
       s.async = true;
@@ -24,21 +67,28 @@
       document.head.appendChild(s);
       gtag('js', new Date());
       gtag('config', this.id);
+      document.dispatchEvent(new Event('em:consent'));
     },
-    // Отзыв: GA4 перестаёт отправлять данные, удаляются только его cookie (_ga, _ga_<ID>, _gid, _gat)
+    // Отзыв: остановить обе системы и удалить их доступные сайту cookie.
     revoke: function () {
+      this.granted = false;
+      if (this.metrikaActive) {
+        ym(this.metrikaId, 'destruct');
+        this.metrikaActive = false;
+      }
       window['ga-disable-' + this.id] = true;
       gtag('consent', 'update', { analytics_storage: 'denied' });
+      document.dispatchEvent(new Event('em:consent'));
       var parts = location.hostname.split('.');
       document.cookie.split(';').forEach(function (c) {
         var name = c.split('=')[0].trim();
-        if (!/^_ga($|_)|^_gid$|^_gat/.test(name)) return;
+        if (!/^_ga($|_)|^_gid$|^_gat|^_ym_/.test(name)) return;
         document.cookie = name + '=; Max-Age=0; path=/';
         for (var i = 0; i < parts.length; i++) document.cookie = name + '=; Max-Age=0; path=/; domain=.' + parts.slice(i).join('.');
       });
     }
   };
-  try { if (localStorage.getItem('em-analytics') === 'granted') emAnalytics.grant(); } catch (e) {}
+  try { if (localStorage.getItem('em-analytics-v2') === 'granted') emAnalytics.grant(); } catch (e) {}
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Все проекты · Екатерина Метельская</title>
@@ -341,6 +391,7 @@
   </footer>
 </div>
 
+<script src="js/analytics.js?v=3b96430c"></script>
 <script src="js/projects.js?v=61aa06cc"></script>
 <script src="js/menu.js?v=95926471"></script>
 <script src="js/covers.js?v=056f6d47"></script>
@@ -348,13 +399,13 @@
 <section class="consent" data-consent hidden aria-labelledby="consent-title">
   <div class="consent-text">
     <h2 class="t-title" id="consent-title">Немного аналитики?</h2>
-    <p class="t-body">Хочу понимать, какие страницы вам интересны, и делать сайт лучше. Для этого использую Google Analytics. <a href="privacy.html">Политика конфиденциальности</a></p>
+    <p class="t-body">Хочу понимать, какие страницы вам интересны, и делать сайт лучше. Для этого использую Google Analytics и Яндекс Метрику с картой кликов и Вебвизором — записью действий на странице. Они работают только с вашего разрешения. <a href="privacy.html">Политика конфиденциальности</a></p>
   </div>
   <div class="consent-actions">
     <button type="button" class="btn btn--outline" data-consent-choice="denied">Отклонить</button>
     <button type="button" class="btn btn--outline" data-consent-choice="granted">Разрешить</button>
   </div>
 </section>
-<script src="js/consent.js?v=1b1e830c"></script>
+<script src="js/consent.js?v=caf3a335"></script>
 </body>
 </html>

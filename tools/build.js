@@ -334,7 +334,8 @@ const versioned = html => html.replace(/(<(?:script|link)\b[^>]*?(?:src|href)=")
 // (templates/partials/gtag.html); баннер согласия и js/consent.js перед </body> (templates/partials/consent.html) — на каждой странице
 const withGtag = html => html.replace(/<head>\r?\n<meta charset="utf-8">\r?\n/, m => m + read('templates/partials/gtag.html').replace(/\r\n/g, '\n'));
 const withConsent = (html, page) => html.replace(/<\/body>/, () => read('templates/partials/consent.html').replace(/\r\n/g, '\n').split('{{root}}').join(page.startsWith('cases/') ? '../' : '') + '</body>');
-const finish = (html, page, og) => withGtag(versioned(typograph(withConsent(withOg(html, page, og), page))));
+const withAnalytics = (html, page) => html.replace(/<script src=/, `<script src="${page.startsWith('cases/') ? '../' : ''}js/analytics.js"></script>\n<script src=`);
+const finish = (html, page, og) => withGtag(versioned(typograph(withAnalytics(withConsent(withOg(html, page, og), page), page))));
 
 // ---------- Главная ----------
 {
@@ -431,7 +432,7 @@ for (const f of fs.readdirSync(path.join(root, 'templates/cases')).filter(f => /
   };
   const html = fill(read(`templates/cases/${f}`), vars, `templates/cases/${f}`)
     .replace('<!--TOC-->', toc)
-    .replace('<!--BODY-->', article)
+    .replace('<!--BODY-->', article + '\n    <span data-content-end aria-hidden="true" style="display:block;height:1px"></span>')
     .replace('<!--COVER:tv-->', read('templates/partials/cover-tv.html'))
     .replace('<!--COVER:ca-->', read('templates/partials/cover-ca.html'))
     .replace('<!--COVER:control-->', read('templates/partials/cover-control.html'))

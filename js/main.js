@@ -639,7 +639,15 @@
     const chips = $$('.chip', choices);
     const group = g => chips.filter(c => c.dataset.group === g);
     const on = c => c.getAttribute('aria-pressed') === 'true';
-    const press = (c, v) => c.setAttribute('aria-pressed', String(v));
+    const press = (c, v) => {
+      if (on(c) === v) return;
+      c.setAttribute('aria-pressed', String(v));
+      window.emAnalytics?.track('match_selection', {
+        location: 'match', group: c.dataset.group, action: v ? 'select' : 'deselect',
+        option: (c.dataset.role || c.dataset.task || c.dataset.format || c.dataset.extra || c.dataset.kind || '').slice(0, 100),
+        role: c.closest('[data-tasks]')?.dataset.tasks || '',
+      });
+    };
     const tasksBox = $('.match-tasks', choices);
     const taskSets = $$('[data-tasks]', choices);
     const copy = $('[data-match-copy]', matchCard);
@@ -790,6 +798,11 @@
       last = signature;
       title.textContent = nb(t);
       render(x);
+      document.dispatchEvent(new CustomEvent('em:match-result', { detail: C && s.role ? {
+        role: s.role, task_count: s.tasks.length, format: s.format || 'none',
+        extras: s.extras || 'none', ai: s.ai ? 'on' : 'off',
+        result_key: matchKey(s).slice(0, 100), result_state: state,
+      } : null }));
       if (!reduceMotion) copy.animate([{ opacity: .4, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2, .7, .2, 1)' });
     };
     chips.forEach(c => c.addEventListener('click', () => {

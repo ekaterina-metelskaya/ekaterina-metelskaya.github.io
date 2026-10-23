@@ -1,10 +1,11 @@
-// Consent banner for Google Analytics. The choice lives in localStorage (em-analytics: granted | denied);
-// GA4 itself is started and stopped by window.emAnalytics from the inline script in <head> (templates/partials/gtag.html).
+// Consent for GA4 + Yandex Metrica (including Session Replay and click map).
+// em-analytics-v2 is deliberately separate from the previous GA-only consent.
+// Both counters are started/stopped by window.emAnalytics (templates/partials/gtag.html).
 // Any element with data-consent-open (footer, privacy page) brings the banner back to change the choice.
 (() => {
   const banner = document.querySelector('[data-consent]');
   if (!banner || !window.emAnalytics) return;
-  const KEY = 'em-analytics';
+  const KEY = 'em-analytics-v2';
   let opener = null;
 
   // While the banner is open the footer gets room at the bottom (in its own colour), so nothing is stuck under the banner
