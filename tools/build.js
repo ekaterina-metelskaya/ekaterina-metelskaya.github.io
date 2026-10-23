@@ -328,7 +328,7 @@ const withOg = (html, page, og = {}) => {
 // ?v=<хэш содержимого> у своих css и js: после правки браузер и GitHub Pages берут новый файл, а не старый из кэша
 const crypto = require('crypto');
 const versioned = html => html.replace(/(<(?:script|link)\b[^>]*?(?:src|href)=")((?:\.\.\/)?((?:css|js|assets\/fonts)\/[\w.-]+\.(?:css|js)))"/g,
-  (m, head, url, file) => `${head}${url}?v=${crypto.createHash('md5').update(read(file)).digest('hex').slice(0, 8)}"`);
+  (m, head, url, file) => `${head}${url}?v=${crypto.createHash('md5').update(read(file).replace(/\r\n/g, '\n')).digest('hex').slice(0, 8)}"`);
 // Google Analytics по согласию: загрузчик в начале <head>, сразу после <meta charset> — кодировка должна
 // оставаться в первых 1024 байтах, иначе браузеры и сборщики превью ссылок могут прочитать кириллицу неверно
 // (templates/partials/gtag.html); баннер согласия и js/consent.js перед </body> (templates/partials/consent.html) — на каждой странице
