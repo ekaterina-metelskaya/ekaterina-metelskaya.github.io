@@ -1,2 +1,5 @@
-# Несжатый словарь «Сработаемся?» — только для обновления: сборка упаковывает его в content/match-texts.json.gz
-content/match-texts.json
+# Несжатые словари «Сработаемся?» — только для обновления: сборка упаковывает их в content/<язык>/match-texts.json.gz
+content/*/match-texts.json
+
+# Готовые страницы не-русских языков: их собирает GitHub Actions при публикации (tools/build.js), в git они не нужны
+/en/

@@ -49,6 +49,12 @@ jobs:
           mkdir -p _site
           cp "$SITE_DIR/index.html" "$SITE_DIR/projects.html" "$SITE_DIR/privacy.html" "$SITE_DIR"/og-image-*.png "$SITE_DIR/.nojekyll" _site/
           cp -R "$SITE_DIR/assets" "$SITE_DIR/cases" "$SITE_DIR/css" "$SITE_DIR/js" _site/
+          # Готовые не-русские языки (сейчас en): build.js собирает их в /<язык>/ только без `draft: true` в content/<язык>/home.md
+          for LANG_DIR in en; do
+            if [[ -d "$SITE_DIR/$LANG_DIR" ]]; then
+              cp -R "$SITE_DIR/$LANG_DIR" _site/
+            fi
+          done
           if [[ -f "$SITE_DIR/CNAME" ]]; then
             cp "$SITE_DIR/CNAME" _site/
           fi

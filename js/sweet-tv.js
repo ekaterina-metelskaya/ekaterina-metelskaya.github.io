@@ -81,7 +81,8 @@
   /* ---------- Footage: clips from open movies in assets/video/ ---------- */
   // Listed here, not fetched from a JSON file: a page opened from disk (file://) may not fetch its neighbours,
   // and the players then fell back to the CSS stills. A missing file still falls back (the error handler below)
-  const CLIP_BASE = '../assets/video/';
+  // The base comes from this script's own address, so it is the same on /cases/ and /en/cases/
+  const CLIP_BASE = document.currentScript ? new URL('../assets/video/', document.currentScript.src).href : '../assets/video/';
   const CLIPS = Object.fromEntries(['dusk', 'desert', 'ice', 'fog', 'meadow', 'neon', 'lab'].map(k => [k, { video: `${k}.mp4`, poster: `${k}.jpg` }]));
   // Figures on screen: footage plays only there, so off-screen videos don't eat the CPU
   const onScreen = new Set();

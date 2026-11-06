@@ -267,6 +267,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .nav a:hover { background: var(--color-primary-subtle); color: var(--color-text-brand); }
 .nav a[aria-current="true"] { background: var(--color-primary-subtle); color: var(--color-text-brand); }
 .header-right { display: flex; align-items: center; gap: 15px; }
+/* Language switch: a link to the same page in the other language (added by tools/build.js once both languages are published) */
+.lang-switch {
+  display: inline-flex; align-items: center; height: 40px; padding: 0 8px; margin-inline: -7px; border-radius: 8px;
+  font: 500 14px/20px var(--font-sans); letter-spacing: .04em; color: var(--color-text-secondary);
+}
+.lang-switch:hover { background: var(--color-primary-subtle); color: var(--color-text-brand); }
 /* Compact menu (menu.js): shown where .nav is hidden */
 .menu-btn {
   display: none; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: var(--radius-md);
