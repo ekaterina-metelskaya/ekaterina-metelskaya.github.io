@@ -5,6 +5,22 @@
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
   const track = (name, params) => api.track(name, params);
+  const playground = $('.pg-frame');
+  if (playground) {
+    const events = new Map([
+      ['scan', 're_playground_scan'],
+      ['compare', 're_playground_compare'],
+      ['restore', 're_playground_complete'],
+      ['bind_color', 're_playground_complete'],
+    ]);
+    addEventListener('message', event => {
+      if (event.origin !== location.origin || event.source !== playground.contentWindow) return;
+      if (event.data?.type !== 're-instance-analytics') return;
+      const action = event.data.action;
+      const name = events.get(action);
+      if (name) track(name, { action, page_type: 'playground' });
+    });
+  }
   const isCase = !!$('.prose');
   const isHome = !!$('.hero');
   const locationOf = el => {
@@ -102,6 +118,7 @@
       track('cv_click', { location: place });
       return;
     }
+    if (el.matches('.re-play-teaser[href]')) track('re_playground_open_click', { location: place });
     if (el.matches('a[href]')) {
       const url = new URL(el.href, location.href);
       const channel = url.protocol === 'mailto:' ? 'email' :

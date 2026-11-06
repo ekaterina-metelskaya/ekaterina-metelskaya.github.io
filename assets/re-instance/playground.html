@@ -1467,18 +1467,28 @@ const setScanning = (on, scope) => {
 };
 // The host answers the plugin through post(): its messages are watched here, the work stays in the host.
 const hostPost = post;
+const embedParams = new URLSearchParams(location.search);
+const reportAction = action => {
+  if (parent === window || !embedParams.has('fit') || embedParams.has('demo')) return;
+  parent.postMessage({ type: 're-instance-analytics', action }, location.origin);
+};
 post = (message) => {
   const done = (list, fnItem) => (list || []).forEach(fnItem);
   if (message.type === 'RESTORE_DONE') done(message.outcomes, (o) => { if (o.status === 'restored') { fn.instances.add(o.frameId); renderItem(o.frameId); } });
   else if (message.type === 'RESTORE_UNDONE') done(message.frameIds, (id) => { fn.instances.delete(id); renderItem(id); });
   else if (message.type === 'REBIND_DONE') done(message.outcomes, (o) => { if (o.status === 'bound' && o.frameId) { fn.bound.add(o.frameId); renderItem(o.frameId); } });
   else if (message.type === 'SCAN_RESULT' || message.type === 'SCAN_CANCELLED') setScanning(false);
+  if (message.type === 'FRAME_COMPARISON' && message.comparison) reportAction('compare');
+  if (message.type === 'RESTORE_DONE' && message.outcomes?.some(outcome => outcome.status === 'restored')) reportAction('restore');
+  if (message.type === 'REBIND_DONE' && message.outcomes?.some(outcome => outcome.status === 'bound' && outcome.field === 'fills')) reportAction('bind_color');
   return hostPost(message);
 };
 // ...and what the plugin is asked to do: a search lights up the cards it goes through.
 window.addEventListener('message', (event) => {
   const message = event.data && event.data.pluginMessage;
-  if (event.source === frame.contentWindow && message && message.type === 'SCAN') setScanning(true, message.scope);
+  if (event.source !== frame.contentWindow || message?.type !== 'SCAN') return;
+  setScanning(true, message.scope);
+  reportAction('scan');
 });
 
 // The cards fill the width of the canvas: as many columns as fit (at least two), each card scaled to its column
