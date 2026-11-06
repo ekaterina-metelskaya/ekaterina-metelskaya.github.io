@@ -45,8 +45,9 @@
     docs: { kicker: 'Case study · Internal systems', title: 'Document Management System', metric: ['×3', 'estimated reduction in time spent working with documents'], art: 'docs' },
     tv: { kicker: 'Case study · Public-facing products', title: 'SWEET.TV', lead: 'One user flow across touchscreens and remote-controlled devices.', art: 'tv' },
     invino: { kicker: 'Case study · Personal tools', title: 'In Vino — Design System', lead: 'Layered tokens, slots, and component properties. This portfolio is built with it.', art: 'invino' },
+    ca: { kicker: 'Case study · Personal tools', title: 'Re:Instance: A Figma Plugin', lead: 'Finds detached components, compares changes, and restores instances.', art: 'ca' },
   };
-  const covers = { tv: ['cover-tv', 'linear-gradient(to right, #0e1b26, #17324a)'], invino: ['cover-invino', '#fdf2f2'] };
+  const covers = { tv: ['cover-tv', 'linear-gradient(to right, #0e1b26, #17324a)'], invino: ['cover-invino', '#fdf2f2'], ca: ['cover-ca', 'linear-gradient(180deg, #fcfbff, #f1eefc)'] };
   const p = pages[new URLSearchParams(location.search).get('k')] || pages.control;
   const $ = s => document.querySelector(s);
   $('[data-kicker]').textContent = p.kicker;

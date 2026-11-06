@@ -137,8 +137,20 @@
     if (current && links[0]) current.textContent = links[0].lastChild.textContent.trim();
     if (step) step.textContent = `${sections.findIndex(s => s.id === id) + 1}/${sections.length}`;
   };
+  // A click in the contents picks that section for good: a short section would otherwise lose the highlight to the next
+  // one the moment the browser has scrolled to it. The pick is released when the reader scrolls by hand.
+  let picked = null;
+  document.addEventListener('click', e => {
+    const a = e.target.closest('.toc a, .toc-drop a');
+    const id = a && a.getAttribute('href').slice(1);
+    if (id && tocLinks.has(id)) { picked = id; setActive(id); }
+  });
+  ['wheel', 'touchmove', 'keydown', 'mousedown'].forEach(type => addEventListener(type, e => {
+    if (type === 'keydown' && !['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) return;
+    picked = null;
+  }, { passive: true }));
   const pickSection = () => {
-    if (!sections.length) return;
+    if (!sections.length || picked) return;
     const line = innerHeight * 0.35;
     let id = sections[0].id;
     sections.forEach(s => { if (s.getBoundingClientRect().top <= line) id = s.id; });

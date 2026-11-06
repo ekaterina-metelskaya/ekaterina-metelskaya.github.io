@@ -263,7 +263,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* The «open to offers» status sits right after the logo */
 .site-header .logo + .status { margin-left: -8px; white-space: nowrap; }
 .nav a {
-  display: inline-flex; align-items: center; height: 40px; padding: 0 12px; border-radius: 8px;
+  display: inline-flex; align-items: center; height: 40px; padding: 0 12px; border-radius: 8px; white-space: nowrap;
   font: 500 14px/20px var(--font-sans); color: var(--color-text-secondary);
 }
 .nav a:hover { background: var(--color-primary-subtle); color: var(--color-text-brand); }
@@ -282,7 +282,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .lang-switch a { color: var(--color-text-secondary); transition: background-color .15s, color .15s; }
 .lang-switch a:hover { background: var(--color-primary-subtle); color: var(--color-text-brand); }
 .lang-switch a:focus-visible { outline: 2px solid var(--accent-600); outline-offset: 1px; }
-.lang-switch .is-current { background: var(--color-primary-bg); color: var(--color-text-on-action); cursor: default; }
+/* Not «.is-current»: case.css has its own rule of that name (with !important) for the contents highlight */
+.lang-switch .lang-switch-current { background: var(--color-primary-bg); color: var(--color-text-on-action); cursor: default; }
 /* Compact menu (menu.js): shown where .nav is hidden */
 .menu-btn {
   display: none; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: var(--radius-md);
@@ -962,25 +963,37 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .badge--wip { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 .cover-badge.badge--wip { padding: 2px 8px; border-radius: 999px; }
 
-/* Component Assistant cover: canvas with a frame + plugin window */
-.cover-ca { background: #f5f5f5; background-image: radial-gradient(#dcdcdc 1px, transparent 1px); background-size: 12px 12px; }
-.ca-art { position: absolute; inset: 0; }
-.ca-art-canvas { position: absolute; left: 8%; top: 0; bottom: 0; width: 44%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
-.ca-art-btn { position: relative; display: flex; align-items: center; gap: 6%; width: 62%; height: 22%; padding: 0 9%; border-radius: 8px; background: #7c3aed; outline: 1.5px solid #0d99ff; outline-offset: 3px; }
-.ca-art-btn i { width: 12%; aspect-ratio: 1; border-radius: 3px; background: rgba(255, 255, 255, .85); }
-.ca-art-btn b { flex: 1; height: 18%; border-radius: 3px; background: rgba(255, 255, 255, .85); }
-.ca-art-frame { order: -1; align-self: flex-start; margin-left: 19%; font: 500 10px/1 var(--font-sans); color: #0d99ff; }
-.ca-art-win { position: absolute; right: 7%; top: 10%; bottom: 10%; width: 36%; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 8px 24px rgba(0, 0, 0, .1); padding: 7% 5%; display: flex; flex-direction: column; gap: 8%; }
-.ca-art-head { display: flex; align-items: center; gap: 6%; }
-.ca-art-head i { width: 12%; aspect-ratio: 1; border-radius: 3px; background: linear-gradient(135deg, #9747ff, #0d99ff); }
-.ca-art-head b { width: 60%; height: 6px; border-radius: 3px; background: #e5e5e5; }
-.ca-art-score { position: relative; width: 38%; aspect-ratio: 1; }
-.ca-art-score svg { width: 100%; transform: rotate(-90deg); }
-.ca-art-score circle { fill: none; stroke: #eee; stroke-width: 8; }
-.ca-art-score .v { stroke: #3b82f6; stroke-linecap: round; stroke-dasharray: 188.5; stroke-dashoffset: 30; }
-.ca-art-score span { position: absolute; inset: 0; display: grid; place-items: center; font: 700 13px/1 var(--font-sans); color: #1e1e1e; }
-.ca-art-rows { display: flex; flex-direction: column; gap: 6px; }
-.ca-art-rows i { display: block; height: 5px; border-radius: 3px; background: linear-gradient(90deg, var(--c, #14ae5c) var(--w), #eee var(--w)); }
+/* Re:Instance cover (templates/partials/cover-ca.html, drawn for 420×180, after the author's reference): a detached card → the plugin window with its detected changes */
+.cover-ca { background: linear-gradient(180deg, #fcfbff 0%, #f1eefc 100%); }
+.ca-art { position: absolute; inset: 0; color: #1c1738; font-family: var(--font-sans); }
+.ca-chip { position: absolute; left: 21px; top: 48px; display: flex; align-items: center; gap: 4px; height: 15px; padding: 0 7px 0 5px; border-radius: 4px; background: #ebe8f8; font: 500 7.5px/1 var(--font-sans); color: #2a2352; white-space: nowrap; }
+.ca-chip svg { width: 8px; height: 8px; fill: none; stroke: #6d4fd6; stroke-width: 2; stroke-linecap: round; }
+.ca-card { position: absolute; left: 20px; top: 70px; width: 136px; height: 82px; box-sizing: border-box; padding: 6px; border: 1.5px solid #8b5cf6; border-radius: 15px; background: #fff; box-shadow: 0 4px 14px rgba(124, 58, 237, .13); }
+.ca-card-img { display: block; height: 30px; border-radius: 5px; overflow: hidden; background: linear-gradient(180deg, #f1edfc, #e7e1fa); }
+.ca-card-img svg { display: block; width: 100%; height: 100%; }
+.ca-card-img path { fill: #ddd5fa; }
+.ca-card b { position: absolute; left: 10px; top: 42px; font: 700 14px/16px var(--font-sans); letter-spacing: -.2px; color: #1c1738; white-space: nowrap; }
+.ca-card em { position: absolute; left: 10px; top: 64px; width: 87px; height: 5px; border-radius: 3px; background: #c8c4dd; }
+.ca-arrow { position: absolute; left: 171px; top: 102px; width: 13px; height: 7px; fill: none; stroke: #8b5cf6; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.ca-win { position: absolute; left: 191px; top: 15px; width: 209px; height: 150px; box-sizing: border-box; border-radius: 14px; background: #fff; box-shadow: 0 1px 2px rgba(60, 40, 120, .06), 0 10px 26px rgba(124, 58, 237, .1); }
+.ca-win-head { position: absolute; left: 12px; top: 8px; display: flex; align-items: center; gap: 7px; }
+.ca-win-head svg { width: 16px; height: 16px; fill: #7c3aed; }
+.ca-win-head svg path { fill: none; stroke: #7c3aed; stroke-width: 9; }
+.ca-win-head b { font: 700 11px/1 var(--font-sans); color: #1c1738; }
+.ca-panel { position: absolute; left: 8px; right: 8px; top: 31px; bottom: 8px; border-radius: 10px; background: #faf9ff; }
+.ca-panel-head { position: absolute; left: 10px; right: 6px; top: 6px; display: flex; align-items: center; justify-content: space-between; }
+.ca-panel-head b { font: 500 8.5px/1 var(--font-sans); }
+.ca-panel-head u { height: 11px; padding: 0 6px; border-radius: 6px; background: #ebe7fb; font: 500 6.5px/11px var(--font-sans); text-decoration: none; }
+.ca-row { position: absolute; left: 6px; right: 5px; height: 20px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 0 3px 0 6px; border-radius: 7px; }
+.ca-row.is-on { background: #ede9fb; }
+.ca-row i { flex: none; display: grid; place-items: center; width: 15px; height: 14px; border-radius: 4px; background: #e9e4fb; }
+.ca-row i svg { width: 9px; height: 9px; fill: none; stroke: #6d28d9; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.ca-row b { flex: 1; font: 500 8.5px/1 var(--font-sans); white-space: nowrap; }
+.ca-row u { flex: none; height: 11px; padding: 0 6px; border-radius: 6px; font: 500 7px/11px var(--font-sans); text-decoration: none; white-space: nowrap; }
+.ca-row u.is-ok { background: #fdeec3; color: #5d4108; }
+.ca-row u.is-review { background: #e2dcfa; color: #2b2160; }
+.ca-progress { position: absolute; left: 6px; right: 8px; top: 98px; height: 4px; border-radius: 3px; background: #d6d2ea; overflow: hidden; }
+.ca-progress s { display: block; width: 33%; height: 100%; border-radius: 3px; background: #7c3aed; }
 
 /* ============================================================
    All projects page (projects.html)
@@ -1086,3 +1099,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
    («layer · scheme · advanced») shortens with an ellipsis instead of pushing the panel 2px off screen */
 .hero-side > * { min-width: 0; max-width: 100%; }
 .inspector-hint { flex: 1 1 0; margin-right: 12px; }
+
+/* Narrow phones (≤ 380px): the header row — logo, contents, menu, language switch, CV — has to fit down to 320px */
+@media (max-width: 380px) {
+  .header-right { gap: 8px; }
+  .lang-switch > * { min-width: 26px; padding: 0 4px; }
+  .header-right .btn--sm { padding: 0 9px; gap: 4px; }
+}

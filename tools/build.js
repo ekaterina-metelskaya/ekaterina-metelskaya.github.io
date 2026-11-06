@@ -133,7 +133,8 @@ function chunk(c, blocks, file) {
 const parseBlocks = file => {
   if (!fs.existsSync(path.join(root, file))) return {};
   const out = {};
-  const parts = readT(file).split(/<!-- block: ([\w-]+) -->\n?/);
+  // {{lang}} в блоке — код языка страницы (для вставок, которые зависят от языка, например playground)
+  const parts = readT(file).split('{{lang}}').join(L.code).split(/<!-- block: ([\w-]+) -->\n?/);
   for (let i = 1; i < parts.length; i += 2) out[parts[i]] = parts[i + 1].trim();
   return out;
 };
@@ -170,10 +171,12 @@ const projectList = [
   ['production-control', 'control', 'internal'],
   ['planning', 'planning', 'internal'],
   ['documentation', 'docs', 'internal'],
+  ['re-instance', 'ca', 'own', 'review'],
   ['sweet-tv', 'tv', 'public'],
   ['in-vino', 'invino', 'own'],
-  ['re-instance', 'ca', 'wip'],
 ];
+// Четвёртый элемент — статус проекта (необязательный): review — «На ревью» (плагин на проверке в Figma Community),
+// на обложке карточки и в шапке кейса. Тип 'wip' делает карточку закрытой: кейс в разработке, открыть нельзя
 // Страница «Все проекты» (projects.html): все проекты в одной сетке по типу; проекты в разработке — последними и со своим фильтром.
 // Подпись над заголовком считает кейсы отдельно от проектов в разработке, чтобы не обещать материалов, которые пока нельзя открыть
 const projectTypes = [
@@ -192,9 +195,11 @@ const card = (slug, attrs = '') => {
   // Кейс в разработке: карточка видна, но не открывается
   const wip = entry[2] === 'wip';
   const art = covers[entry[1]];
+  // Метка на обложке: закрытая карточка — «Ещё в работе», открытая со статусом ревью — «На ревью»
+  const badge = wip ? T('Ещё в работе') : entry[3] === 'review' ? T('На ревью') : '';
   return `
           <li class="case-card${wip ? ' is-disabled' : ' is-linked'}"${wip ? ' aria-disabled="true"' : ''}${attrs}>
-            ${wip ? art.replace(/<\/div>$/, `<span class="badge badge--wip cover-badge">${T('Ещё в работе')}</span></div>`) : art}
+            ${badge ? art.replace(/<\/div>$/, `<span class="badge badge--wip cover-badge">${badge}</span></div>`) : art}
             <div class="card-meta">${d.card_tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
             <h4 class="t-heading-sm">${inline(d.card_title)}</h4>
             <p class="t-body">${inline(d.card_text)}</p>${d.card_result ? `
@@ -359,7 +364,8 @@ const siteImageFile = fs.existsSync(path.join(root, `og-image-${code}.png`)) ? `
 const SITE_IMAGE = [siteImageFile, T('Екатерина Метельская — Product Designer')];
 const ogImages = {
   'index.html': SITE_IMAGE, 'projects.html': SITE_IMAGE, 'privacy.html': SITE_IMAGE,
-  ...Object.fromEntries(Object.entries({ 'production-control.html': 'control', 'planning.html': 'planning', 'documentation.html': 'docs', 'sweet-tv.html': 'tv', 'in-vino.html': 'invino' })
+  're-instance-playground.html': [`assets/og/${code === 'ru' ? '' : code + '/'}ca.png`],
+  ...Object.fromEntries(Object.entries({ 'production-control.html': 'control', 'planning.html': 'planning', 'documentation.html': 'docs', 'sweet-tv.html': 'tv', 'in-vino.html': 'invino', 're-instance.html': 'ca' })
     .map(([p, key]) => [p, [`assets/og/${code === 'ru' ? '' : code + '/'}${key}.png`]])),
 };
 const esc = s => s.replace(/"/g, '&quot;');
@@ -409,7 +415,7 @@ const withLangSwitch = (html, page) => {
   const items = Object.keys(LANGS).filter(c => c === code || published.includes(c)).map(c => {
     const [label, name] = LANG_LINK[c];
     return c === code
-      ? `<span class="is-current" lang="${c}" aria-current="true" title="${name}">${label}</span>`
+      ? `<span class="lang-switch-current" lang="${c}" aria-current="true" title="${name}">${label}</span>`
       : `<a href="${'../'.repeat(depth)}${LANGS[c].out}${page}" hreflang="${c}" lang="${c}" aria-label="${name}" title="${name}">${label}</a>`;
   }).join('');
   const group = `<div class="lang-switch" role="group" aria-label="Language / Язык">${items}</div>`;
@@ -471,8 +477,10 @@ const finish = (html, page, og) => relocate(withLang(withGtag(versioned(localize
     return `${n} ${f.length === 3 ? (n % 10 === 1 && n % 100 !== 11 ? f[0] : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? f[1] : f[2]) : (n === 1 ? f[0] : f[1])}`;
   };
   // {projects} и {wip} в переводе ставятся там, где нужны число проектов и число проектов в разработке
-  const count = T('{projects}, из них {wip} в разработке').replace('{projects}', plural(projectList.length, 'проект|проекта|проектов')).replace('{wip}', inProgress.length);
-  const filters = [['all', T('Все'), projectList.length], ...projectTypes.map(([id, t]) => [id, t, openCases.filter(p => p[2] === id).length]), ['wip', T('В разработке'), inProgress.length]]
+  // Пока в разработке ничего нет (все карточки открываются), подпись просто считает проекты, а фильтра «В разработке» нет
+  const projectsCount = plural(projectList.length, 'проект|проекта|проектов');
+  const count = inProgress.length ? T('{projects}, из них {wip} в разработке').replace('{projects}', projectsCount).replace('{wip}', inProgress.length) : projectsCount;
+  const filters = [['all', T('Все'), projectList.length], ...projectTypes.map(([id, t]) => [id, t, openCases.filter(p => p[2] === id).length]), ...(inProgress.length ? [['wip', T('В разработке'), inProgress.length]] : [])]
     .map(([id, t, n], i) => `
           <button type="button" class="chip" role="radio" aria-checked="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-filter="${id}">${t}<span class="chip-count">${n}</span></button>`).join('');
   const html = fill(readT('templates/projects.html'), { ...textVars(parseMd(`${L.content}/projects.md`).data), ...shared }, 'templates/projects.html')
@@ -489,6 +497,13 @@ const finish = (html, page, og) => relocate(withLang(withGtag(versioned(localize
   const text = sections(body, file).map(s => `      <h2 class="t-heading-sm">${inline(s.text)}</h2>\n      ${s.chunks.map(c => chunk(c, {}, file)).join('\n      ')}`).join('\n');
   const html = fill(readT('templates/privacy.html'), { ...textVars(data), ...shared }, 'templates/privacy.html').replace('<!--BODY-->', text);
   writePage('privacy.html', finish(html, 'privacy.html'));
+}
+
+// ---------- Playground Re:Instance (отдельная страница) ----------
+// Тексты страницы лежат в шаблоне (русские, для других языков их подменяет ui.json); {{lang}} — язык интерфейса в playground
+{
+  const html = fill(readT('templates/re-instance-playground.html'), { lang: code }, 'templates/re-instance-playground.html');
+  writePage('re-instance-playground.html', finish(html, 're-instance-playground.html'));
 }
 
 // ---------- Кейсы ----------

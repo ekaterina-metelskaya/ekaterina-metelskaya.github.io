@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 и Яндекс Метрика загружаются только после согласия.
+     em-analytics-v2: новое согласие включает Метрику с Вебвизором и картой кликов.
+     Старый выбор em-analytics относился только к GA4 и здесь не используется. -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+  window.emAnalytics = {
+    id: 'G-QF1XHVLY6B',
+    loaded: false,
+    granted: false,
+    metrikaId: 113747202,
+    metrikaLoaded: false,
+    metrikaLoading: false,
+    metrikaActive: false,
+    metrikaPending: [],
+    sendMetrikaEvent: function (name, params) {
+      if (!this.granted || !this.metrikaActive) return;
+      var goals = [name];
+      if (name === 'scroll_depth' && [25, 50, 75, 90].indexOf(params.percent_scrolled) !== -1) {
+        goals.push('scroll_depth_' + params.percent_scrolled);
+      }
+      if (name === 'match_selection' && params.action === 'select') {
+        if (params.group === 'role') goals.push('match_role_select');
+        if (params.group === 'task') goals.push('match_task_select');
+      }
+      var self = this;
+      goals.forEach(function (goal) { ym(self.metrikaId, 'reachGoal', goal, params); });
+    },
+    startMetrika: function () {
+      if (!this.granted || !this.metrikaLoaded || this.metrikaActive) return;
+      this.metrikaActive = true;
+      ym(this.metrikaId, 'init', {
+        ssr: true, webvisor: true, clickmap: true, ecommerce: 'dataLayer',
+        referrer: document.referrer, url: location.href,
+        accurateTrackBounce: true, trackLinks: true
+      });
+      var self = this;
+      this.metrikaPending.splice(0).forEach(function (event) {
+        self.sendMetrikaEvent(event.name, event.params);
+      });
+    },
+    loadMetrika: function () {
+      if (this.metrikaLoaded) { this.startMetrika(); return; }
+      if (this.metrikaLoading) return;
+      this.metrikaLoading = true;
+      window.ym = window.ym || function () { (window.ym.a = window.ym.a || []).push(arguments); };
+      window.ym.l = window.ym.l || +new Date();
+      var self = this;
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://mc.yandex.ru/metrika/tag.js?id=' + this.metrikaId;
+      // Инициализация после загрузки: отзыв согласия во время запроса не запустит счётчик.
+      script.onload = function () {
+        self.metrikaLoading = false;
+        self.metrikaLoaded = true;
+        self.startMetrika();
+      };
+      script.onerror = function () {
+        self.metrikaLoading = false;
+        self.metrikaPending.length = 0;
+        script.remove();
+      };
+      document.head.appendChild(script);
+    },
+    track: function (name, params) {
+      if (!this.granted) return false;
+      var eventParams = Object.assign({
+        page_path: location.pathname,
+        page_type: /\/cases\//.test(location.pathname) ? 'case' : /(?:\/|\/index\.html)$/.test(location.pathname) ? 'home' : 'other'
+      }, params);
+      var googleEnabled = !window['ga-disable-' + this.id];
+      if (googleEnabled) gtag('event', name, eventParams);
+      if (this.metrikaActive) this.sendMetrikaEvent(name, eventParams);
+      else if (this.metrikaLoading && this.metrikaPending.length < 100) {
+        // Only post-consent events may wait for the library; init must precede reachGoal.
+        this.metrikaPending.push({ name: name, params: eventParams });
+      }
+      return googleEnabled || this.metrikaActive || this.metrikaLoading;
+    },
+    grant: function () {
+      this.granted = true;
+      this.loadMetrika();
+      window['ga-disable-' + this.id] = false;
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+      // Уже запущен на этой странице: без повторного config, чтобы не задвоить page_view
+      if (this.loaded) { document.dispatchEvent(new Event('em:consent')); return; }
+      this.loaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + this.id;
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', this.id);
+      document.dispatchEvent(new Event('em:consent'));
+    },
+    // Отзыв: остановить обе системы и удалить их доступные сайту cookie.
+    revoke: function () {
+      this.granted = false;
+      this.metrikaPending.length = 0;
+      if (this.metrikaActive) {
+        ym(this.metrikaId, 'destruct');
+        this.metrikaActive = false;
+      }
+      window['ga-disable-' + this.id] = true;
+      gtag('consent', 'update', { analytics_storage: 'denied' });
+      document.dispatchEvent(new Event('em:consent'));
+      var parts = location.hostname.split('.');
+      document.cookie.split(';').forEach(function (c) {
+        var name = c.split('=')[0].trim();
+        if (!/^_ga($|_)|^_gid$|^_gat|^_ym_/.test(name)) return;
+        document.cookie = name + '=; Max-Age=0; path=/';
+        for (var i = 0; i < parts.length; i++) document.cookie = name + '=; Max-Age=0; path=/; domain=.' + parts.slice(i).join('.');
+      });
+    }
+  };
+  try { if (localStorage.getItem('em-analytics-v2') === 'granted') emAnalytics.grant(); } catch (e) {}
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Re:Instance — playground · Екатерина Метельская</title>
+<meta name="description" content="Попробуйте плагин Re:Instance в браузере: настоящий интерфейс и демо-файл Field Notes с примерами отсоединённых компонентов.">
+<link rel="alternate" hreflang="ru" href="https://metelskaya.design/re-instance-playground.html">
+<link rel="alternate" hreflang="en" href="https://metelskaya.design/en/re-instance-playground.html">
+<link rel="alternate" hreflang="x-default" href="https://metelskaya.design/re-instance-playground.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Екатерина Метельская">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Re:Instance — playground · Екатерина Метельская">
+<meta property="og:description" content="Попробуйте плагин Re:Instance в браузере: настоящий интерфейс и демо-файл Field Notes с примерами отсоединённых компонентов.">
+<meta property="og:url" content="https://metelskaya.design/re-instance-playground.html">
+<meta property="og:image" content="https://metelskaya.design/assets/og/ca.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Re:Instance — playground · Екатерина Метельская">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://metelskaya.design/assets/og/ca.png">
+<link rel="preload" href="assets/fonts/IBMPlexSans-Regular-Cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=89807e13">
+<link rel="stylesheet" href="css/styles.css?v=dd7d9861">
+<link rel="stylesheet" href="css/re-instance.css?v=a30149a5">
+<script>try{var s=localStorage.getItem('em-scheme');if(s&&s!=='default')document.documentElement.dataset.scheme=s}catch(e){}</script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M3.33 8h9.34M8.67 4l4 4-4 4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.67v8M4.67 7.33 8 10.67l3.33-3.34M3.33 13.33h9.34"/></symbol>
+  <symbol id="i-telegram" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.3 18.7 19.6c-.24 1.07-.88 1.34-1.78.83l-4.93-3.63-2.38 2.29c-.26.26-.48.48-.99.48l.35-5.02 9.13-8.25c.4-.35-.09-.55-.61-.2L6.2 13.2l-4.86-1.52c-1.06-.33-1.08-1.06.22-1.57L20.55 2.8c.88-.32 1.65.2 1.39 1.5z"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"><path d="M12.67 8H3.33M7.33 4l-4 4 4 4"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="logo" aria-label="На главную">ЕМ.</a>
+    <span class="status t-label">Открыта к предложениям</span>
+    <nav class="nav" aria-label="Разделы">
+      <a href="index.html#about">Обо мне</a>
+      <a href="index.html#work">Избранные кейсы</a>
+      <a href="index.html#process">Как я работаю</a>
+      <a href="index.html#experience">Опыт</a>
+      <a href="index.html#match">Сработаемся?</a>
+      <a href="index.html#contacts">Контакты</a>
+    </nav>
+    <div class="header-right">
+      <div class="lang-switch" role="group" aria-label="Language / Язык"><span class="lang-switch-current" lang="ru" aria-current="true" title="Русский">RU</span><a href="en/re-instance-playground.html" hreflang="en" lang="en" aria-label="English" title="English">EN</a></div>
+      <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>CV</a>
+    </div>
+  </div>
+</header>
+
+<main class="pg-page">
+  <div class="pg-wrap">
+    <div class="pg-bar">
+      <a class="btn btn--link" href="cases/re-instance.html#demo"><svg><use href="#i-arrow-left"/></svg><span>К кейсу Re:Instance</span></a>
+      <ol class="pg-steps" aria-label="Как попробовать">
+        <li><b>01</b>Запустите поиск по странице</li>
+        <li><b>02</b>Сравните карточку</li>
+        <li><b>03</b>Откройте сводку Card</li>
+        <li><b>04</b>Восстановите экземпляр или привяжите цвет</li>
+      </ol>
+    </div>
+    <iframe class="pg-frame" src="assets/re-instance/playground.html?lang=ru&amp;fit=1" title="Playground плагина Re:Instance: настоящий интерфейс и демо-файл Field Notes"></iframe>
+    <p class="t-body-sm pg-note">Демо-⁠данные: playground не подключается к Figma, не меняет файлы и не проверяет ваш документ.</p>
+  </div>
+</main>
+
+<div class="is-dark">
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-left">
+        <a class="logo" href="index.html">ЕМ.</a>
+        <span class="t-body-sm">© 2026 Екатерина Метельская</span>
+        <span class="footer-legal t-body-sm"><a href="privacy.html">Политика конфиденциальности</a><button type="button" data-consent-open>Настройки конфиденциальности</button></span>
+      </div>
+      <nav class="footer-links" aria-label="Ссылки">
+        <a class="t-label-mono" href="https://t.me/ekaterina_metelskaya" target="_blank" rel="noopener">Telegram</a>
+        <a class="t-label-mono" href="https://www.linkedin.com/in/ekaterina-metelskaya/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="t-label-mono" href="https://novosibirsk.hh.ru/resume/f022f4cfff10b37b790039ed1f5a3039745752" target="_blank" rel="noopener">hh.ru</a>
+        <a class="btn btn--outline btn--sm" href="assets/Metelskaya-Ekaterina-CV.pdf" download="Metelskaya-Ekaterina-CV.pdf" data-cv><svg><use href="#i-download"/></svg>CV</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+<script src="js/analytics.js?v=3b96430c"></script>
+<script src="js/menu.js?v=8ee47710"></script>
+<!-- Баннер согласия на аналитику. Показывает js/consent.js, пока посетитель не выбрал;  — путь к корню сайта -->
+<section class="consent" data-consent hidden aria-labelledby="consent-title">
+  <div class="consent-text">
+    <h2 class="t-title" id="consent-title">Немного аналитики?</h2>
+    <p class="t-body">Хочу понимать, какие страницы вам интересны, и делать сайт лучше. Для этого использую Google Analytics и Яндекс Метрику. <a href="privacy.html">Политика конфиденциальности</a></p>
+  </div>
+  <div class="consent-actions">
+    <button type="button" class="btn btn--outline" data-consent-choice="denied">Отклонить</button>
+    <button type="button" class="btn btn--outline" data-consent-choice="granted">Разрешить</button>
+  </div>
+</section>
+<script src="js/consent.js?v=caf3a335"></script>
+</body>
+</html>

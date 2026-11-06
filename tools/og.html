@@ -45,8 +45,9 @@
     docs: { kicker: 'Кейс · Внутренние системы', title: 'Система управления документацией', metric: ['×3', 'расчётное снижение трудозатрат на работу с документацией'], art: 'docs' },
     tv: { kicker: 'Кейс · Публичные продукты', title: 'SWEET.TV', lead: 'Один пользовательский сценарий на устройствах, которыми управляют пальцем и пультом.', art: 'tv' },
     invino: { kicker: 'Кейс · Собственные инструменты', title: 'In Vino — дизайн-система', lead: 'Многоуровневые токены, слоты и свойства компонентов. На ней собрано это портфолио.', art: 'invino' },
+    ca: { kicker: 'Кейс · Собственные инструменты', title: 'Re:Instance — плагин для Figma', lead: 'Поиск отсоединённых компонентов, сравнение изменений и восстановление экземпляров.', art: 'ca' },
   };
-  const covers = { tv: ['cover-tv', 'linear-gradient(to right, #0e1b26, #17324a)'], invino: ['cover-invino', '#fdf2f2'] };
+  const covers = { tv: ['cover-tv', 'linear-gradient(to right, #0e1b26, #17324a)'], invino: ['cover-invino', '#fdf2f2'], ca: ['cover-ca', 'linear-gradient(180deg, #fcfbff, #f1eefc)'] };
   const p = pages[new URLSearchParams(location.search).get('k')] || pages.control;
   const $ = s => document.querySelector(s);
   $('[data-kicker]').textContent = p.kicker;

@@ -319,6 +319,9 @@ input.wf-input:focus { outline: none; border-color: var(--accent-600); box-shado
 .prose .try { font: 400 12px/16px var(--font-mono); color: var(--color-text-tertiary); margin-top: 12px; }
 .try-lead { color: var(--color-text-brand); }
 
+/* Once the «Все кейсы» link joins the header (after the hero), the status next to the logo makes way for it on laptop widths */
+@media (max-width: 1399px) { .hero-back-away .site-header .status { display: none; } }
+
 @media (max-width: 1100px) {
   .toc { display: none; }
   .toc-drop { display: block; min-width: 0; }
@@ -558,3 +561,6 @@ input.wf-input:focus { outline: none; border-color: var(--accent-600); box-shado
 @media (max-width: 720px) {
   .method-list .tag, .toc .toc-num, .toc-drop-list .toc-num, .v2 .fig--wide .na-group { font-size: 12px; }
 }
+
+/* 320–350px: with the language switch in the header there is no room left for the «1/12» step next to the contents */
+@media (max-width: 350px) { .toc-drop-step { display: none; } }

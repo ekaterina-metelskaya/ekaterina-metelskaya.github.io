@@ -1,0 +1,67 @@
+      /* Встраиваемый вид: холст с примерами «Field Notes» и окно плагина (служебная панель превью скрыта) */
+      @import url('../fonts/fonts.css');
+      body { min-height: 0; margin: 0; }
+      .layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; padding: 12px; }
+      /* Холст уже, плагин шире: примеры вторичны, плагин главный */
+      @media (min-width: 900px) { .layout { grid-template-columns: minmax(280px, 3fr) minmax(0, 7fr); } }
+      .panel { display: none; }
+      .window { width: 100%; max-width: 100%; }
+
+      /* Холст */
+      .fn-panel {
+        --fn-ink: #231d42; --fn-muted: #554d6d; --fn-accent: #7c3aed;
+        height: 380px; overflow: auto; padding: 16px; border-radius: 12px; background: #f3f2f8; color: var(--fn-ink);
+        font: 13px/1.4 'IBM Plex Sans', system-ui, sans-serif; box-shadow: var(--host-shadow);
+      }
+      @media (min-width: 900px) { .fn-panel { height: 680px; } }
+      .fn-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; padding: 14px 16px; border-radius: 12px; background: #2a2150; color: #fff; }
+      .fn-title { margin: 0; font-size: 16px; font-weight: 700; }
+      .fn-hint { margin: 0; font-size: 12px; color: #d8d2f3; }
+      .fn-status { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; font-weight: 600; }
+      .fn-clear { border: 0; border-radius: 6px; padding: 4px 8px; background: rgb(255 255 255 / .14); color: #fff; font: inherit; font-size: 11px; cursor: pointer; }
+      .fn-clear:hover { background: rgb(255 255 255 / .24); }
+      .fn-section { margin-top: 20px; }
+      .fn-head + .fn-section { margin-top: 0; }
+      .fn-h2 { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-height: 24px; margin: 0 0 12px; font-size: 15px; line-height: 22px; font-weight: 700; }
+      .fn-tag { display: inline-flex; flex: none; align-items: center; box-sizing: border-box; height: 20px; padding: 0 8px; white-space: nowrap; border-radius: 5px; background: #e6e1ff; color: #5b45ac; font-size: 9px; line-height: 1; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+      /* Сколько колонок и какой масштаб карточек, считает canvas.js (--fn-cols, --fn-zoom): карточки занимают всю ширину холста */
+      .fn-grid { display: grid; grid-template-columns: repeat(var(--fn-cols, 2), minmax(0, 1fr)); gap: 12px 10px; }
+      .fn-item { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+      .fn-item:focus-visible { outline: 2px solid var(--fn-accent); outline-offset: 4px; border-radius: 12px; }
+      /* Карточка нарисована в натуральном размере макета (238×134) и уменьшена целиком */
+      .fn-card {
+        display: flex; flex-direction: column; align-items: flex-start; gap: 13px; box-sizing: border-box; padding: 20px; border-radius: var(--r, 16px);
+        background: var(--fill, #dcd8fe); zoom: var(--fn-zoom, .56); transition: outline-color .15s;
+        outline: 3px solid transparent; outline-offset: 5px;
+      }
+      .fn-cat { padding: 6px; border-radius: 5px; background: #fff; color: #514597; font-size: 10px; font-weight: 700; line-height: 12px; }
+      .fn-card-title { font-size: 19px; font-weight: 700; line-height: 23px; color: #201940; }
+      .fn-card-cap { font-size: 12px; line-height: 15px; color: #514770; }
+      .fn-card.is-serif .fn-card-title { font-family: Georgia, 'Times New Roman', serif; }
+      .fn-card.is-mono .fn-card-cap, .fn-card.is-mono .fn-note { font-family: 'IBM Plex Mono', Consolas, monospace; font-size: 11px; }
+      .fn-divider { align-self: stretch; height: 1px; background: #b9b2e6; }
+      .fn-note { font-size: 11px; line-height: 14px; color: #514770; }
+      .fn-label { margin-top: 4px; font-size: 12px; font-weight: 700; line-height: 15px; }
+      .fn-sub { font-size: 11px; line-height: 14px; color: var(--fn-muted); }
+      .fn-item:hover .fn-card { outline-color: rgb(124 58 237 / .35); }
+      .fn-item[aria-pressed='true'] .fn-card { outline-color: var(--fn-accent); }
+      .fn-item.is-focus .fn-card { animation: fn-focus 1.1s ease-out 2; }
+      @keyframes fn-focus { 0%, 100% { outline-color: var(--fn-accent); outline-width: 3px; } 50% { outline-color: rgb(124 58 237 / .25); outline-width: 8px; } }
+      @media (prefers-reduced-motion: reduce) { .fn-item.is-focus .fn-card { animation: none; outline-color: var(--fn-accent); } }
+      /* Карточки следуют за плагином: поиск, восстановление экземпляром, привязка цвета, переход к слою */
+      .fn-card { position: relative; transition: background-color .35s, outline-color .15s; }
+      .fn-item.is-instance .fn-card::after { content: ''; position: absolute; top: 14px; right: 14px; width: 14px; height: 14px; background: #7c3aed; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+      .fn-item.is-instance .fn-sub { color: #6d28d9; font-weight: 600; }
+      .fn-item.is-scanning .fn-card { animation: fn-scan 1s ease-in-out infinite; }
+      @keyframes fn-scan { 0%, 100% { outline-color: transparent; } 50% { outline-color: rgb(124 58 237 / .45); } }
+      .is-layer-focus { outline: 2px solid var(--fn-accent); outline-offset: 3px; border-radius: 4px; animation: fn-focus 1.1s ease-out 2; }
+      @media (prefers-reduced-motion: reduce) { .fn-item.is-scanning .fn-card, .is-layer-focus { animation: none; } }
+      /* ?fit: отдельная страница, playground занимает всю высоту рамки */
+      html.is-fit, html.is-fit body { height: 100%; }
+      html.is-fit .layout { height: 100%; box-sizing: border-box; grid-template-rows: minmax(0, 1fr); }
+      html.is-fit .fn-panel { height: 100%; min-height: 0; }
+      html.is-fit .window { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+      html.is-fit #frame { flex: 1 1 0; height: auto !important; min-height: 0; }
+      @media (max-width: 899px) { html.is-fit .layout { grid-template-rows: 250px minmax(0, 1fr); } }
+      .fn-item.is-demo .fn-card { outline-color: var(--fn-accent); }
+      @media (max-width: 899px) { html.is-fit .fn-hint { display: none; } html.is-fit .fn-head { margin-bottom: 12px; } }

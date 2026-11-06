@@ -1,0 +1,42 @@
+/* ============================================================
+   Re:Instance case — playground with the plugin and the demo file
+   ============================================================ */
+.prose code { font: 400 .875em/1.4 var(--font-mono); padding: 1px 5px; border-radius: 4px; background: var(--color-bg-subtle); color: var(--color-text-primary); }
+.re-cover .cover { position: absolute; inset: 0; height: auto; border: 0; border-radius: 0; }
+
+/* The hero figure has the layout of the results in the other cases (big number, label, text), but it is an estimate:
+   the number is light violet instead of the confirmed-result violet, with a softer «~» before it, and the label says «potential» */
+.case-result--estimate .case-result-num { color: var(--accent-400); }
+.case-result--estimate .case-result-approx { margin-right: .04em; font-weight: 400; opacity: .7; }
+
+/* Layout of the NDA cases: the number on the left, the text on the right. «~1 hour» is wider than «×8», so its size follows the column;
+   on a phone the block stacks like the others */
+.case-hero-grid .case-result--estimate { flex-wrap: nowrap; align-items: center; gap: 20px; }
+.case-hero-grid .case-result--estimate .case-result-num { font-size: clamp(44px, 4.4vw, 56px); letter-spacing: -2.5px; white-space: nowrap; }
+.case-hero-grid .case-result--estimate p { flex: 1 1 0; min-width: 0; }
+@media (max-width: 720px) {
+  .case-hero-grid .case-result--estimate { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .case-hero-grid .case-result--estimate .case-result-num { font-size: 64px; letter-spacing: -3px; }
+  .case-hero-grid .case-result--estimate p { flex: none; }
+}
+
+/* ============================================================
+   Playground page (re-instance-playground.html): steps, the playground frame filling the screen
+   ============================================================ */
+.pg-wrap { max-width: 1480px; margin: 0 auto; padding: 16px var(--gutter) 40px; }
+.pg-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 12px; }
+.pg-steps { display: flex; flex-wrap: wrap; gap: 4px 22px; margin: 0; padding: 0; list-style: none; font: 500 13px/20px var(--font-sans); color: var(--color-text-secondary); }
+.pg-steps b { margin-right: 7px; font: 500 11px/20px var(--font-mono); color: var(--color-text-brand); }
+.pg-frame { display: block; width: 100%; height: max(560px, calc(100vh - 190px)); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); background: #e5e5e5; }
+.pg-note { margin: 12px 0 0; color: var(--color-text-tertiary); }
+@media (max-width: 899px) { .pg-frame { height: 940px; } }
+
+/* Teaser in the case: a picture of the playground and the way to the page */
+.re-play-teaser { position: relative; display: block; overflow: hidden; border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); background: #e5e5e5; }
+.re-play-teaser img { display: block; width: 100%; height: auto; transition: transform .4s ease; }
+.re-play-teaser:hover img { transform: scale(1.015); }
+.re-play-cta { position: absolute; left: 20px; bottom: 20px; box-shadow: 0 6px 20px rgba(28, 25, 23, .22); }
+@media (max-width: 720px) { .re-play-cta { left: 12px; bottom: 12px; } }
+
+/* On a phone the steps go one under another */
+@media (max-width: 720px) { .pg-steps { flex-direction: column; flex-wrap: nowrap; gap: 6px; } }

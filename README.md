@@ -85,6 +85,21 @@ node tools/build.js --lang en --extract-ui
 заголовка или метрики кейса перерисуйте их: `node tools/og.js en en-control en-planning en-docs en-tv en-invino`
 (сервер из `tools/serve.js` должен быть запущен, другой порт — переменной `OG_BASE`).
 
+**Playground Re:Instance.** Он живёт на отдельной странице `re-instance-playground.html` (в `/en/` своя): холст и плагин рядом на весь экран
+(на телефоне друг под другом), сверху шаги «Как попробовать». В кейсе на месте `[[re-instance-playground]]` превью-блок: снимок
+`assets/re-instance/playground-ru.png` / `-en.png` с кнопкой на страницу. Снимки рисует `node tools/playground-shot.js` (нужны сервер и Edge,
+как у `tools/og.js`; перерисовывайте после изменений в playground). Сама страница-iframe — `assets/re-instance/playground.html` (`?lang=ru|en`,
+`?fit=1` — на весь экран, `?demo=1` — состояние для снимка):
+настоящий интерфейс плагина в окне «Figma» с демо-файлом «Field Notes» рядом (карточки-примеры можно выделять и сканировать).
+Страницу собирает `tools/make-playground.js` из проекта плагина: окно-имитация Figma (`Re_Instance/scripts/preview-host.html`) и свежий интерфейс
+(`Re_Instance/dist/ui.html`); код плагина не меняется, панель разработчика и UI kit убраны, данные и холст берутся из `tools/playground/`.
+Холст следует за плагином: поиск подсвечивает карточки, «Показать на холсте» выделяет карточку и слой, восстановление помечает карточку
+экземпляром (отмена возвращает), привязка цвета перекрашивает карточку. Язык интерфейса — `?lang=ru|en`, его подставляет сборка.
+После пересборки плагина (`npm run build` в `Re_Instance`): `node tools/make-playground.js "<путь>/Re-Instance/Re_Instance"` и коммит нового HTML.
+Старый `preview/index.html` не используйте: он может отставать от исходников плагина.
+Статус проекта «На ревью» / «In review» задаётся четвёртым элементом строки проекта в `projectList` (`tools/build.js`):
+метка на карточке и в шапке кейса. Когда плагин пройдёт ревью, уберите `'review'` и бейдж `На ревью` в `templates/cases/re-instance.html`.
+
 **Что пока не переводится.** Типограф (неразрывные пробелы) работает только для русского.
 
 ## Аналитика

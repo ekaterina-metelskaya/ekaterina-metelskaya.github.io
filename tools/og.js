@@ -14,7 +14,7 @@ const BASE = process.env.OG_BASE || 'http://localhost:5173';
 const root = path.join(__dirname, '..');
 fs.mkdirSync(path.join(root, 'assets', 'og', 'en'), { recursive: true });
 
-const cases = ['control', 'planning', 'docs', 'tv', 'invino'];
+const cases = ['control', 'planning', 'docs', 'tv', 'invino', 'ca'];
 const targets = {
   ru: ['tools/og-site.html?lang=ru', 'og-image-ru.png'],
   en: ['tools/og-site.html?lang=en', 'og-image-en.png'],

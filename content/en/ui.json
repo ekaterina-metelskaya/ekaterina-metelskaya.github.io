@@ -492,5 +492,21 @@
   "Попробуйте: переключите язык и включите правила для длинных строк": "Try it: change the language and enable rules for long strings",
   "FIG. 7 — ПРОВЕРКА ЛОКАЛИЗАЦИИ В ДИЗАЙНЕ": "FIG. 7 — CHECKING LOCALIZATION IN DESIGN",
   "Экраны в кейсе пересобраны по макетам. Каналы и передачи вымышленные, в эфире — фрагменты открытых фильмов Blender Foundation": "Screens in this case study were recreated from the original designs. Channels and programs are fictional; video clips come from openly available Blender Foundation films",
-  "In Vino — дизайн-система": "In Vino — Design System"
+  "In Vino — дизайн-система": "In Vino — Design System",
+  "Re:Instance — плагин для Figma": "Re:Instance: A Figma Plugin",
+  "Playground плагина Re:Instance: настоящий интерфейс и демо-файл Field Notes": "Re:Instance playground: the real plugin interface and the Field Notes demo file",
+  "FIG. 1 — PLAYGROUND: ПЛАГИН И ДЕМО-ФАЙЛ": "FIG. 1 — PLAYGROUND: THE PLUGIN AND THE DEMO FILE",
+  "демо-данные, без подключения к Figma": "sample data, no Figma connection",
+  "Re:Instance — playground · Екатерина Метельская": "Re:Instance playground · Ekaterina Metelskaya",
+  "Попробуйте плагин Re:Instance в браузере: настоящий интерфейс и демо-файл Field Notes с примерами отсоединённых компонентов.": "Try the Re:Instance plugin in your browser: the real interface and the Field Notes demo file with examples of detached components.",
+  "К кейсу Re:Instance": "Back to the Re:Instance case",
+  "Как попробовать": "How to try it",
+  "Запустите поиск по странице": "Scan the page",
+  "Сравните карточку": "Compare a card",
+  "Откройте сводку Card": "Open the Card summary",
+  "Восстановите экземпляр или привяжите цвет": "Restore an instance or bind the fill",
+  "Демо-данные: playground не подключается к Figma, не меняет файлы и не проверяет ваш документ.": "Sample data: the playground does not connect to Figma, change files, or inspect your document.",
+  "Открыть playground Re:Instance": "Open the Re:Instance playground",
+  "Playground Re:Instance: холст с примерами Field Notes и плагин с результатами поиска": "Re:Instance playground: the Field Notes example canvas and the plugin with search results",
+  "Открыть playground": "Open the playground"
 }
