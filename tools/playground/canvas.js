@@ -120,6 +120,19 @@ status.append(statusText, clearBtn);
 head.append(el('p', 'fn-hint', FN_TEXT.hint), status);
 panelEl.append(head);
 
+// A card drawn from its view: colour, corners, width, fonts and the layers inside. Also used to redraw a card after a restore.
+const paintCard = (card, v) => {
+  card.className = 'fn-card' + (v.serif ? ' is-serif' : '') + (v.mono ? ' is-mono' : '');
+  card.style.setProperty('--fill', v.fill || '#DCD8FE');
+  card.style.setProperty('--r', `${v.radius ?? 16}px`);
+  card.style.width = `${v.w || 238}px`;
+  card.style.minHeight = `${v.badge ? 170 : v.divider ? 176 : 134}px`;
+  const parts = [el('span', 'fn-cat', 'FIELD NOTES'), el('b', 'fn-card-title', v.title), el('span', 'fn-card-cap', v.caption)];
+  if (v.badge) parts.push(el('span', 'fn-cat fn-badge', v.badge));
+  if (v.divider) parts.push(el('span', 'fn-divider'), el('span', 'fn-note', v.note));
+  card.replaceChildren(...parts);
+};
+
 const itemEls = new Map();
 for (const section of FN_SECTIONS) {
   const sec = el('section', 'fn-section');
@@ -132,14 +145,8 @@ for (const section of FN_SECTIONS) {
     item.dataset.id = v.id;
     item.setAttribute('aria-pressed', 'false');
     item.setAttribute('aria-label', `${v.label}${v.sub ? '. ' + v.sub : ''}. ${FN_TEXT.select}`);
-    const card = el('span', 'fn-card' + (v.serif ? ' is-serif' : '') + (v.mono ? ' is-mono' : ''));
-    card.style.setProperty('--fill', v.fill || '#DCD8FE');
-    card.style.setProperty('--r', `${v.radius ?? 16}px`);
-    card.style.width = `${v.w || 238}px`;
-    card.style.minHeight = `${v.badge ? 170 : v.divider ? 176 : 134}px`;
-    card.append(el('span', 'fn-cat', 'FIELD NOTES'), el('b', 'fn-card-title', v.title), el('span', 'fn-card-cap', v.caption));
-    if (v.badge) card.append(el('span', 'fn-cat fn-badge', v.badge));
-    if (v.divider) card.append(el('span', 'fn-divider'), el('span', 'fn-note', v.note));
+    const card = el('span', 'fn-card');
+    paintCard(card, v);
     const sub = el('span', 'fn-sub', v.sub || '');
     item.append(card, el('span', 'fn-label', v.label), sub);
     item._v = v;
@@ -204,12 +211,23 @@ window.__canvasFocus = (nodeId) => {
 // binding the fill returns the card's colour to the component's variable. The canvas follows the plugin's answers.
 const SURFACE = '#DCD8FE';
 const fn = { instances: new Set(), bound: new Set() };
+// What a restored card looks like: an instance of its source component. The look (colour, corners, width, fonts, layers) comes
+// from the source; only the text edits the plugin carries over (the changes of kind «text-content») stay as they were.
+const instanceLook = (id, own) => {
+  const frameInfo = FRAMES.find((f) => f.frameId === id);
+  const source = frameInfo && SOURCES[frameInfo.sourceKey];
+  const base = source && FN_VIEWS[source.componentId];
+  if (!base) return own;
+  const edited = (layer) => ((COMPARISONS[id] && COMPARISONS[id].changes) || []).some((c) => c.kind === 'text-content' && c.path.endsWith('/' + layer));
+  return { ...base, title: edited('Title') ? own.title : base.title, caption: edited('Caption') ? own.caption : base.caption };
+};
 const renderItem = (id) => {
   const item = itemEls.get(id);
   if (!item) return;
   const instance = fn.instances.has(id);
   item.classList.toggle('is-instance', instance);
-  item._card.style.setProperty('--fill', fn.bound.has(id) ? SURFACE : item._v.fill || SURFACE);
+  paintCard(item._card, instance ? instanceLook(id, item._v) : item._v);
+  if (fn.bound.has(id)) item._card.style.setProperty('--fill', SURFACE);
   item._sub.textContent = instance ? FN_TEXT.restored : item._v.sub || '';
 };
 const setScanning = (on, scope) => {
