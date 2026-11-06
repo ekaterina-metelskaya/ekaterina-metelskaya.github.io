@@ -77,6 +77,9 @@ node tools/build.js --lang en --extract-ui
 `.en.js`, если такой файл есть; `analytics.js`, `consent.js`, `covers.js` текста не содержат и общие. Правя логику скрипта,
 вносите правку в обе копии. Демо локализации в `sweet-tv.js` намеренно сохраняет русский пример, стартовый язык у него английский.
 
+**Резюме.** Русское лежит в `assets/Metelskaya-Ekaterina-CV.pdf`, английское в `assets/Metelskaya-Ekaterina-CV-en.pdf`:
+английские страницы получают ссылку и имя скачиваемого файла с `-en` автоматически. Чтобы обновить, замените PDF под тем же именем.
+
 **Превью ссылок.** Для английских страниц главная использует `og-image-en.png`, кейсы — `assets/og/en/<ключ>.png`
 (русские лежат в `assets/og/`). Тексты картинок — в `tools/og.en.html` (русские в `tools/og.html`); после правки
 заголовка или метрики кейса перерисуйте их: `node tools/og.js en en-control en-planning en-docs en-tv en-invino`

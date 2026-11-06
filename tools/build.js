@@ -399,22 +399,32 @@ const withAnalytics = (html, page) => html.replace(/<script src=/, `<script src=
 // Не-русский язык лежит на уровень глубже (/en/…), а css, js и assets остаются в корне сайта: их адреса получают ещё один «../»
 const relocate = html => L.up ? html.replace(/="((?:\.\.\/)?(?:assets|css|js)\/)/g, `="${L.up}$1`) : html;
 const withLang = html => html.replace(/<html lang="[\w-]+">/, `<html lang="${code}">`);
-// Переключатель языка в шапке: ссылка на ту же страницу в другом готовом языке. Подпись и aria-label — на языке самой ссылки,
-// поэтому не переводятся. Пока второй язык в черновике, на обычной сборке русской версии переключателя нет
-const LANG_LINK = { ru: ['RU', 'Русская версия'], en: ['EN', 'English version'] };
+// Переключатель языка в шапке: сегментный «RU | EN». Текущий язык подсвечен и не кликается (aria-current), доступные — ссылки
+// на ту же страницу на другом языке. Подписи и aria-label — на языке самого сегмента, поэтому не переводятся.
+// Пока второй язык в черновике, на обычной сборке русской версии переключателя нет
+const LANG_LINK = { ru: ['RU', 'Русский'], en: ['EN', 'English'] };
 const withLangSwitch = (html, page) => {
   const depth = (page.startsWith('cases/') ? 1 : 0) + (L.up ? 1 : 0);
-  const links = Object.keys(LANGS).filter(c => c !== code && published.includes(c)).map(c => {
+  if (!Object.keys(LANGS).some(c => c !== code && published.includes(c))) return html;
+  const items = Object.keys(LANGS).filter(c => c === code || published.includes(c)).map(c => {
     const [label, name] = LANG_LINK[c];
-    return `<a class="lang-switch" href="${'../'.repeat(depth)}${LANGS[c].out}${page}" hreflang="${c}" lang="${c}" aria-label="${name}">${label}</a>`;
+    return c === code
+      ? `<span class="is-current" lang="${c}" aria-current="true" title="${name}">${label}</span>`
+      : `<a href="${'../'.repeat(depth)}${LANGS[c].out}${page}" hreflang="${c}" lang="${c}" aria-label="${name}" title="${name}">${label}</a>`;
   }).join('');
-  return links ? html.replace(/(<div class="header-right">\s*<span class="status[^>]*>[^<]*<\/span>)/, `$1\n      ${links}`) : html;
+  const group = `<div class="lang-switch" role="group" aria-label="Language / Язык">${items}</div>`;
+  return html.replace(/(<div class="header-right">)/, `$1\n      ${group}`);
 };
 // Скрипты со строками интерфейса у не-русских языков свои: js/<имя>.<язык>.js (main.en.js и т. д.) вместо js/<имя>.js.
 // Если перевода скрипта нет (analytics.js, consent.js, covers.js не содержат текста), остаётся общий
 const localizeScripts = html => code === 'ru' ? html : html.replace(/(<script\b[^>]*\bsrc=")((?:\.\.\/)?js\/[\w-]+)\.js"/g,
   (m, head, base) => fs.existsSync(path.join(root, `${base.replace(/^\.\.\//, '')}.${code}.js`)) ? `${head}${base}.${code}.js"` : m);
-const finish = (html, page, og) => relocate(withLang(withGtag(versioned(localizeScripts(typograph(withAnalytics(withConsent(withLangSwitch(withAlternates(withOg(html, page, og), page), page), page), page)))))));
+// Резюме: у русской версии assets/Metelskaya-Ekaterina-CV.pdf, у остальных языков — assets/Metelskaya-Ekaterina-CV-<язык>.pdf
+// (если файла нет, остаётся русское). Меняется и ссылка, и имя скачиваемого файла
+const CV_NAME = 'Metelskaya-Ekaterina-CV';
+const localizeCv = html => code === 'ru' || !fs.existsSync(path.join(root, `assets/${CV_NAME}-${code}.pdf`)) ? html
+  : html.split(`${CV_NAME}.pdf`).join(`${CV_NAME}-${code}.pdf`);
+const finish = (html, page, og) => relocate(withLang(withGtag(versioned(localizeCv(localizeScripts(typograph(withAnalytics(withConsent(withLangSwitch(withAlternates(withOg(html, page, og), page), page), page), page))))))));
 
 // ---------- Главная ----------
 {

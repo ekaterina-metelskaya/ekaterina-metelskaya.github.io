@@ -98,7 +98,8 @@
     back.setAttribute('aria-label', 'Все кейсы');
     back.href = '../projects.html';
     back.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M12.67 8H3.33M7.33 4l-4 4 4 4" fill="none" stroke="currentColor" stroke-width="1.33" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Все кейсы</span>';
-    $('.logo', header).after(back, drop);
+    // After the «open to offers» status when it follows the logo, so the status stays next to the logo
+    ($('.logo + .status', header) || $('.logo', header)).after(back, drop);
     // Shown only once the hero's own «Все кейсы» has scrolled away, so the link never appears twice
     const heroBack = $('.case-hero .back');
     if (heroBack) new IntersectionObserver(([e]) => {
